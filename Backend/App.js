@@ -131,10 +131,12 @@ app.get('/testdb', (request, response) => {
 
 
 
-
-
+// If port isn't set, then defaults to 5050
+// This was my workaround to force my computer to recognize 
+// the backend server without changing file names
+const port = process.env.PORT || 5050;
 // set up the web server listener
-app.listen(process.env.PORT, 
+app.listen(port,
     () => {
         console.log("I am listening.")
     }
