@@ -1,7 +1,7 @@
 // database services, accessbile by DbService methods.
 
 const mysql = require('mysql');
-const dotenv = require('.env');
+const dotenv = require('dotenv');
 dotenv.config(); // read from .env file
 
 let instance = null; 
