@@ -7,7 +7,6 @@ const dotenv = require('dotenv')
 dotenv.config()
 
 const app = express();
-
 const dbService = require('./dbService');
 
 
