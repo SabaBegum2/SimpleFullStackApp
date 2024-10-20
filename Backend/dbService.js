@@ -6,12 +6,13 @@ dotenv.config(); // read from .env file
 
 let instance = null; 
 
-/* for debugging
-console.log(process.env.HOST);
-console.log(process.env.USER);
-console.log(process.env.PASSWORD);
-*/
-
+// if you use .env to configure
+/*
+console.log("HOST: " + process.env.HOST);
+console.log("DB USER: " + process.env.DB_USER);
+console.log("PASSWORD: " + process.env.PASSWORD);
+console.log("DATABASE: " + process.env.DATABASE);
+console.log("DB PORT: " + process.env.DB_PORT);
 const connection = mysql.createConnection({
      host: process.env.HOST,
      user: process.env.USER,        
@@ -19,7 +20,16 @@ const connection = mysql.createConnection({
      database: process.env.DATABASE,
      port: process.env.DB_PORT
 });
+*/
 
+// if you configure directly in this file, there is a security issue, but it will work
+const connection = mysql.createConnection({
+   host:"localhost",
+   user:"root",        
+   password:"",
+   database:"web_app",
+   port:3306
+});
 
 connection.connect((err) => {
      if(err){
@@ -126,6 +136,7 @@ class DbService{
 
    async searchByName(name){
         try{
+          //TODO: check if this dateAdded is needed
              const dateAdded = new Date();
              // use await to call an asynchronous function
              const response = await new Promise((resolve, reject) => 
