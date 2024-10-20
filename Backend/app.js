@@ -17,7 +17,7 @@ app.use(express.urlencoded({extended: false}));
 // create
 app.post('/insert', (request, response) => {
     console.log("app: insert a row.");
-    // console.log(request.body); 
+    //console.log(request.body); 
 
     const {name} = request.body;
     const db = dbService.getDbServiceInstance();
@@ -137,6 +137,6 @@ const port = process.env.PORT || 5050;
 // set up the web server listener
 app.listen(port,
     () => {
-        console.log("I am listening.")
+        console.log("I am listening on the configured port " + process.env.PORT)
     }
 );
