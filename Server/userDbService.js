@@ -164,6 +164,76 @@ class userDbService{
          }
    }
 
+   // Search users by first and/or last name
+async searchByFirstAndLastName(firstname, lastname) {
+   try {
+       const query = "SELECT * FROM Users WHERE firstname = ? OR lastname = ?;";
+       const response = await new Promise((resolve, reject) => {
+           connection.query(query, [firstname || null, lastname || null], (err, results) => {
+               if (err) reject(new Error(err.message));
+               else resolve(results);
+           });
+       });
+       return response;
+   } catch (error) {
+       console.error("Error in searchByFirstAndLastName:", error);
+       throw error; // Ensure the error is propagated
+   }
+}
+
+// Search users by user ID
+async searchUsersByUserID(id) {
+   try {
+       const query = "SELECT * FROM Users WHERE username = ?;";
+       const response = await new Promise((resolve, reject) => {
+           connection.query(query, [id], (err, results) => {
+               if (err) reject(new Error(err.message));
+               else resolve(results);
+           });
+       });
+       return response;
+   } catch (error) {
+       console.error("Error in searchUsersByUserID:", error);
+       throw error;
+   }
+}
+
+// Search users by salary range (between x and y)
+async searchUsersBySalary(minSalary, maxSalary) {
+   try {
+       const query = "SELECT * FROM Users WHERE salary BETWEEN ? AND ?;";
+       const response = await new Promise((resolve, reject) => {
+           connection.query(query, [minSalary || 0, maxSalary || Number.MAX_SAFE_INTEGER], (err, results) => {
+               if (err) reject(new Error(err.message));
+               else resolve(results);
+           });
+       });
+       return response;
+   } catch (error) {
+       console.error("Error in searchBySalary:", error);
+       throw error;
+   }
+}
+
+// Search users by age range (between x and y)
+async searchUsersByAge(minAge, maxAge) {
+   try {
+       const query = "SELECT * FROM Users WHERE age BETWEEN ? AND ?;";
+       const response = await new Promise((resolve, reject) => {
+           connection.query(query, [minAge || 0, maxAge || 120], (err, results) => {
+               if (err) reject(new Error(err.message));
+               else resolve(results);
+           });
+       });
+       return response;
+   } catch (error) {
+       console.error("Error in searchByAge:", error);
+       throw error;
+   }
+}
+
+
+
    async deleteRowById(username){
          try{
             //id = parseInt(id, 10);

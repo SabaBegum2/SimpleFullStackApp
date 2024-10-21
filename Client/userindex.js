@@ -102,6 +102,81 @@ searchBtn.onclick = function (){
     .then(data => loadHTMLTable(data['data']));
 }
 
+//when the sear-by id button is clicked
+const searchByIdBtn =  document.querySelector('#search-by-id-btn');
+searchByIdBtn.onclick = function (){
+    const idInput = document.querySelector('#id-input');
+    const id = idInput.value;
+    idInput.value = "";
+
+    //fetch('http://localhost:5050/getById/' + id)
+    fetch('http://localhost:5050/searchUsersByUserID/' + id)
+    .then(response => response.json())
+    .then(data => loadHTMLTable([data['data']]));
+}
+
+// When the searchBtn is clicked for searching users by first and last name
+searchBtn.addEventListener('click', function(event) {
+    // Check if the event is for searching by first and last name
+    // Make sure this button has the class 'search-by-first-last-name-btn'
+    if (event.target.classList.contains("search-by-first-last-name-btn")) {
+        const firstNameInput = document.querySelector('#first-name-input');
+        const lastNameInput = document.querySelector('#last-name-input');
+
+        const firstName = firstNameInput.value;
+        const lastName = lastNameInput.value;
+
+        firstNameInput.value = "";
+        lastNameInput.value = "";
+
+        // Make sure to encode the query parameters to handle spaces and special characters
+        const query = new URLSearchParams({ firstname: firstName, lastname: lastName }).toString();
+        
+        //fetch('http://localhost:5050/SearchUsersByName?' + query)
+        fetch('http://localhost:5050/searchUsersByFirstAndLastName?' + query)
+            .then(response => response.json())
+            .then(data => loadHTMLTable(data['data']));
+    }
+});
+
+//search all users whole salary is between x and y
+//when the search-by-salary button is clicked
+const searchBySalaryBtn =  document.querySelector('#search-by-salary-btn');
+searchBySalaryBtn.onclick = function (){
+    const minSalaryInput = document.querySelector('#min-salary-input');
+    const maxSalaryInput = document.querySelector('#max-salary-input');
+
+    const minSalary = minSalaryInput.value || 0; // Default to 0 if empty
+    const maxSalary = maxSalaryInput.value || 99999999; // Default to a large number if empty
+
+    salaryFromInput.value = "";
+    salaryToInput.value = "";
+
+    //fetch('http://localhost:5050/searchBySalary/' + salaryFrom + '/' + salaryTo)
+    fetch('http://localhost:5050/searchUsersBySalary/' + minSalary + '/' + maxSalary)
+   .then(response => response.json())
+   .then(data => loadHTMLTable(data['data']));
+}
+
+//search all users whose ages are between x and y
+const searchByAgeBtn =  document.querySelector('#search-by-age-btn');
+searchByAgeBtn.onclick = function (){
+    const minAgeInput = document.querySelector('#min-age-input');
+    const maxAgeInput = document.querySelector('#max-age-input');
+
+    const minAge = minAgeInput.value || 0; // Default to 0 if empty
+    const maxAge = maxAgeInput.value || 9999; // Default to a large number if empty
+
+    ageFromInput.value = "";
+    ageToInput.value = "";
+
+    //fetch('http://localhost:5050/searchByAge/' + minAge + '/' + maxAge)
+    fetch('http://localhost:5050/searchUsersByAge/' + minAge + '/' + maxAge)
+   .then(response => response.json())
+   .then(data => loadHTMLTable(data['data']));
+}
+
+
 let rowToDelete; 
 
 // when the delete button is clicked, since it is not part of the DOM tree, we need to do it differently

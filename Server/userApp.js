@@ -67,6 +67,106 @@ app.get('/search/:username', (request, response) => { // we can debug by URL
     .catch(err => console.log(err));
 });
 
+//search users by first and/or last name
+app.get('/searchByFirstAndLastName', (request, response) => {
+    const {firstname , lastname} = request.query;
+    console.log(firstname);
+    console.log(lastname);
+
+    const db = userDbService.getUserDbServiceInstance();
+    let result;
+
+    if (firstname === "" && lastname === "") {
+        // Return empty array if both firstname and lastname are empty
+        return response.json({ data: [] });
+    } else {
+        // Proceed with searching by name
+        result = db.searchUsersByName(firstname, lastname);
+    }
+
+    result
+        .then(data => response.json({ data: data }))
+        .catch(err => console.log(err));
+});
+
+//search users by user id
+app.get('/searchUsersByUserID', (request, response) => {
+    const { id = "" } = request.query;
+    console.log(id);
+
+    const db = userDbService.getUserDbServiceInstance();
+    let result;
+
+    if (id === "") {
+        // Return empty array if user id is empty
+        return response.json({ data: [] });
+    } else {
+        // Proceed with searching by user id
+        result = db.searchUsersByUserId(id);
+    }
+
+    result
+       .then(data => response.json({ data: data }))
+       .catch(err => console.log(err));
+});
+
+//search all users whose salary is between x and y
+app.get('/searchUsersBySalary', (request, response) => {
+    let { minSalary = 0, maxSalary = 99999999 } = request.query;
+
+    // Convert to floats and handle potential invalid input
+    minSalary = parseFloat(minSalary);
+    maxSalary = parseFloat(maxSalary);
+
+    // Basic validation to ensure numbers are valid
+    if (isNaN(minSalary) || isNaN(maxSalary)) {
+        return response.status(400).json({ error: "Invalid salary range" });
+    }
+
+    console.log('Min Salary:', minSalary);
+    console.log('Max Salary:', maxSalary);
+
+    const db = dbService.getDbServiceInstance();
+
+    let result;
+    if (minSalary === 0 && maxSalary === 99999999) {
+        //result = db.getAllData(); // Fetch all data if no salary range is provided
+        return response.json({ data: []});
+    } else {
+        result = db.SearchUsersBySalary(minSalary, maxSalary); // Call a DB function
+    }
+
+    result
+        .then(data => response.json({ data: data }))
+        .catch(err => {
+            console.log(err);
+            response.status(500).json({ error: "Database error occurred" });
+        });
+});
+
+// Search all users whose age is between X and Y
+app.get('/searchUsersByAge', (request, response) => {
+    let { minAge = 0, maxAge = 120 } = request.query;
+
+    minAge = parseInt(minAge);
+    maxAge = parseInt(maxAge);
+
+    console.log(minAge);
+    console.log(maxAge);
+
+    const db = dbService.getDbServiceInstance();
+
+    let result;
+    if (minAge === 0 && maxAge === 120) {
+        return response,json({ data: []}); //return an emapty array
+    } else {
+        result = db.SearchUsersByAge(minAge, maxAge); // Call a DB function
+    }
+
+    result
+        .then(data => response.json({ data: data }))
+        .catch(err => console.log(err));
+});
 
 // update
 // app.patch('/update', 
