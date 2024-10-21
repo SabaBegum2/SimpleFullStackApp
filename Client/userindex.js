@@ -63,7 +63,7 @@ Arrow functions have a few notable features:
 */
 
 
-// fetch call is to call the backend
+// fetch call is to call the server
 document.addEventListener('DOMContentLoaded', function() {
     // one can point your browser to http://localhost:5050/getAll to check what it returns first.
     fetch('http://localhost:5050/getAll')     
@@ -73,18 +73,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // when the addBtn is clicked
-const addBtn = document.querySelector('#add-name-btn');
+const addBtn = document.querySelector('#add-username-btn');
 addBtn.onclick = function (){
-    const nameInput = document.querySelector('#name-input');
-    const name = nameInput.value;
-    nameInput.value = "";
+    const usernameInput = document.querySelector('#username-input');
+    const username = usernameInput.value;
+    usernameInput.value = "";
 
     fetch('http://localhost:5050/insert', {
         headers: {
             'Content-type': 'application/json'
         },
         method: 'POST',
-        body: JSON.stringify({name: name})
+        body: JSON.stringify({username: username})
     })
     .then(response => response.json())
     .then(data => insertRowIntoTable(data['data']));
@@ -102,6 +102,81 @@ searchBtn.onclick = function (){
     .then(data => loadHTMLTable(data['data']));
 }
 
+//when the sear-by id button is clicked
+const searchByIdBtn =  document.querySelector('#search-by-id-btn');
+searchByIdBtn.onclick = function (){
+    const idInput = document.querySelector('#id-input');
+    const id = idInput.value;
+    idInput.value = "";
+
+    //fetch('http://localhost:5050/getById/' + id)
+    fetch('http://localhost:5050/searchUsersByUserID/' + id)
+    .then(response => response.json())
+    .then(data => loadHTMLTable([data['data']]));
+}
+
+// When the searchBtn is clicked for searching users by first and last name
+searchBtn.addEventListener('click', function(event) {
+    // Check if the event is for searching by first and last name
+    // Make sure this button has the class 'search-by-first-last-name-btn'
+    if (event.target.classList.contains("search-by-first-last-name-btn")) {
+        const firstNameInput = document.querySelector('#first-name-input');
+        const lastNameInput = document.querySelector('#last-name-input');
+
+        const firstName = firstNameInput.value;
+        const lastName = lastNameInput.value;
+
+        firstNameInput.value = "";
+        lastNameInput.value = "";
+
+        // Make sure to encode the query parameters to handle spaces and special characters
+        const query = new URLSearchParams({ firstname: firstName, lastname: lastName }).toString();
+        
+        //fetch('http://localhost:5050/SearchUsersByName?' + query)
+        fetch('http://localhost:5050/searchUsersByFirstAndLastName?' + query)
+            .then(response => response.json())
+            .then(data => loadHTMLTable(data['data']));
+    }
+});
+
+//search all users whole salary is between x and y
+//when the search-by-salary button is clicked
+const searchBySalaryBtn =  document.querySelector('#search-by-salary-btn');
+searchBySalaryBtn.onclick = function (){
+    const minSalaryInput = document.querySelector('#min-salary-input');
+    const maxSalaryInput = document.querySelector('#max-salary-input');
+
+    const minSalary = minSalaryInput.value || 0; // Default to 0 if empty
+    const maxSalary = maxSalaryInput.value || 99999999; // Default to a large number if empty
+
+    salaryFromInput.value = "";
+    salaryToInput.value = "";
+
+    //fetch('http://localhost:5050/searchBySalary/' + salaryFrom + '/' + salaryTo)
+    fetch('http://localhost:5050/searchUsersBySalary/' + minSalary + '/' + maxSalary)
+   .then(response => response.json())
+   .then(data => loadHTMLTable(data['data']));
+}
+
+//search all users whose ages are between x and y
+const searchByAgeBtn =  document.querySelector('#search-by-age-btn');
+searchByAgeBtn.onclick = function (){
+    const minAgeInput = document.querySelector('#min-age-input');
+    const maxAgeInput = document.querySelector('#max-age-input');
+
+    const minAge = minAgeInput.value || 0; // Default to 0 if empty
+    const maxAge = maxAgeInput.value || 9999; // Default to a large number if empty
+
+    ageFromInput.value = "";
+    ageToInput.value = "";
+
+    //fetch('http://localhost:5050/searchByAge/' + minAge + '/' + maxAge)
+    fetch('http://localhost:5050/searchUsersByAge/' + minAge + '/' + maxAge)
+   .then(response => response.json())
+   .then(data => loadHTMLTable(data['data']));
+}
+
+
 let rowToDelete; 
 
 // when the delete button is clicked, since it is not part of the DOM tree, we need to do it differently
@@ -109,20 +184,20 @@ document.querySelector('table tbody').addEventListener('click',
       function(event){
         if(event.target.className === "delete-row-btn"){
 
-            deleteRowById(event.target.dataset.id);   
+            deleteRowByUsername(event.target.dataset.username);   
             rowToDelete = event.target.parentNode.parentNode.rowIndex;    
             debug("delete which one:");
             debug(rowToDelete);
         }   
         if(event.target.className === "edit-row-btn"){
-            showEditRowInterface(event.target.dataset.id); // display the edit row interface
+            showEditRowInterface(event.target.dataset.username); // display the edit row interface
         }
       }
 );
 
-function deleteRowById(id){
-    // debug(id);
-    fetch('http://localhost:5050/delete/' + id,
+function deleteRowByusername(username){
+    // debug(username);
+    fetch('http://localhost:5050/delete/' + username,
        { 
         method: 'DELETE'
        }
@@ -131,25 +206,25 @@ function deleteRowById(id){
     .then(
          data => {
              if(data.success){
-                document.getElementById("table").deleteRow(rowToDelete);
+                document.getElementByusername("table").deleteRow(rowToDelete);
                 // location.reload();
              }
          }
     );
 }
 
-let idToUpdate = 0;
+let usernameToUpdate = 0;
 
-function showEditRowInterface(id){
-    debug("id clicked: ");
-    debug(id);
-    document.querySelector('#update-name-input').value = ""; // clear this field
+function showEditRowInterface(username){
+    debug("username clicked: ");
+    debug(username);
+    document.querySelector('#update-username-input').value = ""; // clear this field
     const updateSetction = document.querySelector("#update-row");  
     updateSetction.hidden = false;
-    // we assign the id to the update button as its id attribute value
-    idToUpdate = id;
-    debug("id set!");
-    debug(idToUpdate+"");
+    // we assign the username to the update button as its username attribute value
+    usernameToUpdate = username;
+    debug("username set!");
+    debug(usernameToUpdate+"");
 }
 
 
@@ -158,10 +233,10 @@ const updateBtn = document.querySelector('#update-row-btn');
 
 updateBtn.onclick = function(){
     debug("update clicked");
-    debug("got the id: ");
+    debug("got the username: ");
     debug(updateBtn.value);
     
-    const updatedNameInput = document.querySelector('#update-name-input');
+    const updatedusernameInput = document.querySelector('#update-username-input');
 
     fetch('http://localhost:5050/update',
           {
@@ -171,8 +246,8 @@ updateBtn.onclick = function(){
             method: 'PATCH',
             body: JSON.stringify(
                   {
-                    id: idToUpdate,
-                    name: updatedNameInput.value
+                    username: usernameToUpdate,
+                    username: updatedusernameInput.value
                   }
             )
           }
@@ -202,7 +277,7 @@ function debug(data)
 
 function insertRowIntoTable(data){
 
-   debug("index.js: insertRowIntoTable called: ");
+   debug("userindex.js: insertRowIntoTable called: ");
    debug(data);
 
    const table = document.querySelector('table tbody');
@@ -223,8 +298,8 @@ function insertRowIntoTable(data){
       }
    }
 
-   tableHtml +=`<td><button class="delete-row-btn" data-id=${data.id}>Delete</td>`;
-   tableHtml += `<td><button class="edit-row-btn" data-id=${data.id}>Edit</td>`;
+   tableHtml +=`<td><button class="delete-row-btn" data-username=${data.username}>Delete</td>`;
+   tableHtml += `<td><button class="edit-row-btn" data-username=${data.username}>Edit</td>`;
 
    tableHtml += "</tr>";
 
@@ -242,12 +317,12 @@ function insertRowIntoTable(data){
 }
 
 function loadHTMLTable(data){
-    debug("index.js: loadHTMLTable called.");
+    debug("userindex.js: loadHTMLTable called.");
 
     const table = document.querySelector('table tbody'); 
     
     if(data.length === 0){
-        table.innerHTML = "<tr><td class='no-data' colspan='5'>No Data</td></tr>";
+        table.innerHTML = "<tr><td class='no-data' colspan='8'>No Data</td></tr>";
         return;
     }
   
@@ -261,14 +336,14 @@ function loadHTMLTable(data){
     destructuring pattern:
 
 
-    function ({id, name, date_added}) {
+    function ({username, password, firstname, lastname, salary, age, registerday, signintime) {
         // ... code inside the callback function
     }
 
-    This pattern is used to extract the id, name, and date_added properties from each 
+    This pattern is used to extract the username, password, firstname, lastname, salary, age, registerday, signintime properties from each 
     element of the data array. The callback function is then executed for each element
     in the array, and within the function, you can access these properties directly 
-    as variables (id, name, and date_added).
+    as variables (username, password, firstname, lastname, salary, age, registerday, signintime).
 
     
     In summary, the forEach method is a convenient way to iterate over each element in 
@@ -278,15 +353,20 @@ function loadHTMLTable(data){
     */
 
     let tableHtml = "";
-    data.forEach(function ({id, name, date_added}){
+    data.forEach(function ({username, password, firstname, lastname, salary, age, registerday, signintime}){
          tableHtml += "<tr>";
-         tableHtml +=`<td>${id}</td>`;
-         tableHtml +=`<td>${name}</td>`;
-         tableHtml +=`<td>${new Date(date_added).toLocaleString()}</td>`;
-         tableHtml +=`<td><button class="delete-row-btn" data-id=${id}>Delete</td>`;
-         tableHtml += `<td><button class="edit-row-btn" data-id=${id}>Edit</td>`;
+         tableHtml +=`<td>${username}</td>`;
+         tableHtml +=`<td>${password}</td>`;
+         tableHtml +=`<td>${firstname}</td>`;
+         tableHtml +=`<td>${lastname}</td>`;
+         tableHtml +=`<td>${salary}</td>`;
+         tableHtml +=`<td>${age}</td>`;
+         tableHtml +=`<td>${new Date(registerday).toLocaleString()}</td>`;
+         tableHtml +=`<td>${new Date(signintime).toLocaleString()}</td>`;
+         tableHtml +=`<td><button class="delete-row-btn" data-username=${username}>Delete</button></td>`;
+         tableHtml += `<td><button class="edit-row-btn" data-username=${username}>Edit</button></td>`;
          tableHtml += "</tr>";
     });
 
     table.innerHTML = tableHtml;
-}
+} 
