@@ -109,20 +109,20 @@ document.querySelector('table tbody').addEventListener('click',
       function(event){
         if(event.target.className === "delete-row-btn"){
 
-            deleteRowById(event.target.dataset.id);   
+            deleteRowByUsername(event.target.dataset.username);   
             rowToDelete = event.target.parentNode.parentNode.rowIndex;    
             debug("delete which one:");
             debug(rowToDelete);
         }   
         if(event.target.className === "edit-row-btn"){
-            showEditRowInterface(event.target.dataset.id); // display the edit row interface
+            showEditRowInterface(event.target.dataset.username); // display the edit row interface
         }
       }
 );
 
-function deleteRowById(id){
-    // debug(id);
-    fetch('http://localhost:5050/delete/' + id,
+function deleteRowByusername(username){
+    // debug(username);
+    fetch('http://localhost:5050/delete/' + username,
        { 
         method: 'DELETE'
        }
@@ -131,25 +131,25 @@ function deleteRowById(id){
     .then(
          data => {
              if(data.success){
-                document.getElementById("table").deleteRow(rowToDelete);
+                document.getElementByusername("table").deleteRow(rowToDelete);
                 // location.reload();
              }
          }
     );
 }
 
-let idToUpdate = 0;
+let usernameToUpdate = 0;
 
-function showEditRowInterface(id){
-    debug("id clicked: ");
-    debug(id);
+function showEditRowInterface(username){
+    debug("username clicked: ");
+    debug(username);
     document.querySelector('#update-username-input').value = ""; // clear this field
     const updateSetction = document.querySelector("#update-row");  
     updateSetction.hidden = false;
-    // we assign the id to the update button as its id attribute value
-    idToUpdate = id;
-    debug("id set!");
-    debug(idToUpdate+"");
+    // we assign the username to the update button as its username attribute value
+    usernameToUpdate = username;
+    debug("username set!");
+    debug(usernameToUpdate+"");
 }
 
 
@@ -158,7 +158,7 @@ const updateBtn = document.querySelector('#update-row-btn');
 
 updateBtn.onclick = function(){
     debug("update clicked");
-    debug("got the id: ");
+    debug("got the username: ");
     debug(updateBtn.value);
     
     const updatedusernameInput = document.querySelector('#update-username-input');
@@ -171,7 +171,7 @@ updateBtn.onclick = function(){
             method: 'PATCH',
             body: JSON.stringify(
                   {
-                    id: idToUpdate,
+                    username: usernameToUpdate,
                     username: updatedusernameInput.value
                   }
             )
@@ -223,8 +223,8 @@ function insertRowIntoTable(data){
       }
    }
 
-   tableHtml +=`<td><button class="delete-row-btn" data-id=${data.username}>Delete</td>`;
-   tableHtml += `<td><button class="edit-row-btn" data-id=${data.username}>Edit</td>`;
+   tableHtml +=`<td><button class="delete-row-btn" data-username=${data.username}>Delete</td>`;
+   tableHtml += `<td><button class="edit-row-btn" data-username=${data.username}>Edit</td>`;
 
    tableHtml += "</tr>";
 
@@ -247,7 +247,7 @@ function loadHTMLTable(data){
     const table = document.querySelector('table tbody'); 
     
     if(data.length === 0){
-        table.innerHTML = "<tr><td class='no-data' colspan='5'>No Data</td></tr>";
+        table.innerHTML = "<tr><td class='no-data' colspan='8'>No Data</td></tr>";
         return;
     }
   
@@ -288,8 +288,8 @@ function loadHTMLTable(data){
          tableHtml +=`<td>${age}</td>`;
          tableHtml +=`<td>${new Date(registerday).toLocaleString()}</td>`;
          tableHtml +=`<td>${new Date(signintime).toLocaleString()}</td>`;
-         tableHtml +=`<td><button class="delete-row-btn" data-id=${username}>Delete</td>`;
-         tableHtml += `<td><button class="edit-row-btn" data-id=${username}>Edit</td>`;
+         tableHtml +=`<td><button class="delete-row-btn" data-username=${username}>Delete</button></td>`;
+         tableHtml += `<td><button class="edit-row-btn" data-username=${username}>Edit</button></td>`;
          tableHtml += "</tr>";
     });
 
