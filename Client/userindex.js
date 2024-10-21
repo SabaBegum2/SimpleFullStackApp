@@ -73,18 +73,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // when the addBtn is clicked
-const addBtn = document.querySelector('#add-name-btn');
+const addBtn = document.querySelector('#add-username-btn');
 addBtn.onclick = function (){
-    const nameInput = document.querySelector('#name-input');
-    const name = nameInput.value;
-    nameInput.value = "";
+    const usernameInput = document.querySelector('#username-input');
+    const username = usernameInput.value;
+    usernameInput.value = "";
 
     fetch('http://localhost:5050/insert', {
         headers: {
             'Content-type': 'application/json'
         },
         method: 'POST',
-        body: JSON.stringify({name: name})
+        body: JSON.stringify({username: username})
     })
     .then(response => response.json())
     .then(data => insertRowIntoTable(data['data']));
@@ -143,7 +143,7 @@ let idToUpdate = 0;
 function showEditRowInterface(id){
     debug("id clicked: ");
     debug(id);
-    document.querySelector('#update-name-input').value = ""; // clear this field
+    document.querySelector('#update-username-input').value = ""; // clear this field
     const updateSetction = document.querySelector("#update-row");  
     updateSetction.hidden = false;
     // we assign the id to the update button as its id attribute value
@@ -161,7 +161,7 @@ updateBtn.onclick = function(){
     debug("got the id: ");
     debug(updateBtn.value);
     
-    const updatedNameInput = document.querySelector('#update-name-input');
+    const updatedusernameInput = document.querySelector('#update-username-input');
 
     fetch('http://localhost:5050/update',
           {
@@ -172,7 +172,7 @@ updateBtn.onclick = function(){
             body: JSON.stringify(
                   {
                     id: idToUpdate,
-                    name: updatedNameInput.value
+                    username: updatedusernameInput.value
                   }
             )
           }
@@ -223,8 +223,8 @@ function insertRowIntoTable(data){
       }
    }
 
-   tableHtml +=`<td><button class="delete-row-btn" data-id=${data.id}>Delete</td>`;
-   tableHtml += `<td><button class="edit-row-btn" data-id=${data.id}>Edit</td>`;
+   tableHtml +=`<td><button class="delete-row-btn" data-id=${data.username}>Delete</td>`;
+   tableHtml += `<td><button class="edit-row-btn" data-id=${data.username}>Edit</td>`;
 
    tableHtml += "</tr>";
 
@@ -261,14 +261,14 @@ function loadHTMLTable(data){
     destructuring pattern:
 
 
-    function ({id, name, date_added}) {
+    function ({username, password, firstname, lastname, salary, age, registerday, signintime) {
         // ... code inside the callback function
     }
 
-    This pattern is used to extract the id, name, and date_added properties from each 
+    This pattern is used to extract the username, password, firstname, lastname, salary, age, registerday, signintime properties from each 
     element of the data array. The callback function is then executed for each element
     in the array, and within the function, you can access these properties directly 
-    as variables (id, name, and date_added).
+    as variables (username, password, firstname, lastname, salary, age, registerday, signintime).
 
     
     In summary, the forEach method is a convenient way to iterate over each element in 
@@ -278,15 +278,20 @@ function loadHTMLTable(data){
     */
 
     let tableHtml = "";
-    data.forEach(function ({id, name, date_added}){
+    data.forEach(function ({username, password, firstname, lastname, salary, age, registerday, signintime}){
          tableHtml += "<tr>";
-         tableHtml +=`<td>${id}</td>`;
-         tableHtml +=`<td>${name}</td>`;
-         tableHtml +=`<td>${new Date(date_added).toLocaleString()}</td>`;
-         tableHtml +=`<td><button class="delete-row-btn" data-id=${id}>Delete</td>`;
-         tableHtml += `<td><button class="edit-row-btn" data-id=${id}>Edit</td>`;
+         tableHtml +=`<td>${username}</td>`;
+         tableHtml +=`<td>${password}</td>`;
+         tableHtml +=`<td>${firstname}</td>`;
+         tableHtml +=`<td>${lastname}</td>`;
+         tableHtml +=`<td>${salary}</td>`;
+         tableHtml +=`<td>${age}</td>`;
+         tableHtml +=`<td>${new Date(registerday).toLocaleString()}</td>`;
+         tableHtml +=`<td>${new Date(signintime).toLocaleString()}</td>`;
+         tableHtml +=`<td><button class="delete-row-btn" data-id=${username}>Delete</td>`;
+         tableHtml += `<td><button class="edit-row-btn" data-id=${username}>Edit</td>`;
          tableHtml += "</tr>";
     });
 
     table.innerHTML = tableHtml;
-}
+} 
