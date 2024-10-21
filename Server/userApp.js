@@ -16,19 +16,19 @@ app.use(express.urlencoded({extended: false}));
 
 // create
 app.post('/insert', (request, response) => {
-    console.log("userapp: insert a row.");
+    console.log("userApp: insert a row.");
     //console.log(request.body); 
 
-    const {name} = request.body;
+    const {username} = request.body;
     const db = userDbService.getUserDbServiceInstance();
 
-    const result = db.insertNewName(name);
+    const result = db.insertNewName(username);
  
     // note that result is a promise
     result 
     .then(data => response.json({data: data})) // return the newly added row to frontend, which will show it
-   // .then(data => console.log({data: data})) // debug first before return by response
-   .catch(err => console.log(err));
+    .then(data => console.log({data: data})) // debug first before return by response
+    .catch(err => console.log(err));
 });
 
 
@@ -48,7 +48,7 @@ app.get('/getAll', (request, response) => {
 });
 
 
-app.get('/search/:name', (request, response) => { // we can debug by URL
+app.get('/search/:username', (request, response) => { // we can debug by URL
     
     const {name} = request.params;
     
@@ -69,32 +69,32 @@ app.get('/search/:name', (request, response) => { // we can debug by URL
 
 
 // update
-app.patch('/update', 
-     (request, response) => {
-          console.log("app: update is called");
-          //console.log(request.body);
-          const{id, name} = request.body;
-          console.log(id);
-          console.log(name);
-          const db = userDbService.getUserDbServiceInstance();
+// app.patch('/update', 
+//      (request, response) => {
+//           console.log("app: update is called");
+//           //console.log(request.body);
+//           const{id, name} = request.body;
+//           console.log(id);
+//           console.log(name);
+//           const db = userDbService.getUserDbServiceInstance();
 
-          const result = db.updateNameById(id, name);
+//           const result = db.updateNameById(id, name);
 
-          result.then(data => response.json({success: true}))
-          .catch(err => console.log(err)); 
+//           result.then(data => response.json({success: true}))
+//           .catch(err => console.log(err)); 
 
-     }
-);
+//      }
+// );
 
 // delete service
-app.delete('/delete/:id', 
+app.delete('/delete/:username', 
      (request, response) => {     
-        const {id} = request.params;
+        const {username} = request.params;
         console.log("delete");
-        console.log(id);
+        console.log(username);
         const db = userDbService.getUserDbServiceInstance();
 
-        const result = db.deleteRowById(id);
+        const result = db.deleteRowById(username);
 
         result.then(data => response.json({success: true}))
         .catch(err => console.log(err));
@@ -118,7 +118,7 @@ app.get('/testdb', (request, response) => {
     const db = userDbService.getUserDbServiceInstance();
 
     
-    const result =  db.deleteById("14"); // call a DB function here, change it to the one you want
+    const result =  db.deleteByUsername("14"); // call a DB function here, change it to the one you want
 
     result
     .then(data => response.json({data: data}))
