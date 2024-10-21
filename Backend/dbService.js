@@ -157,6 +157,15 @@ class DbService{
          }
    }
 
+   //search users by first and/or last name
+
+   //search users by userid
+
+   //search users whose salary is between x and y
+
+   //search users ages are between x and y 
+
+
    async deleteRowById(id){
          try{
               id = parseInt(id, 10);
