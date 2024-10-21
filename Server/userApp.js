@@ -1,4 +1,4 @@
-// Backend: application services, accessible by URIs
+// Server: application services, accessible by URIs
 
 
 const express = require('express')
@@ -7,7 +7,7 @@ const dotenv = require('dotenv')
 dotenv.config()
 
 const app = express();
-const dbService = require('./userDbService');
+const userDbService = require('./userDbService');
 
 
 app.use(cors());
@@ -20,7 +20,7 @@ app.post('/insert', (request, response) => {
     //console.log(request.body); 
 
     const {name} = request.body;
-    const db = dbService.getDbServiceInstance();
+    const db = userDbService.getUserDbServiceInstance();
 
     const result = db.insertNewName(name);
  
@@ -37,7 +37,7 @@ app.post('/insert', (request, response) => {
 // read 
 app.get('/getAll', (request, response) => {
     
-    const db = dbService.getDbServiceInstance();
+    const db = userDbService.getUserDbServiceInstance();
 
     
     const result =  db.getAllData(); // call a DB function
@@ -54,7 +54,7 @@ app.get('/search/:name', (request, response) => { // we can debug by URL
     
     console.log(name);
 
-    const db = dbService.getDbServiceInstance();
+    const db = userDbService.getUserDbServiceInstance();
 
     let result;
     if(name === "all") // in case we want to search all
@@ -76,7 +76,7 @@ app.patch('/update',
           const{id, name} = request.body;
           console.log(id);
           console.log(name);
-          const db = dbService.getDbServiceInstance();
+          const db = userDbService.getUserDbServiceInstance();
 
           const result = db.updateNameById(id, name);
 
@@ -92,7 +92,7 @@ app.delete('/delete/:id',
         const {id} = request.params;
         console.log("delete");
         console.log(id);
-        const db = dbService.getDbServiceInstance();
+        const db = userDbService.getUserDbServiceInstance();
 
         const result = db.deleteRowById(id);
 
@@ -115,7 +115,7 @@ app.post('/debug', (request, response) => {
 // should be deleted finally
 app.get('/testdb', (request, response) => {
     
-    const db = dbService.getDbServiceInstance();
+    const db = userDbService.getUserDbServiceInstance();
 
     
     const result =  db.deleteById("14"); // call a DB function here, change it to the one you want
@@ -132,7 +132,7 @@ app.get('/testdb', (request, response) => {
 
 // If port isn't set, then defaults to 5050
 // This was my workaround to force my computer to recognize 
-// the backend server without changing file names
+// the backend server without changing file Users
 const port = process.env.PORT || 5050;
 // set up the web server listener
 app.listen(port,
