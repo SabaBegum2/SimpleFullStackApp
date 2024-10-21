@@ -63,7 +63,7 @@ Arrow functions have a few notable features:
 */
 
 
-// fetch call is to call the backend
+// fetch call is to call the server
 document.addEventListener('DOMContentLoaded', function() {
     // one can point your browser to http://localhost:5050/getAll to check what it returns first.
     fetch('http://localhost:5050/getAll')     
@@ -202,7 +202,7 @@ function debug(data)
 
 function insertRowIntoTable(data){
 
-   debug("index.js: insertRowIntoTable called: ");
+   debug("userindex.js: insertRowIntoTable called: ");
    debug(data);
 
    const table = document.querySelector('table tbody');
@@ -242,7 +242,7 @@ function insertRowIntoTable(data){
 }
 
 function loadHTMLTable(data){
-    debug("index.js: loadHTMLTable called.");
+    debug("userindex.js: loadHTMLTable called.");
 
     const table = document.querySelector('table tbody'); 
     
