@@ -10,8 +10,12 @@ main{
     text-align: center;
 }
 
+body {
+    font-family: Arial, sans-serif;
+    font-size: 8px;
+}
 table {
-    margin: 50px auto;
+    margin: 40px auto;
 }
 
 table, th, td {
@@ -20,5 +24,6 @@ table, th, td {
 }
 
 th, td {
-    padding: 5px;
+    padding: 10px;
+    font-size: 14px
 }

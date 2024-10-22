@@ -142,39 +142,39 @@ searchBtn.addEventListener('click', function(event) {
 //search all users whole salary is between x and y
 //when the search-by-salary button is clicked
 const searchBySalaryBtn =  document.querySelector('#search-by-salary-btn');
-searchBySalaryBtn.onclick = function (){
+searchBySalaryBtn.onclick = function () {
     const minSalaryInput = document.querySelector('#min-salary-input');
     const maxSalaryInput = document.querySelector('#max-salary-input');
 
-    const minSalary = minSalaryInput.value || 0; // Default to 0 if empty
-    const maxSalary = maxSalaryInput.value || 99999999; // Default to a large number if empty
+    const minSalary = minSalaryInput.value || 0;
+    const maxSalary = maxSalaryInput.value || 99999999;
 
-    salaryFromInput.value = "";
-    salaryToInput.value = "";
+    minSalaryInput.value = "";
+    maxSalaryInput.value = "";
 
-    //fetch('http://localhost:5050/searchBySalary/' + salaryFrom + '/' + salaryTo)
-    fetch('http://localhost:5050/searchUsersBySalary/' + minSalary + '/' + maxSalary)
-   .then(response => response.json())
-   .then(data => loadHTMLTable(data['data']));
-}
+    fetch(`http://localhost:5050/searchUsersBySalary?minSalary=${minSalary}&maxSalary=${maxSalary}`)
+        .then(response => response.json())
+        .then(data => loadHTMLTable(data['data']));
+};
+
 
 //search all users whose ages are between x and y
 const searchByAgeBtn =  document.querySelector('#search-by-age-btn');
-searchByAgeBtn.onclick = function (){
+searchByAgeBtn.onclick = function () {
     const minAgeInput = document.querySelector('#min-age-input');
     const maxAgeInput = document.querySelector('#max-age-input');
 
-    const minAge = minAgeInput.value || 0; // Default to 0 if empty
-    const maxAge = maxAgeInput.value || 9999; // Default to a large number if empty
+    const minAge = minAgeInput.value || 0;
+    const maxAge = maxAgeInput.value || 9999;
 
-    ageFromInput.value = "";
-    ageToInput.value = "";
+    minAgeInput.value = "";
+    maxAgeInput.value = "";
 
-    //fetch('http://localhost:5050/searchByAge/' + minAge + '/' + maxAge)
-    fetch('http://localhost:5050/searchUsersByAge/' + minAge + '/' + maxAge)
-   .then(response => response.json())
-   .then(data => loadHTMLTable(data['data']));
-}
+    fetch(`http://localhost:5050/searchUsersByAge?minAge=${minAge}&maxAge=${maxAge}`)
+        .then(response => response.json())
+        .then(data => loadHTMLTable(data['data']));
+};
+
 
 
 let rowToDelete; 
