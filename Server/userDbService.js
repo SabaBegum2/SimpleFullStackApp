@@ -232,6 +232,91 @@ async searchUsersByAge(minAge, maxAge) {
    }
 }
 
+//search users who registered after john registered where john is the userid
+async searchUsersAfterJohn(johnId) {
+   try {
+       const query = "SELECT * FROM Users WHERE registerday > (SELECT registerday FROM Users WHERE username =?) ORDER BY registerday ASC;";
+       const response = await new Promise((resolve, reject) => {
+           connection.query(query, [johnId], (err, results) => {
+               if (err) reject(new Error(err.message));
+               else resolve(results);
+           });
+       });
+       return response;
+   } catch (error) {
+       console.error("Error in searchUsersAfterJohn:", error);
+       throw error;
+   }
+}
+
+//search users who never signed in
+async searchUsersNeverLoggedIn(){
+        try{
+           // use await to call an asynchronous function
+           const response = await new Promise((resolve, reject) => 
+              {
+                 const query = "SELECT * FROM Users WHERE signintime = '0000-00-00 00:00:00';";
+                 connection.query(query, (err, results) => {
+                         if(err) reject(new Error(err.message));
+                         else resolve(results);
+                 });
+              }
+            );
+
+            // console.log("userDbServices.js: search result:");
+            // console.log(response);  // for debugging to see the result of select
+            return response;
+
+        }  catch(error){
+           console.log(error);
+        }
+   }
+
+   //search users who registered on the same day that john registered
+   async searchUsersSameDayAsJohn(johnId){
+        try{
+           // use await to call an asynchronous function
+           const response = await new Promise((resolve, reject) => 
+              {
+                 const query = "SELECT * FROM Users WHERE DATEDIFF(registerday, (SELECT registerday FROM Users WHERE username =?)) = 0 AND username!=?;";
+                 connection.query(query, [johnId, johnId], (err, results) => {
+                         if(err) reject(new Error(err.message));
+                         else resolve(results);
+                 });
+              }
+            );
+
+            // console.log("userDbServices.js: search result:");
+            // console.log(response);  // for debugging to see the result of select
+            return response;
+
+        }  catch(error){
+           console.log(error);
+        }
+   }
+
+   //return users who registered today
+   async searchUsersToday(){
+        try{
+           // use await to call an asynchronous function
+           const response = await new Promise((resolve, reject) => 
+              {
+                 const query = "SELECT * FROM Users WHERE DAYOFYEAR(registerday) = DAYOFYEAR(CURDATE());";
+                 connection.query(query, (err, results) => {
+                         if(err) reject(new Error(err.message));
+                         else resolve(results);
+                 });
+              }
+            );
+
+            // console.log("userDbServices.js: search result:");
+            // console.log(response);  // for debugging to see the result of select
+            return response;
+
+        }  catch(error){
+           console.log(error);
+        }
+   }
 
 
    async deleteRowById(username){

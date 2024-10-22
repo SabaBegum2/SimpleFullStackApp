@@ -175,7 +175,49 @@ searchByAgeBtn.onclick = function () {
         .then(data => loadHTMLTable(data['data']));
 };
 
+//search useres who registered after john registered, where john is the userid
+const searchByRegisteredAfterBtn =  document.querySelector('#search-by-registered-after-btn');
+searchByRegisteredAfterBtn.onclick = function () {
+    const userIdInput = document.querySelector('#user-id-input');
 
+    const userId = userIdInput.value;
+
+    userIdInput.value = "";
+
+    fetch(`http://localhost:5050/searchUsersByRegisteredAfter/${userId}`)
+       .then(response => response.json())
+       .then(data => loadHTMLTable(data['data']));
+};
+
+//search users who never signed in
+const searchByNeverLoggedInBtn =  document.querySelector('#search-by-never-logged-in-btn');
+searchByNeverLoggedInBtn.onclick = function () {
+    fetch('http://localhost:5050/searchUsersNeverLoggedIn')
+       .then(response => response.json())
+       .then(data => loadHTMLTable(data['data']));
+};
+
+//search users who registered on the same day that john registered
+const searchBySameDayRegisteredBtn =  document.querySelector('#search-by-same-day-registered-btn');
+searchBySameDayRegisteredBtn.onclick = function () {
+    const userIdInput = document.querySelector('#user-id-input');
+
+    const userId = userIdInput.value;
+
+    userIdInput.value = "";
+
+    fetch(`http://localhost:5050/searchUsersBySameDayRegistered/${userId}`)
+       .then(response => response.json())
+       .then(data => loadHTMLTable(data['data']));
+};
+
+//return the users who registed today
+const searchByTodayRegisteredBtn =  document.querySelector('#search-by-today-registered-btn');
+searchByTodayRegisteredBtn.onclick = function () {
+    fetch('http://localhost:5050/searchUsersByTodayRegistered')
+       .then(response => response.json())
+       .then(data => loadHTMLTable(data['data']));
+};
 
 let rowToDelete; 
 

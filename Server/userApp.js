@@ -168,6 +168,78 @@ app.get('/searchUsersByAge', (request, response) => {
         .catch(err => console.log(err));
 });
 
+//search users who registered after john registered, where "john" is the user id
+app.get('/searchUsersByRegistrationDate', async (request, response) => {
+    const { id = "" } = request.query;
+
+    if (!id) {
+        return response.json({ data: [] });
+    }
+
+    try {
+        const db = userDbService.getUserDbServiceInstance();
+        const user = await db.getUserById(id);
+
+        if (!user) {
+            return response.json({ data: [] });
+        }
+
+        const registrationDate = user.registration_date;
+        const result = await db.searchUsersByRegistrationDate(registrationDate);
+        return response.json({ data: result });
+    } catch (err) {
+        console.error(err);
+        return response.status(500).json({ error: "An error occurred while searching users." });
+    }
+});
+
+
+//serch users who never signed in
+app.get('/searchUsersNeverLoggedIn', async (request, response) => {
+    try {
+        const db = userDbService.getUserDbServiceInstance();
+        const result = await db.searchUsersNeverLoggedIn();
+        return response.json({ data: result });
+    } catch (err) {
+        console.error(err);
+        return response.status(500).json({ error: "An error occurred while searching users." });
+    }
+});
+
+
+//search users who registered on the same day that john registered
+app.get('/searchUsersSameDayAsJohn', async (request, response) => {
+    try {
+        const db = userDbService.getUserDbServiceInstance();
+        const johnUser = await db.getUserById('john'); // Assuming 'john' is the ID you're using
+
+        if (!johnUser) {
+            return response.json({ data: [] });
+        }
+
+        const registrationDate = johnUser.registration_date;
+        const result = await db.searchUsersSameDay(registrationDate);
+        return response.json({ data: result });
+    } catch (err) {
+        console.error(err);
+        return response.status(500).json({ error: "An error occurred while searching users." });
+    }
+});
+
+
+//return the users who registered today
+app.get('/searchUsersRegisteredToday', async (request, response) => {
+    try {
+        const db = userDbService.getUserDbServiceInstance();
+        const result = await db.searchUsersRegisteredToday();
+        return response.json({ data: result });
+    } catch (err) {
+        console.error(err);
+        return response.status(500).json({ error: "An error occurred while searching users." });
+    }
+});
+
+
 // update
 // app.patch('/update', 
 //      (request, response) => {
