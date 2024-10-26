@@ -7,39 +7,32 @@
   <title>Search Directory</title>
 </head>
 <body>
-  <div>
+  <div class="searchBox">
     <h1>Search Directory</h1>
-
-        <input placeholder="search by username" id="search-username-input">
+        <h2>Search by one of the following parameters and click "Search".</h2>
+        <!-- <h3>First and Last Name: </h3> -->
+        <input placeholder="Search by Username" id="search-username-input">
         <button id="search-username-btn">Search</button>
 
     <!-- Search by First and Last Name -->
     <section>
-        <h2>Search by First and Last Name</h2>
-        <input type="text" id="first-name-input" placeholder="First Name">
-        <input type="text" id="last-name-input" placeholder="Last Name">
+        <!-- <h3>Search by First and Last Name</h2> -->
+        <input type="text" id="first-name-input" placeholder="Search by First Name">
+        <input type="text" id="last-name-input" placeholder="Search by Last Name">
         <button id="search-by-first-last-name-btn">Search</button>
-    </section>
-
-
-     <!-- Search by User ID -->
-     <section>
-        <h2>Search by User ID</h2>
-        <input type="text" id="id-input" placeholder="Enter User ID">
-        <button id="search-by-id-btn">Search</button>
     </section>
 
     <!-- Search by Salary Range -->
     <section>
-        <h2>Search by Salary Range</h2>
-        <input type="number" id="min-salary-input" placeholder="Min Salary">
+        <h3>Search by Salary Range</h3>
+        <input type="number" id="min-salary-input" placeholder="Min Salary" min='0'>
         <input type="number" id="max-salary-input" placeholder="Max Salary">
         <button id="search-by-salary-btn">Search</button>
     </section>
 
     <!-- Search by Age Range -->
     <section>
-        <h2>Search by Age Range</h2>
+        <h3>Search by Age Range</h3>
         <input type="number" id="min-age-input" placeholder="Min Age">
         <input type="number" id="max-age-input" placeholder="Max Age">
         <button id="search-by-age-btn">Search</button>

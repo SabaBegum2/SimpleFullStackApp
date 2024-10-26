@@ -7,34 +7,17 @@
   <title>User Registration</title>
 </head>
 <body>
-    <div class="box">
-    <h1>User Registration:</h1>
+    <div class="registerBox">
+    <h1 style="margin-left: 18px">User Registration:</h1>
         <form id="registrationForm">
-            <!-- <label for="firstname">First Name:</label> -->
             <input type="text" id="firstname-input" placeholder="First Name" required >
-
-            <!-- <label for="lastname">Last Name:</label> -->
             <input type="text" id="lastname-input" placeholder="Last Name" required >
-            <br>
-            <br>
-            <!-- <label for="username">Username:</label> -->
-            <input type="text" id="username-input" placeholder="Username" required>
-            <br>
-            <br>
-            <!-- <label for="password">Password:</label> -->
-            <input type="text" id="password-input" placeholder="Password" required>
-            <br>
-            <br>
-            <!-- <label for="age">Age:</label> -->
+            <input class="registerAltInput" class="altInput" type="text" id="username-input" placeholder="Username" required>
+            <input class="registerAltInput" type="text" id="password-input" placeholder="Password" required>
             <input type="text" id="age-input" placeholder="Age">
-            <br>
-            <br>
-            <!-- <label for="salary">Salary:</label> -->
             <input type="text" id="salary-input" placeholder="Salary (i.e. 50000)">
-            <br>
-            <br>
-            <button id="register-user-btn">Register</button>
         </form>
+        <button id="register-user-btn">Register</button>
     </div>
     <script src="userindex.js"></script>
 </body>
