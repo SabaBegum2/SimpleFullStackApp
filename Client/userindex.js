@@ -71,9 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(data => loadHTMLTable(data['data']));
 });
 
-
-// when the addBtn is clicked
-const addBtn = document.querySelector('#add-username-btn');
+/*const addBtn = document.querySelector('#add-user-btn');
 addBtn.onclick = function (){
     const usernameInput = document.querySelector('#username-input');
     const username = usernameInput.value;
@@ -85,6 +83,47 @@ addBtn.onclick = function (){
         },
         method: 'POST',
         body: JSON.stringify({username: username})
+    })
+    .then(response => response.json())
+    .then(data => insertRowIntoTable(data['data']));
+}*/
+
+
+// when the register-user-btn is clicked
+const registerBtn = document.querySelector('#register-user-btn');
+registerBtn.onclick = function (){
+    // Username
+    const usernameInput = document.querySelector('#username-input');
+    const username = usernameInput.value;
+    usernameInput.value = "";
+
+    const firstnameInput = document.querySelector('#firstname-input');
+    const firstname = firstnameInput.value;
+    firstnameInput.value = "";
+
+    const lastnameInput = document.querySelector('#lastname-input');
+    const lastname = lastnameInput.value;
+    lastnameInput.value = "";
+
+    const salaryInput = document.querySelector('#salary-input');
+    const salary = salaryInput.value;
+    salaryInput.value = "";
+
+    const ageInput = document.querySelector('#age-input');
+    const age = ageInput.value;
+    ageInput.value = "";
+
+    fetch('http://localhost:5050/insert', {
+        headers: {
+            'Content-type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify({
+            username: username, 
+            firstname: firstname,
+            lastname: lastname,
+            salary: salary,
+            age: age})
     })
     .then(response => response.json())
     .then(data => insertRowIntoTable(data['data']));
@@ -103,42 +142,43 @@ searchBtn.onclick = function (){
 }
 
 //when the sear-by id button is clicked
-const searchByIdBtn =  document.querySelector('#search-by-id-btn');
-searchByIdBtn.onclick = function (){
-    const idInput = document.querySelector('#id-input');
-    const id = idInput.value;
-    idInput.value = "";
+const searchByUsernameBtn =  document.querySelector('#search-by-username-btn');
+searchByUsernameBtn.onclick = function (){
+    const usernameInput = document.querySelector('#username-input');
+    const username = usernameInput.value;
+    usernameInput.value = "";
 
     //fetch('http://localhost:5050/getById/' + id)
-    fetch('http://localhost:5050/searchUsersByUserID/' + id)
+    fetch('http://localhost:5050/searchUsername/' + username)
     .then(response => response.json())
     .then(data => loadHTMLTable([data['data']]));
 }
 
+// TODO: This might be easier to with separate search buttons for each search type
 // When the searchBtn is clicked for searching users by first and last name
 searchBtn.addEventListener('click', function(event) {
     // Check if the event is for searching by first and last name
     // Make sure this button has the class 'search-by-first-last-name-btn'
     if (event.target.classList.contains("search-by-first-last-name-btn")) {
-        const firstNameInput = document.querySelector('#first-name-input');
-        const lastNameInput = document.querySelector('#last-name-input');
+        const firstnameInput = document.querySelector('#first-name-input');
+        const lastnameInput = document.querySelector('#last-name-input');
 
-        const firstName = firstNameInput.value;
-        const lastName = lastNameInput.value;
+        const firstName = firstnameInput.value;
+        const lastName = lastnameInput.value;
 
-        firstNameInput.value = "";
-        lastNameInput.value = "";
+        firstnameInput.value = "";
+        lastnameInput.value = "";
 
-        // Make sure to encode the query parameters to handle spaces and special characters
+        // TODO: Make sure to encode the query parameters to handle spaces and special characters
         const query = new URLSearchParams({ firstname: firstName, lastname: lastName }).toString();
         
-        //fetch('http://localhost:5050/SearchUsersByName?' + query)
         fetch('http://localhost:5050/searchUsersByFirstAndLastName?' + query)
             .then(response => response.json())
             .then(data => loadHTMLTable(data['data']));
     }
 });
 
+// TODO: This needs to be reformatted to work for salary-input and possibly use a ranger checker instead
 //search all users whole salary is between x and y
 //when the search-by-salary button is clicked
 const searchBySalaryBtn =  document.querySelector('#search-by-salary-btn');
@@ -175,16 +215,16 @@ searchByAgeBtn.onclick = function () {
         .then(data => loadHTMLTable(data['data']));
 };
 
-//search useres who registered after john registered, where john is the userid
+//search useres who registered after john registered, where john is the username
 const searchByRegisteredAfterBtn =  document.querySelector('#search-by-registered-after-btn');
 searchByRegisteredAfterBtn.onclick = function () {
-    const userIdInput = document.querySelector('#user-id-input');
+    const usernameInput = document.querySelector('#user-id-input');
 
-    const userId = userIdInput.value;
+    const username = usernameInput.value;
 
-    userIdInput.value = "";
+    usernameInput.value = "";
 
-    fetch(`http://localhost:5050/searchUsersByRegisteredAfter/${userId}`)
+    fetch(`http://localhost:5050/searchUsersByRegisteredAfter/${username}`)
        .then(response => response.json())
        .then(data => loadHTMLTable(data['data']));
 };
@@ -200,13 +240,13 @@ searchByNeverLoggedInBtn.onclick = function () {
 //search users who registered on the same day that john registered
 const searchBySameDayRegisteredBtn =  document.querySelector('#search-by-same-day-registered-btn');
 searchBySameDayRegisteredBtn.onclick = function () {
-    const userIdInput = document.querySelector('#user-id-input');
+    const usernameInput = document.querySelector('#user-id-input');
 
-    const userId = userIdInput.value;
+    const username = usernameInput.value;
 
-    userIdInput.value = "";
+    usernameInput.value = "";
 
-    fetch(`http://localhost:5050/searchUsersBySameDayRegistered/${userId}`)
+    fetch(`http://localhost:5050/searchUsersBySameDayRegistered/${username}`)
        .then(response => response.json())
        .then(data => loadHTMLTable(data['data']));
 };
@@ -275,7 +315,7 @@ const updateBtn = document.querySelector('#update-row-btn');
 
 updateBtn.onclick = function(){
     debug("update clicked");
-    debug("got the username: ");
+    debug("Got the username: ");
     debug(updateBtn.value);
     
     const updatedusernameInput = document.querySelector('#update-username-input');
@@ -300,7 +340,7 @@ updateBtn.onclick = function(){
             location.reload();
         }
         else 
-           debug("no update occurs");
+           debug("No update occurred");
     })
 }
 
