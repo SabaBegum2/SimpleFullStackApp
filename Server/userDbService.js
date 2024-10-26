@@ -108,20 +108,20 @@ class userDbService{
    }
 
 
-   async insertNewUsername(username){
+   async insertNewUsername(username, password, firstname, lastname, salary, age){
          try{
             const registerDate = new Date();
             const timeLoggedIn = new Date();
             // use await to call an asynchronous function
-            const insertId = await new Promise((resolve, reject) => 
+            const insertProfile = await new Promise((resolve, reject) => 
             {
                const query = "INSERT INTO Users (username, password, firstname, lastname, salary, age, registerday, signintime) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
                connection.query(query, [username, password, firstname, lastname, salary, age, registerDate, timeLoggedIn], (err, result) => {
                    if(err) reject(new Error(err.message));
-                   else resolve(result.insertId);
+                   else resolve(result.insertProfile);
                });
             });
-            console.log(insertId);  // for debugging to see the result of select
+            console.log(insertProfile);  // for debugging to see the result of select
             return{
                  username: username,
                  password: password,
@@ -140,7 +140,7 @@ class userDbService{
 
 
 
-   async searchByUserName(username){
+   async searchByUsername(username){
         try{
           //TODO: check if this dateAdded is needed
              const timeLoggedIn = new Date();
@@ -168,7 +168,7 @@ async searchByFirstAndLastName(firstname, lastname) {
    try {
        const query = "SELECT * FROM Users WHERE firstname = ? OR lastname = ?;";
        const response = await new Promise((resolve, reject) => {
-           connection.query(query, [firstname || null, lastname || null], (err, results) => {
+           connection.query(query, [firstname, lastname], (err, results) => {
                if (err) reject(new Error(err.message));
                else resolve(results);
            });
@@ -180,22 +180,22 @@ async searchByFirstAndLastName(firstname, lastname) {
    }
 }
 
-// Search users by user ID
-async searchUsersByUserID(id) {
-   try {
-       const query = "SELECT * FROM Users WHERE username = ?;";
-       const response = await new Promise((resolve, reject) => {
-           connection.query(query, [id], (err, results) => {
-               if (err) reject(new Error(err.message));
-               else resolve(results);
-           });
-       });
-       return response;
-   } catch (error) {
-       console.error("Error in searchUsersByUserID:", error);
-       throw error;
-   }
-}
+// // Search users by user ID
+// async searchUsersByUsername(id) {
+//    try {
+//        const query = "SELECT * FROM Users WHERE username = ?;";
+//        const response = await new Promise((resolve, reject) => {
+//            connection.query(query, [id], (err, results) => {
+//                if (err) reject(new Error(err.message));
+//                else resolve(results);
+//            });
+//        });
+//        return response;
+//    } catch (error) {
+//        console.error("Error in searchUsersByUsername:", error);
+//        throw error;
+//    }
+// }
 
 // Search users by salary range (between x and y)
 async searchUsersBySalary(minSalary, maxSalary) {
@@ -226,7 +226,7 @@ async searchUsersByAge(minAge, maxAge) {
        });
        return response;
    } catch (error) {
-       console.error("Error in searchByAge:", error);
+       console.error("Error in searchUsersByAge:", error);
        throw error;
    }
 }
