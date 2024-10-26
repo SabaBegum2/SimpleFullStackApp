@@ -102,6 +102,123 @@ searchBtn.onclick = function (){
     .then(data => loadHTMLTable(data['data']));
 }
 
+//when the sear-by id button is clicked
+const searchByIdBtn =  document.querySelector('#search-by-id-btn');
+searchByIdBtn.onclick = function (){
+    const idInput = document.querySelector('#id-input');
+    const id = idInput.value;
+    idInput.value = "";
+
+    //fetch('http://localhost:5050/getById/' + id)
+    fetch('http://localhost:5050/searchUsersByUserID/' + id)
+    .then(response => response.json())
+    .then(data => loadHTMLTable([data['data']]));
+}
+
+// When the searchBtn is clicked for searching users by first and last name
+searchBtn.addEventListener('click', function(event) {
+    // Check if the event is for searching by first and last name
+    // Make sure this button has the class 'search-by-first-last-name-btn'
+    if (event.target.classList.contains("search-by-first-last-name-btn")) {
+        const firstNameInput = document.querySelector('#first-name-input');
+        const lastNameInput = document.querySelector('#last-name-input');
+
+        const firstName = firstNameInput.value;
+        const lastName = lastNameInput.value;
+
+        firstNameInput.value = "";
+        lastNameInput.value = "";
+
+        // Make sure to encode the query parameters to handle spaces and special characters
+        const query = new URLSearchParams({ firstname: firstName, lastname: lastName }).toString();
+        
+        //fetch('http://localhost:5050/SearchUsersByName?' + query)
+        fetch('http://localhost:5050/searchUsersByFirstAndLastName?' + query)
+            .then(response => response.json())
+            .then(data => loadHTMLTable(data['data']));
+    }
+});
+
+//search all users whole salary is between x and y
+//when the search-by-salary button is clicked
+const searchBySalaryBtn =  document.querySelector('#search-by-salary-btn');
+searchBySalaryBtn.onclick = function () {
+    const minSalaryInput = document.querySelector('#min-salary-input');
+    const maxSalaryInput = document.querySelector('#max-salary-input');
+
+    const minSalary = minSalaryInput.value || 0;
+    const maxSalary = maxSalaryInput.value || 99999999;
+
+    minSalaryInput.value = "";
+    maxSalaryInput.value = "";
+
+    fetch(`http://localhost:5050/searchUsersBySalary?minSalary=${minSalary}&maxSalary=${maxSalary}`)
+        .then(response => response.json())
+        .then(data => loadHTMLTable(data['data']));
+};
+
+
+//search all users whose ages are between x and y
+const searchByAgeBtn =  document.querySelector('#search-by-age-btn');
+searchByAgeBtn.onclick = function () {
+    const minAgeInput = document.querySelector('#min-age-input');
+    const maxAgeInput = document.querySelector('#max-age-input');
+
+    const minAge = minAgeInput.value || 0;
+    const maxAge = maxAgeInput.value || 9999;
+
+    minAgeInput.value = "";
+    maxAgeInput.value = "";
+
+    fetch(`http://localhost:5050/searchUsersByAge?minAge=${minAge}&maxAge=${maxAge}`)
+        .then(response => response.json())
+        .then(data => loadHTMLTable(data['data']));
+};
+
+//search useres who registered after john registered, where john is the userid
+const searchByRegisteredAfterBtn =  document.querySelector('#search-by-registered-after-btn');
+searchByRegisteredAfterBtn.onclick = function () {
+    const userIdInput = document.querySelector('#user-id-input');
+
+    const userId = userIdInput.value;
+
+    userIdInput.value = "";
+
+    fetch(`http://localhost:5050/searchUsersByRegisteredAfter/${userId}`)
+       .then(response => response.json())
+       .then(data => loadHTMLTable(data['data']));
+};
+
+//search users who never signed in
+const searchByNeverLoggedInBtn =  document.querySelector('#search-by-never-logged-in-btn');
+searchByNeverLoggedInBtn.onclick = function () {
+    fetch('http://localhost:5050/searchUsersNeverLoggedIn')
+       .then(response => response.json())
+       .then(data => loadHTMLTable(data['data']));
+};
+
+//search users who registered on the same day that john registered
+const searchBySameDayRegisteredBtn =  document.querySelector('#search-by-same-day-registered-btn');
+searchBySameDayRegisteredBtn.onclick = function () {
+    const userIdInput = document.querySelector('#user-id-input');
+
+    const userId = userIdInput.value;
+
+    userIdInput.value = "";
+
+    fetch(`http://localhost:5050/searchUsersBySameDayRegistered/${userId}`)
+       .then(response => response.json())
+       .then(data => loadHTMLTable(data['data']));
+};
+
+//return the users who registed today
+const searchByTodayRegisteredBtn =  document.querySelector('#search-by-today-registered-btn');
+searchByTodayRegisteredBtn.onclick = function () {
+    fetch('http://localhost:5050/searchUsersByTodayRegistered')
+       .then(response => response.json())
+       .then(data => loadHTMLTable(data['data']));
+};
+
 let rowToDelete; 
 
 // when the delete button is clicked, since it is not part of the DOM tree, we need to do it differently

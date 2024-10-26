@@ -108,7 +108,7 @@ class userDbService{
    }
 
 
-   async insertNewName(username){
+   async insertNewUsername(username){
          try{
             const registerDate = new Date();
             const timeLoggedIn = new Date();
@@ -123,7 +123,6 @@ class userDbService{
             });
             console.log(insertId);  // for debugging to see the result of select
             return{
-                 //id: insertId,
                  username: username,
                  password: password,
                  firstname: firstname,
@@ -141,7 +140,7 @@ class userDbService{
 
 
 
-   async searchByName(username){
+   async searchByUserName(username){
         try{
           //TODO: check if this dateAdded is needed
              const timeLoggedIn = new Date();
@@ -164,7 +163,162 @@ class userDbService{
          }
    }
 
-   async deleteRowById(username){
+   // Search users by first and/or last name
+async searchByFirstAndLastName(firstname, lastname) {
+   try {
+       const query = "SELECT * FROM Users WHERE firstname = ? OR lastname = ?;";
+       const response = await new Promise((resolve, reject) => {
+           connection.query(query, [firstname || null, lastname || null], (err, results) => {
+               if (err) reject(new Error(err.message));
+               else resolve(results);
+           });
+       });
+       return response;
+   } catch (error) {
+       console.error("Error in searchByFirstAndLastName:", error);
+       throw error; // Ensure the error is propagated
+   }
+}
+
+// Search users by user ID
+async searchUsersByUserID(id) {
+   try {
+       const query = "SELECT * FROM Users WHERE username = ?;";
+       const response = await new Promise((resolve, reject) => {
+           connection.query(query, [id], (err, results) => {
+               if (err) reject(new Error(err.message));
+               else resolve(results);
+           });
+       });
+       return response;
+   } catch (error) {
+       console.error("Error in searchUsersByUserID:", error);
+       throw error;
+   }
+}
+
+// Search users by salary range (between x and y)
+async searchUsersBySalary(minSalary, maxSalary) {
+   try {
+       const query = "SELECT * FROM Users WHERE salary BETWEEN ? AND ?;";
+       const response = await new Promise((resolve, reject) => {
+           connection.query(query, [minSalary || 0, maxSalary || Number.MAX_SAFE_INTEGER], (err, results) => {
+               if (err) reject(new Error(err.message));
+               else resolve(results);
+           });
+       });
+       return response;
+   } catch (error) {
+       console.error("Error in searchBySalary:", error);
+       throw error;
+   }
+}
+
+// Search users by age range (between x and y)
+async searchUsersByAge(minAge, maxAge) {
+   try {
+       const query = "SELECT * FROM Users WHERE age BETWEEN ? AND ?;";
+       const response = await new Promise((resolve, reject) => {
+           connection.query(query, [minAge || 0, maxAge || 120], (err, results) => {
+               if (err) reject(new Error(err.message));
+               else resolve(results);
+           });
+       });
+       return response;
+   } catch (error) {
+       console.error("Error in searchByAge:", error);
+       throw error;
+   }
+}
+
+//search users who registered after john registered where john is the userid
+async searchUsersAfterJohn(johnId) {
+   try {
+       const query = "SELECT * FROM Users WHERE registerday > (SELECT registerday FROM Users WHERE username =?) ORDER BY registerday ASC;";
+       const response = await new Promise((resolve, reject) => {
+           connection.query(query, [johnId], (err, results) => {
+               if (err) reject(new Error(err.message));
+               else resolve(results);
+           });
+       });
+       return response;
+   } catch (error) {
+       console.error("Error in searchUsersAfterJohn:", error);
+       throw error;
+   }
+}
+
+//search users who never signed in
+async searchUsersNeverLoggedIn(){
+        try{
+           // use await to call an asynchronous function
+           const response = await new Promise((resolve, reject) => 
+              {
+                 const query = "SELECT * FROM Users WHERE signintime = '0000-00-00 00:00:00';";
+                 connection.query(query, (err, results) => {
+                         if(err) reject(new Error(err.message));
+                         else resolve(results);
+                 });
+              }
+            );
+
+            // console.log("userDbServices.js: search result:");
+            // console.log(response);  // for debugging to see the result of select
+            return response;
+
+        }  catch(error){
+           console.log(error);
+        }
+   }
+
+   //search users who registered on the same day that john registered
+   async searchUsersSameDayAsJohn(johnId){
+        try{
+           // use await to call an asynchronous function
+           const response = await new Promise((resolve, reject) => 
+              {
+                 const query = "SELECT * FROM Users WHERE DATEDIFF(registerday, (SELECT registerday FROM Users WHERE username =?)) = 0 AND username!=?;";
+                 connection.query(query, [johnId, johnId], (err, results) => {
+                         if(err) reject(new Error(err.message));
+                         else resolve(results);
+                 });
+              }
+            );
+
+            // console.log("userDbServices.js: search result:");
+            // console.log(response);  // for debugging to see the result of select
+            return response;
+
+        }  catch(error){
+           console.log(error);
+        }
+   }
+
+   //return users who registered today
+   async searchUsersToday(){
+        try{
+           // use await to call an asynchronous function
+           const response = await new Promise((resolve, reject) => 
+              {
+                 const query = "SELECT * FROM Users WHERE DAYOFYEAR(registerday) = DAYOFYEAR(CURDATE());";
+                 connection.query(query, (err, results) => {
+                         if(err) reject(new Error(err.message));
+                         else resolve(results);
+                 });
+              }
+            );
+
+            // console.log("userDbServices.js: search result:");
+            // console.log(response);  // for debugging to see the result of select
+            return response;
+
+        }  catch(error){
+           console.log(error);
+        }
+   }
+
+
+   async deleteRowByUsername(username){
          try{
             //id = parseInt(id, 10);
               // use await to call an asynchronous function
