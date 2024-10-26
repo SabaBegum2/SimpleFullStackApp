@@ -166,14 +166,15 @@ registerBtn.onclick = function (wait){
     const salary = salaryInput.value.trim();
     salaryInput.value = "";
     
-    // Check if  salary has commas
-    if (/,/.test(salary)) {
-        salary = salary.replace(/,/g, ""); // Remove commas from salary
-    }
     // Check if salary is empty
     if (!salary) {
         salary = 0;
     }
+    // Check if  salary has commas
+    if (/,/.test(salary)) {
+        salary = salary.replace(/,/g, ""); // Remove commas from salary
+    }
+
 
     // Convert salary to an integer
     salary = parseInt(salary, 10);
@@ -220,7 +221,17 @@ registerBtn.onclick = function (wait){
         body: JSON.stringify({username: username, firstname: firstname, lastname: lastname, salary: salary, age: age})
     })
     .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("User registered successfully!");
+            insertRowIntoTable(data['data']);
+        } else {
+            alert(data.message);
+        }
+    })
     .then(data => insertRowIntoTable(data['data']));
+
+    // Clear the form fields
 }
 
 
