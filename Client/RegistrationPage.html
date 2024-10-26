@@ -7,58 +7,35 @@
   <title>User Registration</title>
 </head>
 <body>
-  <main>
+    <div class="box">
+    <h1>User Registration:</h1>
+        <form id="registrationForm">
+            <!-- <label for="firstname">First Name:</label> -->
+            <input type="text" id="firstname-input" placeholder="First Name" required >
 
-    <label>First Name:</label>
-    <input type="text" id="firstname-input">
-    <!-- <button id="add-firstname-btn">Register</button> -->
-    <label>Last Name:</label>
-    <input type="text" id="lastname-input">
-    <br>
-    <!-- <button id="add-lastname-btn">Register</button> -->
-    <label>Username:</label>
-    <input type="text" id="username-input">
-    <!-- <button id="add-username-btn">Register</button> -->
-    <br>
-    <label>Password:</label>
-    <input type="text" id="password-input">
-    <!-- <button id="add-password-btn">Register</button> -->
-    <br>
-    <label>Salary:</label>
-    <input type="text" id="salary-input">
-    <!-- <button id="add-salary-btn">Register</button> -->
-    <br>
-    <label>Age:</label>
-    <input type="text" id="age-input">
-    <!-- <button id="add-age-btn">Register</button> -->
-    <br>
-    <button id="register-user-btn">Register</button>
-
-    <!-- <label>First Name:</label>
-    <input type="text" id="username-input">
-    <button id="add-username-btn">Register</button>
-    <br>
-    <label>First Name:</label>
-    <input type="text" id="username-input">
-    <button id="add-username-btn">Register</button> -->
-     <!-- <table id="table">
-         <thead>
-             <th>Username</th>
-             <th>Password</th>
-             <th>First Name</th>
-             <th>Last Name</th>
-             <th>Salary</th>
-             <th>Age</th>
-         </thead> -->
-         <tbody></tbody>
-     </table>
-
-     <!-- <section hidden id="update-row">
-         <label>username:</label>
-         <input type="text" id="update-username-input">
-         <button id="update-row-btn" value="">Update</button>
-    </section> -->
-</main>
-<script src="userindex.js"></script>
+            <!-- <label for="lastname">Last Name:</label> -->
+            <input type="text" id="lastname-input" placeholder="Last Name" required >
+            <br>
+            <br>
+            <!-- <label for="username">Username:</label> -->
+            <input type="text" id="username-input" placeholder="Username" required>
+            <br>
+            <br>
+            <!-- <label for="password">Password:</label> -->
+            <input type="text" id="password-input" placeholder="Password" required>
+            <br>
+            <br>
+            <!-- <label for="age">Age:</label> -->
+            <input type="text" id="age-input" placeholder="Age">
+            <br>
+            <br>
+            <!-- <label for="salary">Salary:</label> -->
+            <input type="text" id="salary-input" placeholder="Salary (i.e. 50000)">
+            <br>
+            <br>
+            <button id="register-user-btn">Register</button>
+        </form>
+    </div>
+    <script src="userindex.js"></script>
 </body>
 </html>

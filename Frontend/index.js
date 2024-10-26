@@ -144,8 +144,8 @@ function showEditRowInterface(id){
     debug("id clicked: ");
     debug(id);
     document.querySelector('#update-name-input').value = ""; // clear this field
-    const updateSetction = document.querySelector("#update-row");  
-    updateSetction.hidden = false;
+    const updateSection = document.querySelector("#update-row");  
+    updateSection.hidden = false;
     // we assign the id to the update button as its id attribute value
     idToUpdate = id;
     debug("id set!");

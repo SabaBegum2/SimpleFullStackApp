@@ -1,9 +1,9 @@
-*{
+body{
     box-sizing: border-box;
-    background-color: aquamarine;
+    background-color: #a8f0d8;
 }
 
-main{
+div{
     width: 50%;
     margin: 50px auto;
     text-align: left;
@@ -11,13 +11,17 @@ main{
     border: 2px solid gray;
     border-radius: 10px;
     background: solid white;
-    padding: 20px;
+    padding: 30px 80px 50px 80px;
 }
-
-
-body {
-    font-family: Arial, sans-serif;
-    font-size: 8px;
+.register {
+    width: 50%;
+    margin: 50px auto;
+    text-align: left;
+    border-style: groove;
+    border: 2px solid #888888a0;
+    border-radius: 10px;
+    background: solid white;
+    padding: 30px 80px 50px 80px;
 }
 
 h1 {
@@ -25,7 +29,7 @@ h1 {
     vertical-align: left;
     margin-bottom: 20px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-weight: condensed bold;
+    font-weight: lighter;
 }
 
 h2 {
@@ -39,13 +43,12 @@ h3 {
 }
 
 p {
-    font-size: 14px;
+    font-size: 12px;
     margin-bottom: 20px;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    font-size: 8px;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }
 table {
     margin: 40px auto;
