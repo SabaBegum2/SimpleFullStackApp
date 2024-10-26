@@ -108,7 +108,7 @@ class userDbService{
    }
 
 
-   async insertNewName(username){
+   async insertNewUsername(username){
          try{
             const registerDate = new Date();
             const timeLoggedIn = new Date();
@@ -123,7 +123,6 @@ class userDbService{
             });
             console.log(insertId);  // for debugging to see the result of select
             return{
-                 //id: insertId,
                  username: username,
                  password: password,
                  firstname: firstname,
@@ -141,7 +140,7 @@ class userDbService{
 
 
 
-   async searchByName(username){
+   async searchByUserName(username){
         try{
           //TODO: check if this dateAdded is needed
              const timeLoggedIn = new Date();
@@ -319,7 +318,7 @@ async searchUsersNeverLoggedIn(){
    }
 
 
-   async deleteRowById(username){
+   async deleteRowByUsername(username){
          try{
             //id = parseInt(id, 10);
               // use await to call an asynchronous function

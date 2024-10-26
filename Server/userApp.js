@@ -27,7 +27,7 @@ app.post('/insert', (request, response) => {
     // note that result is a promise
     result 
     .then(data => response.json({data: data})) // return the newly added row to frontend, which will show it
-    .then(data => console.log({data: data})) // debug first before return by response
+    //.then(data => console.log({data: data})) // debug first before return by response
     .catch(err => console.log(err));
 });
 
@@ -47,20 +47,20 @@ app.get('/getAll', (request, response) => {
     .catch(err => console.log(err));
 });
 
-
+// Search by Username
 app.get('/search/:username', (request, response) => { // we can debug by URL
     
-    const {name} = request.params;
+    const {username} = request.params;
     
-    console.log(name);
+    console.log(username);
 
     const db = userDbService.getUserDbServiceInstance();
 
     let result;
-    if(name === "all") // in case we want to search all
+    if(username === "all") // in case we want to search all
        result = db.getAllData()
     else 
-       result =  db.searchByName(name); // call a DB function
+       result =  db.searchByUsername(username); // call a DB function
 
     result
     .then(data => response.json({data: data}))
@@ -258,7 +258,7 @@ app.get('/searchUsersRegisteredToday', async (request, response) => {
 //      }
 // );
 
-// delete service
+// delete username
 app.delete('/delete/:username', 
      (request, response) => {     
         const {username} = request.params;
