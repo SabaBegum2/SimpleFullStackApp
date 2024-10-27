@@ -19,7 +19,7 @@ app.post('/register', async(request, response) => {
     console.log("userApp: insert a row.");
     //console.log(request.body); 
     try {
-        const {firstname, lastname, username, password, age, salary} = request.body;
+        const {username, password, firstname, lastname, age, salary} = request.body;
 
         // Check for missing fields
         if (!firstname || !lastname || !username || !password) {
@@ -27,11 +27,11 @@ app.post('/register', async(request, response) => {
         }
 
         // Hash users password input
-        const hashedPassword = await bcrypt.hash(password, 10);
+        //const hashedPassword = await bcrypt.hash(password, 10);
 
         const db = userDbService.getUserDbServiceInstance();
 
-        const result = await db.registerNewUser(firstname, lastname, username, hashedPassword, age, salary);
+        const result = await db.registerNewUser(username, password, firstname, lastname, salary, age);
 
         response.status(201).json({ message: "User registration successful!", data: result });
     }

@@ -7,31 +7,24 @@
   <title>User Registration</title>
 </head>
 <body>
-    <main>
     <div class="registerBox">
+    <main>
     <h1 style="margin-left: 18px">User Registration:</h1>
         <form id="registrationForm">
+            <input class="registerAltInput" type="text" id="username-input" placeholder="Username" required>
+            <input class="registerAltInput" type="text" id="password-input" placeholder="Password" required>
             <input type="text" id="firstname-input" placeholder="First Name" required >
             <input type="text" id="lastname-input" placeholder="Last Name" required >
-            <input class="registerAltInput" class="altInput" type="text" id="username-input" placeholder="Username" required>
-            <input class="registerAltInput" type="text" id="password-input" placeholder="Password" required>
-            <input type="number" id="age-input" placeholder="Age">
             <input type="number" id="salary-input" placeholder="Salary (i.e. 50000)">
-            <button type="submit" id="register-user-btn">Register</button>
+            <input type="number" id="age-input" placeholder="Age">
+            <button type="submit" id="register-user-btn" style="margin-left: 35%">Register</button>
         </form>
-    </div>
-
-         <!-- This allows the database to be updated with information from the database
-         <section hidden id="update-row">
-            <label>username:</label>
-            <input type="text" id="update-username-input">
-            <button id="update-row-btn" value="">Update</button>
-       </section> -->
-    <h2>Go back to <a href="http://127.0.0.1:5500/Client/LoginPage.html">Login HomePage</a>.</h2>
     <script src="userindex.js"></script>
-</main>
+    </main>
+    </div>
 </body>
 <footer>
+    <h2>Go back to <a href="http://127.0.0.1:5500/Client/LoginPage.html">Login HomePage</a>.</h2>
     <p>Created by: Saba Begum and Violet Yousif</p>
 </footer>
 </html>

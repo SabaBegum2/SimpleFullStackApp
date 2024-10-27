@@ -64,28 +64,28 @@ Arrow functions have a few notable features:
 
 
 // fetch call is to call the server
-document.addEventListener('DOMContentLoaded', function() {
-    // one can point your browser to http://localhost:5050/getAll to check what it returns first.
-    fetch('http://localhost:5050/getAll')     
-    .then(response => response.json())
-    .then(data => loadHTMLTable(data['data']));
-});
+// document.addEventListener('DOMContentLoaded', function() {
+//     // one can point your browser to http://localhost:5050/getAll to check what it returns first.
+//     fetch('http://localhost:5050/getAll')     
+//     .then(response => response.json())
+//     .then(data => loadHTMLTable(data['data']));
+// });
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    const registerForm = document.querySelector('#registrationform');
+    const registerForm = document.querySelector('#registrationForm');
     registerForm.addEventListener('submit', function(event){
 
         // prevent the default reload action of the page
         event.preventDefault();
 
         // Get the registration form inputs
-        const firstnameInput = document.querySelector('#firstname-input').value.trim();
-        const lastnameInput = document.querySelector('#lastname-input').value.trim();
-        const usernameInput = document.querySelector('#username-input').value.trim();
-        const passwordInput = document.querySelector('#password-input').value.trim();
-        const ageInput = parseInt(document.querySelector('#age-input').value.trim()) || 0;
-        const salaryInput = parseInt(document.querySelector('#salary-input').value.trim()) || 0;
+        const username = document.querySelector('#username-input').value.trim();
+        const password = document.querySelector('#password-input').value.trim();
+        const firstname = document.querySelector('#firstname-input').value.trim();
+        const lastname = document.querySelector('#lastname-input').value.trim();
+        const age = parseInt(document.querySelector('#age-input').value.trim()) || 0;
+        const salary = parseInt(document.querySelector('#salary-input').value.trim()) || 0;
 
         // Check values against these characters
         const invalidChars = /[@#$%^&*()_+=[\]{};:"\\|,.<>/?]+/;
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 'Content-type': 'application/json'
             },
             method: 'POST',
-            body: JSON.stringify({firstname: firstname, lastname: lastname, username: username, password: password, salary: salary, age: age})
+            body: JSON.stringify({username, password, firstname, lastname, salary, age})
         })
         .then(response => response.json())
         .then(data => {
@@ -320,16 +320,16 @@ registerBtn.onclick = function (){
 
 
 // when the searchBtn is clicked
-const searchBtn =  document.querySelector('#search-btn');
-searchBtn.onclick = function (){
-    const searchInput = document.querySelector('#username-input');
-    const searchValue = searchInput.value;
-    searchInput.value = "";
+// const searchBtn =  document.querySelector('#search-btn');
+// searchBtn.onclick = function (){
+//     const searchInput = document.querySelector('#username-input');
+//     const searchValue = searchInput.value;
+//     searchInput.value = "";
 
-    fetch('http://localhost:5050/search/' + searchValue)
-    .then(response => response.json())
-    .then(data => loadHTMLTable(data['data']));
-}
+//     fetch('http://localhost:5050/search/' + searchValue)
+//     .then(response => response.json())
+//     .then(data => loadHTMLTable(data['data']));
+// }
 
 
 
@@ -469,20 +469,20 @@ searchByTodayRegisteredBtn.onclick = function () {
 let rowToDelete; 
 
 // when the delete button is clicked, since it is not part of the DOM tree, we need to do it differently
-document.querySelector('table tbody').addEventListener('click', 
-      function(event){
-        if(event.target.className === "delete-row-btn"){
+// document.querySelector('table tbody').addEventListener('click', 
+//       function(event){
+//         if(event.target.className === "delete-row-btn"){
 
-            deleteRowByUsername(event.target.dataset.username);   
-            rowToDelete = event.target.parentNode.parentNode.rowIndex;    
-            debug("delete which one:");
-            debug(rowToDelete);
-        }   
-        if(event.target.className === "edit-row-btn"){
-            showEditRowInterface(event.target.dataset.username); // display the edit row interface
-        }
-      }
-);
+//             deleteRowByUsername(event.target.dataset.username);   
+//             rowToDelete = event.target.parentNode.parentNode.rowIndex;    
+//             debug("delete which one:");
+//             debug(rowToDelete);
+//         }   
+//         if(event.target.className === "edit-row-btn"){
+//             showEditRowInterface(event.target.dataset.username); // display the edit row interface
+//         }
+//       }
+// );
 
 function deleteRowByusername(username){
     // debug(username);
@@ -649,14 +649,14 @@ function loadHTMLTable(data){
     */
 
     let tableHtml = "";
-    data.forEach(function ({firstname, lastname, username, password, age, salary, registerday, signintime}){
+    data.forEach(function ({username, password, firstname, lastname, salary, age, registerday, signintime}){
          tableHtml += "<tr>";
-         tableHtml +=`<td>${firstname}</td>`;
-         tableHtml +=`<td>${lastname}</td>`;
          tableHtml +=`<td>${username}</td>`;
          tableHtml +=`<td>${password}</td>`;
-         tableHtml +=`<td>${age}</td>`;
+         tableHtml +=`<td>${firstname}</td>`;
+         tableHtml +=`<td>${lastname}</td>`;
          tableHtml +=`<td>${salary}</td>`;
+         tableHtml +=`<td>${age}</td>`;
          tableHtml +=`<td>${new Date(registerday).toLocaleString()}</td>`;
          tableHtml +=`<td>${new Date(signintime).toLocaleString()}</td>`;
          tableHtml +=`<td><button class="delete-row-btn" data-username=${username}>Delete</button></td>`;

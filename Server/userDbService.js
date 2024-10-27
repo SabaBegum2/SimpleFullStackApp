@@ -15,7 +15,7 @@ let instance = null;
 // console.log("DB PORT: " + process.env.DB_PORT);
 // const connection = mysql.createConnection({
 //      host: process.env.HOST,
-//      user: process.env.USER,        
+//      user: process.env.DB_USER,        
 //      password: process.env.PASSWORD,
 //      database: process.env.DATABASE,
 //      port: process.env.DB_PORT
@@ -108,7 +108,7 @@ class userDbService{
    }
 
 
-   async registerNewUser(firstname, lastname, username, password, age, salary){
+   async registerNewUser(username, password, firstname, lastname, salary, age){
          try {
             const registerDate = new Date();
             const timeLoggedIn = new Date();    // TODO: Change this to null for final version
@@ -116,8 +116,8 @@ class userDbService{
             //const hashedPassword = bcrypt.hash(password, 10);
             const insertProfile = await new Promise((resolve, reject) => 
             {
-               const query = "INSERT INTO Users (firstname, lastname, username, password, age, salary, registerday, signintime) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-               connection.query(query, [firstname, lastname, username, password, age, salary, registerDate, timeLoggedIn], (err, results) => {
+               const query = "INSERT INTO Users (username, password, firstname, lastname, salary, age, registerday, signintime) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+               connection.query(query, [ username, password, firstname, lastname, salary, age, registerDate, timeLoggedIn], (err, results) => {
                    if(err) reject(new Error(err.message));
                    else resolve(results.insertProfile);
                });
@@ -125,15 +125,14 @@ class userDbService{
             console.log(insertProfile);  // for debugging to see the result of select
             //res.status(201).json({ message: 'User registered successfully!', data: results.insertProfile });
             return{
-               insertProfile
-               //   firstname: firstname,
-               //   lastname: lastname,
-               //   username: username,
-               //   password: password,
-               //   age: age,
-               //   salary: salary,
-               //   registerDate: registerDate,
-               //   timeLoggedIn: timeLoggedIn
+               username: username,
+               password: password,
+               firstname: firstname,
+               lastname: lastname,
+               salary: salary,
+               age: age,
+               registerDate: registerDate,
+               timeLoggedIn: timeLoggedIn
             }
          } catch(error){
                console.log(error);
@@ -141,22 +140,22 @@ class userDbService{
          }
    }
 
-// // Search users by user ID
-// async searchByUsername(id) {
-//    try {
-//        const query = "SELECT * FROM Users WHERE username = ?;";
-//        const response = await new Promise((resolve, reject) => {
-//            connection.query(query, [id], (err, results) => {
-//                if (err) reject(new Error(err.message));
-//                else resolve(results);
-//            });
-//        });
-//        return response;
-//    } catch (error) {
-//        console.error("Error in searchByUsername:", error);
-//        throw error;
-//    }
-// }
+// Search users by user ID
+async searchByUsername(id) {
+   try {
+       const query = "SELECT * FROM Users WHERE username = ?;";
+       const response = await new Promise((resolve, reject) => {
+           connection.query(query, [id], (err, results) => {
+               if (err) reject(new Error(err.message));
+               else resolve(results);
+           });
+       });
+       return response;
+   } catch (error) {
+       console.error("Error in searchByUsername:", error);
+       throw error;
+   }
+}
 
 
    async searchByUsername(username){
