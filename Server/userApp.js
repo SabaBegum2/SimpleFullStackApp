@@ -4,33 +4,45 @@
 const express = require('express')
 const cors = require ('cors')
 const dotenv = require('dotenv')
+const bcrypt = require('bcrypt') // for password hashing
 dotenv.config()
 
 const app = express();
 const userDbService = require('./userDbService');
-
 
 app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({extended: false}));
 
 // create
-app.post('/insert', (request, response) => {
+app.post('/register', async(request, response) => {
     console.log("userApp: insert a row.");
     //console.log(request.body); 
+    try {
+        const {username, password, firstname, lastname, age, salary} = request.body;
 
-    const {username} = request.body;
-    const db = userDbService.getUserDbServiceInstance();
+        // Check for missing fields
+        if (!firstname || !lastname || !username || !password) {
+            return res.status(400).json({ message: "All required fields must be filled." });
+        }
 
-    const result = db.insertNewName(username);
- 
-    // note that result is a promise
-    result 
-    .then(data => response.json({data: data})) // return the newly added row to frontend, which will show it
-    //.then(data => console.log({data: data})) // debug first before return by response
-    .catch(err => console.log(err));
+        // Hash users password input
+        //const hashedPassword = await bcrypt.hash(password, 10);
+
+        const db = userDbService.getUserDbServiceInstance();
+
+        const result = await db.registerNewUser(username, password, firstname, lastname, salary, age);
+
+        response.status(201).json({ message: "User registration successful!", data: result });
+    }
+    catch (error) {
+        //.then(data => response.json({data: data})) // return the newly added row to frontend, which will show it
+        //.then(data => console.log({data: data})) // debug first before return by response
+        //.catch(err => console.log(err));
+        console.error(error);
+        response.status(500).json({ error: "An error occurred while registering user." });
+    }
 });
-
 
 
 
@@ -47,6 +59,7 @@ app.get('/getAll', (request, response) => {
     .catch(err => console.log(err));
 });
 
+
 // Search by Username
 app.get('/search/:username', (request, response) => { // we can debug by URL
     
@@ -57,31 +70,72 @@ app.get('/search/:username', (request, response) => { // we can debug by URL
     const db = userDbService.getUserDbServiceInstance();
 
     let result;
-    if(username === "all") // in case we want to search all
+    if(username === "all") {// in case we want to search all
        result = db.getAllData()
-    else 
+    } else { 
        result =  db.searchByUsername(username); // call a DB function
-
+    }
     result
     .then(data => response.json({data: data}))
     .catch(err => console.log(err));
 });
 
+
+
 //search users by first and/or last name
-app.get('/searchByFirstAndLastName', (request, response) => {
-    const {firstname , lastname} = request.query;
+// app.get('/search/:FirstAndLastName', (request, response) => {
+//     const {firstname , lastname} = request.query;
+//     console.log(firstname);
+//     console.log(lastname);
+
+//     const db = userDbService.getUserDbServiceInstance();
+//     let result;
+
+//     if (firstname === "" && lastname === "") {
+//         // Return empty array if both firstname and lastname are empty
+//         return response.json({ data: [] });
+//     } else {
+//         // Proceed with searching by name
+//         result = db.searchByName(firstname, lastname);
+//     }
+
+//     result
+//         .then(data => response.json({ data: data }))
+//         .catch(err => console.log(err));
+// });
+
+// //search users by user id
+// app.get('/searchByUserID', (request, response) => {
+//     const { id = "" } = request.query;
+//     console.log(id);
+//     const db = userDbService.getUserDbServiceInstance();
+//     let result;
+//     if (id === "") {
+//         // Return empty array if user id is empty
+//         return response.json({ data: [] });
+//     } else {
+//         // Proceed with searching by user id
+//         result = db.searchByUserId(id);
+//     }
+//     result
+//        .then(data => response.json({ data: data }))
+//        .catch(err => console.log(err));
+// });
+
+//search users by first name
+app.get('/search/firstname', (request, response) => {
+    const {firstname} = request.query;
     console.log(firstname);
-    console.log(lastname);
 
     const db = userDbService.getUserDbServiceInstance();
     let result;
 
-    if (firstname === "" && lastname === "") {
-        // Return empty array if both firstname and lastname are empty
-        return response.json({ data: [] });
+    if (firstname === "") {
+        // Return empty array if both firstname are empty
+        result = db.getAllData();
     } else {
         // Proceed with searching by name
-        result = db.searchUsersByName(firstname, lastname);
+        result = db.searchByFirstname(firstname);
     }
 
     result
@@ -89,30 +143,33 @@ app.get('/searchByFirstAndLastName', (request, response) => {
         .catch(err => console.log(err));
 });
 
-//search users by user id
-app.get('/searchUsersByUserID', (request, response) => {
-    const { id = "" } = request.query;
-    console.log(id);
+/*
+//search users by first name
+app.get('/search/:lastname', (request, response) => {
+    const {lastname} = request.query;
+    console.log(lastname);
 
     const db = userDbService.getUserDbServiceInstance();
     let result;
 
-    if (id === "") {
-        // Return empty array if user id is empty
-        return response.json({ data: [] });
+    if (firstname === "") {
+        // Return empty array if both lastname are empty
+        result = db.getAllData();
     } else {
-        // Proceed with searching by user id
-        result = db.searchUsersByUserId(id);
+        // Proceed with searching by name
+        result = db.searchByLastname(firstname);
     }
 
     result
-       .then(data => response.json({ data: data }))
-       .catch(err => console.log(err));
+        .then(data => response.json({ data: data }))
+        .catch(err => console.log(err));
 });
+*/
 
-//search all users whose salary is between x and y
-app.get('/searchUsersBySalary', (request, response) => {
-    let { minSalary = 0, maxSalary = 99999999 } = request.query;
+
+// search all users whose salary is between x and y
+app.get('/search/salary', (request, response) => {
+    let { minSalary = 0, maxSalary = 999999999 } = request.query;
 
     // Convert to floats and handle potential invalid input
     minSalary = parseFloat(minSalary);
@@ -133,7 +190,7 @@ app.get('/searchUsersBySalary', (request, response) => {
         //result = db.getAllData(); // Fetch all data if no salary range is provided
         return response.json({ data: []});
     } else {
-        result = db.SearchUsersBySalary(minSalary, maxSalary); // Call a DB function
+        result = db.searchBySalary(minSalary, maxSalary); // Call a DB function
     }
 
     result
@@ -145,7 +202,7 @@ app.get('/searchUsersBySalary', (request, response) => {
 });
 
 // Search all users whose age is between X and Y
-app.get('/searchUsersByAge', (request, response) => {
+app.get('/search/age', (request, response) => {
     let { minAge = 0, maxAge = 120 } = request.query;
 
     minAge = parseInt(minAge);
@@ -158,9 +215,9 @@ app.get('/searchUsersByAge', (request, response) => {
 
     let result;
     if (minAge === 0 && maxAge === 120) {
-        return response,json({ data: []}); //return an emapty array
+        result = response,json({ data: []}); //return an emapty array
     } else {
-        result = db.SearchUsersByAge(minAge, maxAge); // Call a DB function
+        result = db.searchByAge(minAge, maxAge); // Call a DB function
     }
 
     result
@@ -168,110 +225,156 @@ app.get('/searchUsersByAge', (request, response) => {
         .catch(err => console.log(err));
 });
 
+// //search users who registered after john registered, where "john" is the user id
+// app.get('/searchByRegistrationDate', async (request, response) => {
+//     const { username } = request.query;
+
+//     if (!username) {
+//         return response.status(400).json({ error: "Username is required" });
+//     }
+
+//     try {
+//         const db = userDbService.getUserDbServiceInstance();
+//         const user = await db.searchByUsername(username);
+
+//         if (!user) {
+//             return response.json({ data: [] });
+//         }
+
+//         const registrationDate = user.registration_date;
+//         const result = await db.searchByRegistrationDate(registrationDate);
+//         return response.json({ data: result });
+//     } catch (err) {
+//         console.error(err);
+//         return response.status(500).json({ error: "An error occurred while searching users." });
+//     }
+// });
+
 //search users who registered after john registered, where "john" is the user id
-app.get('/searchUsersByRegistrationDate', async (request, response) => {
-    const { id = "" } = request.query;
+// app.get('/search/:registerDate', async (request, response) => {
+//     const { username } = request.query;
 
-    if (!id) {
-        return response.json({ data: [] });
+//     try {
+//         const db = userDbService.getUserDbServiceInstance();
+//         const user = await db.searchByUsername(username);
+
+//         if (!user) {
+//             return response.json({ data: [] });
+//         }
+
+//         const registrationDate = user.registration_date;
+//         const result = await db.searchByRegistrationDate(registrationDate);
+//         return response.json({ data: result });
+//     } catch (err) {
+//         console.error(err);
+//         result = response.status(500).json({ error: "An error occurred or Username does not exist." });
+//     }
+// });
+
+app.get('/search/registerDate', (request, response) => {
+
+    const { username, registerDate } = request.params;
+
+    console.log(username);
+    
+    const db = userDbService.getUserDbServiceInstance();
+
+    let result;
+    if (user === "") {
+        result = response.json({ data: [] });
     }
 
-    try {
-        const db = userDbService.getUserDbServiceInstance();
-        const user = await db.getUserById(id);
+    const registrationDate = user.registration_date;
+    result = db.searchByRegistrationDate(username,registrationDate);
+    result = response.json({ data: result });
 
-        if (!user) {
-            return response.json({ data: [] });
-        }
-
-        const registrationDate = user.registration_date;
-        const result = await db.searchUsersByRegistrationDate(registrationDate);
-        return response.json({ data: result });
-    } catch (err) {
-        console.error(err);
-        return response.status(500).json({ error: "An error occurred while searching users." });
-    }
+    result
+    .then(data => response.json({data: data}))
+    .catch(err => console.log(err));
 });
 
 
-//serch users who never signed in
-app.get('/searchUsersNeverLoggedIn', async (request, response) => {
-    try {
-        const db = userDbService.getUserDbServiceInstance();
-        const result = await db.searchUsersNeverLoggedIn();
-        return response.json({ data: result });
-    } catch (err) {
-        console.error(err);
-        return response.status(500).json({ error: "An error occurred while searching users." });
-    }
+
+// TODO: Combine this function to just work in Username search and return "User doesn't exist" instead
+app.get('/searchNeverLoggedIn', async (request, response) => {
+    const { username } = request.query;
+    let result;
+    
+    const db = userDbService.getUserDbServiceInstance();
+
+    result = await db.searchByNeverLoggedIn();
+    result = response.json({ data: result });
+
+    result
+    console.error(err);
+    result = response.status(500).json({ error: "An error occurred while searching users." });
+    
 });
 
+// TODO: Alter this function to make a function that checks for user first
+        // then check for their registation date
+/*
+        //search users who registered on the same day that john registered
+app.get('/registeredSameDay', async (request, response) => {
 
-//search users who registered on the same day that john registered
-app.get('/searchUsersSameDayAsJohn', async (request, response) => {
+    let result;
     try {
         const db = userDbService.getUserDbServiceInstance();
-        const johnUser = await db.getUserById('john'); // Assuming 'john' is the ID you're using
+        const findUser = await db.searchByName("");     // find user
 
-        if (!johnUser) {
-            return response.json({ data: [] });
+        if (!findUser) {
+            result = response.json({ data: [] });
         }
 
         const registrationDate = johnUser.registration_date;
-        const result = await db.searchUsersSameDay(registrationDate);
-        return response.json({ data: result });
+        const result = await db.searchBySameDay(registrationDate);
+        
+        result = response.json({ data: result });
     } catch (err) {
         console.error(err);
-        return response.status(500).json({ error: "An error occurred while searching users." });
+        result = response.status(500).json({ error: "An error occurred while searching users." });
     }
 });
+*/
 
 
 //return the users who registered today
-app.get('/searchUsersRegisteredToday', async (request, response) => {
+/*
+app.get('/searchRegisteredToday', async (request, response) => {
+
+    let result;
     try {
         const db = userDbService.getUserDbServiceInstance();
-        const result = await db.searchUsersRegisteredToday();
-        return response.json({ data: result });
+        const result = await db.searchByRegisteredToday();
+        result = response.json({ data: result });
     } catch (err) {
         console.error(err);
-        return response.status(500).json({ error: "An error occurred while searching users." });
+        result = response.status(500).json({ error: "An error occurred while searching users." });
     }
+    result
 });
+*/
 
+//update
+/*
+app.patch('/update', 
+     (request, response) => {
+          console.log("app: update is called");
+          //console.log(request.body);
+          const{id, name} = request.body;
+          console.log(id);
+          console.log(name);
+          const db = userDbService.getUserDbServiceInstance();
 
-// update
-// app.patch('/update', 
-//      (request, response) => {
-//           console.log("app: update is called");
-//           //console.log(request.body);
-//           const{id, name} = request.body;
-//           console.log(id);
-//           console.log(name);
-//           const db = userDbService.getUserDbServiceInstance();
+          const result = db.updateNameById(id, name);
 
-//           const result = db.updateNameById(id, name);
+          result.then(data => response.json({success: true}))
+          .catch(err => console.log(err)); 
 
-//           result.then(data => response.json({success: true}))
-//           .catch(err => console.log(err)); 
-
-//      }
-// );
-
-// delete username
-app.delete('/delete/:username', 
-     (request, response) => {     
-        const {username} = request.params;
-        console.log("delete");
-        console.log(username);
-        const db = userDbService.getUserDbServiceInstance();
-
-        const result = db.deleteRowById(username);
-
-        result.then(data => response.json({success: true}))
-        .catch(err => console.log(err));
      }
-)   
+);
+*/
+
 
 // debug function, will be deleted later
 app.post('/debug', (request, response) => {
@@ -296,9 +399,6 @@ app.get('/testdb', (request, response) => {
     .then(data => response.json({data: data}))
     .catch(err => console.log(err));
 });
-
-
-  
 
 
 

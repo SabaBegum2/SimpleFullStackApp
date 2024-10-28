@@ -110,3 +110,22 @@ button {
 button:hover {
     background-color: #000e0e;
 }
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 12px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: #777777a0;
+}
+
+a {
+    color: #003131d7;
+    text-decoration:none;
+    cursor: pointer;
+}
+
+a:hover {
+    color: #005555; /* Change to a darker shade of the original color */
+    text-decoration: underline; /* Add underline on hover */
+}
