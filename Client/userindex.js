@@ -63,33 +63,76 @@ Arrow functions have a few notable features:
 */
 
 
-
+// This is the frontEnd calls that interact with the HTML pages directly
 document.addEventListener('DOMContentLoaded', function () {
     const currentPage = document.body.getAttribute('data-page');  // Identify the current page
     console.log(`Current page: ${currentPage}`);
 
     // Execute the correct setup function based on the page
-    switch (currentPage) {
-        case 'LoginPage':
-            setLoginPage();  // Fetch data for the search page
-            break;
-        case 'RegistrationPage':
-            setRegistrationPage();  // Setup registration form event
-            break;
-        case 'SearchDirectory':
-            setSearchDirectory();  // Setup search form event
-            break;
-
-        default:
-            console.error('Unknown page or no matching logic for this page.');
+    if(currentPage === 'LoginPage') {
+            const loginForm = document.getElementById("login-form");
+            loginForm.addEventListener("submit", submitLoginForm);
+            submitLoginForm();  // Fetch data for the search page
+    }
+    else if(currentPage === 'RegistrationPage') {
+            const registrationForm = document.getElementById('registrationForm');
+            registrationForm.addEventListener("submit", submitRegistrationForm);
+            submitRegistrationForm();  // Setup registration form event
+    }
+    else {  //SearchDirectory:
+        // one can point your browser to http://localhost:5050/getAll to check what it returns first.
+        fetch('http://localhost:5050/getAll')     
+        .then(response => response.json())
+        .then(data => loadHTMLTable(data['data']));
     }
 });
 
 
+//PURPOSE : Login
+// document.addEventListener("DOMContentLoaded", () => {
+//     const loginForm = document.getElementById("login-form");
+
+//     // Attach the event listener to the login form
+//     if (loginForm) {
+//         loginForm.addEventListener("submit", submitForm);
+//     }
+// });
+
+//function submitForm(event) {
+function submitLoginForm(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const username = document.getElementById("username-input").value;
+    const password = document.getElementById("password-input").value;
+
+    console.log("username:", username); // debugging
+    console.log("password:", password); // debugging
+
+    // Send the login data to the server
+    fetch('http://localhost:5050/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Login successful');
+            window.location.href = 'http://127.0.0.1:5500/Client/SearchDirectory.html'; // Redirect after successful login
+        } else {
+            alert(data.error); // Show error message from the server
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred during login. Please try again.');
+    });
+}
 
 
-
-// //fetch call is to call the server
+//fetch call is to call the server
 // document.addEventListener('DOMContentLoaded', function() {
 //     // one can point your browser to http://localhost:5050/getAll to check what it returns first.
 //     fetch('http://localhost:5050/getAll')     
@@ -100,9 +143,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 //// PURPOSE: REGISTRATION FORM
 
-function setRegistrationPage() {
-    const registerForm = document.querySelector('#registrationForm');
-    registerForm.addEventListener('submit', function(event){
+function submitRegistrationForm(event) {
+    //const registerForm = document.querySelector('#registrationForm');
+    //registerForm.addEventListener('submit', function(event){
     //registerForm.onclick = function() {
 
         // prevent the default reload action of the page
@@ -184,15 +227,8 @@ function setRegistrationPage() {
             //console.log(data => insertRowIntoTable(data['data']));
         })
         .catch(error => console.error("Error: ", error));
-    });
 }
 
-
-function setLoginPage() {
-    fetch('http://localhost:5050/getAll')
-    .then(response => response.json())
-    .then(data => loadHTMLTable(data['data']));
-}
 
 
 
