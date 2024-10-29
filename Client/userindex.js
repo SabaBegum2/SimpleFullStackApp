@@ -63,141 +63,136 @@ Arrow functions have a few notable features:
 */
 
 
-//fetch call is to call the server
-document.addEventListener('DOMContentLoaded', function() {
-    // one can point your browser to http://localhost:5050/getAll to check what it returns first.
-    fetch('http://localhost:5050/getAll')     
-    .then(response => response.json())
-    .then(data => loadHTMLTable(data['data']));
-});
 
-//PURPOSE : Login
-document.addEventListener("DOMContentLoaded", () => {
-    const loginForm = document.getElementById("login-form");
+document.addEventListener('DOMContentLoaded', function () {
+    const currentPage = document.body.getAttribute('data-page');  // Identify the current page
+    console.log(`Current page: ${currentPage}`);
 
-    // Attach the event listener to the login form
-    if (loginForm) {
-        loginForm.addEventListener("submit", submitForm);
+    // Execute the correct setup function based on the page
+    switch (currentPage) {
+        case 'LoginPage':
+            setLoginPage();  // Fetch data for the search page
+            break;
+        case 'RegistrationPage':
+            setRegistrationPage();  // Setup registration form event
+            break;
+        case 'SearchDirectory':
+            setSearchDirectory();  // Setup search form event
+            break;
+
+        default:
+            console.error('Unknown page or no matching logic for this page.');
     }
 });
 
-function submitForm(event) {
-    event.preventDefault(); // Prevent default form submission
 
-    const username = document.getElementById("username-input").value;
-    const password = document.getElementById("password-input").value;
 
-    console.log("username:", username); // debugging
-    console.log("password:", password); // debugging
 
-    // Send the login data to the server
-    fetch('http://localhost:5050/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Login successful');
-            window.location.href = 'http://127.0.0.1:5500/Client/SearchDirectory.html'; // Redirect after successful login
-        } else {
-            alert(data.error); // Show error message from the server
+
+// //fetch call is to call the server
+// document.addEventListener('DOMContentLoaded', function() {
+//     // one can point your browser to http://localhost:5050/getAll to check what it returns first.
+//     fetch('http://localhost:5050/getAll')     
+//     .then(response => response.json())
+//     .then(data => loadHTMLTable(data['data']));
+// });
+
+
+//// PURPOSE: REGISTRATION FORM
+
+function setRegistrationPage() {
+    const registerForm = document.querySelector('#registrationForm');
+    registerForm.addEventListener('submit', function(event){
+    //registerForm.onclick = function() {
+
+        // prevent the default reload action of the page
+        event.preventDefault();
+
+        // Get the registration form inputs
+        const username = document.querySelector('#username-input').value.trim();
+        const password = document.querySelector('#password-input').value.trim();
+        const firstname = document.querySelector('#firstname-input').value.trim();
+        const lastname = document.querySelector('#lastname-input').value.trim();
+        const age = parseInt(document.querySelector('#age-input').value.trim()) || 0;
+        const salary = parseInt(document.querySelector('#salary-input').value.trim()) || 0;
+
+        // Check values against these characters
+        const invalidChars = /[@#$%^&*()_+=[\]{};:"\\|,.<>/?]+/;
+        const invalidUsernameChars = /[@#$%^&*()+=[\]{};:"\\|,.<>/?]+/;
+        const invalidPasswordChars = /[[\]{};:\\|,<>/?]+/;
+
+        // Check if firstname or lastname is less than 2 characters
+        if (firstname.length < 2 || lastname.length < 2) {          // Check if firstname is less than 2 characters
+            alert("Not enough characters in first or last name.");  // Throw error to user
+            return; // Exit function
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred during login. Please try again.');
+        // Check if first or last name contains special characters
+        if (invalidChars.test(firstname) || invalidChars.test(lastname)) {
+            alert("First or Last name cannot contain special characters"); // Throw error to user
+            return;
+        }
+
+        // Check if username has whitespace
+        if (username.includes(" ")) { // Check if username contains whitespace
+            alert("Username cannot contain whitespace"); // Throw error to user
+            return; // Exit function
+        }
+        // Check if username is less than 4 characters
+        if (username.length < 4) { // Check if username is less than 2 characters
+            alert("Username must be at least 2 characters"); // Throw error to user
+            return; // Exit function
+        }
+        // Check if username contains special characters
+        if (invalidUsernameChars.test(username)) {
+            alert("Username cannot contain special characters"); // Throw error to user
+            return;
+        }
+
+        // Check if password has whitespace
+        if (password.includes(" ")) { // Check if password contains whitespace
+            alert("Password cannot contain whitespace"); // Throw error to user
+            return;
+        }
+        // Check if password is less than 8 characters
+        if (password.length < 8) { // Check if password is less than 8 characters
+            alert("Password must be at least 8 characters"); // Throw error to user
+            return; // Exit function
+        }
+        // Check if password contains special characters
+        if (invalidPasswordChars.test(password)) {
+            alert("Password cannot contain these special characters: []{};:\\|.<>/?"); // Throw error to user
+            return;
+        }
+
+        // Check valid age range
+        if (age < 1 || age > 200) { 
+            alert("Please enter valid age."); // Throw error to user
+            return;
+        }
+
+        fetch('http://localhost:5050/register', {
+            headers: {
+                'Content-type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify({username, password, firstname, lastname, salary, age})
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert("User registration successful!");
+            console.log(data);
+            //console.log(data => insertRowIntoTable(data['data']));
+        })
+        .catch(error => console.error("Error: ", error));
     });
 }
 
-//// PURPOSE: REGISTRATION FORM
-// const registerForm = document.querySelector('#registrationForm');
-// registerForm.addEventListener('submit', function(event){
-// //registerForm.onclick = function() {
 
-//     // prevent the default reload action of the page
-//     event.preventDefault();
-
-//      // Get the registration form inputs
-//     const username = document.querySelector('#username-input').value.trim();
-//     const password = document.querySelector('#password-input').value.trim();
-//     const firstname = document.querySelector('#firstname-input').value.trim();
-//     const lastname = document.querySelector('#lastname-input').value.trim();
-//     const age = parseInt(document.querySelector('#age-input').value.trim()) || 0;
-//     const salary = parseInt(document.querySelector('#salary-input').value.trim()) || 0;
-
-//     // Check values against these characters
-//     const invalidChars = /[@#$%^&*()_+=[\]{};:"\\|,.<>/?]+/;
-//     const invalidUsernameChars = /[@#$%^&*()+=[\]{};:"\\|,.<>/?]+/;
-//     const invalidPasswordChars = /[[\]{};:\\|,<>/?]+/;
-
-//     // Check if firstname or lastname is less than 2 characters
-//     if (firstname.length < 2 || lastname.length < 2) {          // Check if firstname is less than 2 characters
-//         alert("Not enough characters in first or last name.");  // Throw error to user
-//         return; // Exit function
-//     }
-//     // Check if first or last name contains special characters
-//     if (invalidChars.test(firstname) || invalidChars.test(lastname)) {
-//         alert("First or Last name cannot contain special characters"); // Throw error to user
-//         return;
-//     }
-
-//     // Check if username has whitespace
-//     if (username.includes(" ")) { // Check if username contains whitespace
-//         alert("Username cannot contain whitespace"); // Throw error to user
-//         return; // Exit function
-//     }
-//     // Check if username is less than 4 characters
-//     if (username.length < 4) { // Check if username is less than 2 characters
-//         alert("Username must be at least 2 characters"); // Throw error to user
-//         return; // Exit function
-//     }
-//     // Check if username contains special characters
-//     if (invalidUsernameChars.test(username)) {
-//         alert("Username cannot contain special characters"); // Throw error to user
-//         return;
-//     }
-
-//     // Check if password has whitespace
-//     if (password.includes(" ")) { // Check if password contains whitespace
-//         alert("Password cannot contain whitespace"); // Throw error to user
-//         return;
-//     }
-//     // Check if password is less than 8 characters
-//     if (password.length < 8) { // Check if password is less than 8 characters
-//         alert("Password must be at least 8 characters"); // Throw error to user
-//         return; // Exit function
-//     }
-//     // Check if password contains special characters
-//     if (invalidPasswordChars.test(password)) {
-//         alert("Password cannot contain these special characters: []{};:\\|.<>/?"); // Throw error to user
-//         return;
-//     }
-
-//     // Check valid age range
-//     if (age < 1 || age > 200) { 
-//         alert("Please enter valid age."); // Throw error to user
-//         return;
-//     }
-
-//     fetch('http://localhost:5050/register', {
-//         headers: {
-//             'Content-type': 'application/json'
-//         },
-//         method: 'POST',
-//         body: JSON.stringify({username, password, firstname, lastname, salary, age})
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         alert("User registration successful!");
-//         console.log(data);
-//         //console.log(data => insertRowIntoTable(data['data']));
-//     })
-//     .catch(error => console.error("Error: ", error));
-// });
+function setLoginPage() {
+    fetch('http://localhost:5050/getAll')
+    .then(response => response.json())
+    .then(data => loadHTMLTable(data['data']));
+}
 
 
 
@@ -628,7 +623,7 @@ function loadHTMLTable(data){
     */
 
     let tableHtml = "";
-    data.forEach(function ({username, password, firstname, lastname, salary, age, registerday, signintime}){
+    data.forEach(function ({firstname, lastname, username, password, age, salary, registerday, signintime}){
          tableHtml += "<tr>";
          tableHtml +=`<td>${username}</td>`;
          tableHtml +=`<td>${password}</td>`;

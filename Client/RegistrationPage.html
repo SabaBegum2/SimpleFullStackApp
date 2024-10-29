@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="userstylesheet.css">
   <title>User Registration</title>
 </head>
-<body>
+<body data-page="RegistrationPage">
     <div class="registerBox">
     <main>
     <h1 style="margin-left: 18px">User Registration:</h1>
@@ -16,7 +16,6 @@
                 <input class="registerAltInput" type="password" id="password-input" placeholder="Password" required>
                 <!-- Show Password checkbox -->
                 <input type="checkbox" onclick="hidePassword()"><p>Show Password</p>
-                <!-- Password function to hide password on HTML page using javascript -->
             </section>
 
             <input type="text" id="firstname-input" placeholder="First Name" required >
@@ -35,6 +34,7 @@
 </footer>
 </html>
 
+<!-- Password function to hide password on HTML page using javascript -->
 <script>
     function hidePassword() {
         var x = document.getElementById("password-input");

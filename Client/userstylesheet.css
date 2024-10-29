@@ -17,7 +17,9 @@ div{
     background: white;
     border-radius: 10px;
     width: 20%;
-    margin: 50px auto;
+    margin-top: 10%;
+    margin-left: auto;
+    margin-right: auto;
     text-align:left;
 }
 
@@ -30,7 +32,9 @@ div{
     background: white;
     border-radius: 10px;
     width: 30%;
-    margin: 50px auto;
+    margin-top: 10%;
+    margin-left: auto;
+    margin-right: auto;
     text-align: left;
 }
 
@@ -43,7 +47,9 @@ div{
     background: white;
     border-radius: 10px;
     width: 80%;
-    margin: 50px auto;
+    margin-top: 10%;
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
 }
 
