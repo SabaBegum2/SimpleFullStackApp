@@ -6,7 +6,8 @@
     <link rel="stylesheet" href="userstylesheet.css">
     <title>User Login</title>
 </head>
-<body data-page= "LoginPage">
+<!-- <body data-page= "LoginPage"> -->
+<body data-page="LoginPage">
 <main>
     <div class="signInBox">
         <h1>Login</h1>
@@ -17,7 +18,8 @@
             <h3>Username:</h3>
             <input class="registerAltInput" style="margin-left: 8px" placeholder="Enter Username" id="username-input" required>
             <h3>Password:</h3>
-            <input class="registerAltInput" style="margin-left: 8px" placeholder="Enter Password" id="password-input" required>
+            <input class="registerAltInput" type="password" style="margin-left: 8px" placeholder="Enter Password" id="password-input" required>
+            <input type="checkbox" onclick="hidePassword()"><p>Show Password</p>
             <button id="search-username-btn" style="margin-left:35%">Sign In</button>
         </form>
     </div>
@@ -28,3 +30,16 @@
     <p>Created by: Saba Begum and Violet Yousif</p>
 </footer>
 </html>
+
+
+<!-- Password function to hide password on HTML page using javascript -->
+<script>
+    function hidePassword() {
+        var x = document.getElementById("password-input");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+</script>
