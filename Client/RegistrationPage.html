@@ -12,7 +12,13 @@
     <h1 style="margin-left: 18px">User Registration:</h1>
         <form id="registrationForm">
             <input class="registerAltInput" type="text" id="username-input" placeholder="Username" required>
-            <input class="registerAltInput" type="text" id="password-input" placeholder="Password" required>
+            <section class="showPwd">
+                <input class="registerAltInput" type="password" id="password-input" placeholder="Password" required>
+                <!-- Show Password checkbox -->
+                <input type="checkbox" onclick="hidePassword()"><p>Show Password</p>
+                <!-- Password function to hide password on HTML page using javascript -->
+            </section>
+
             <input type="text" id="firstname-input" placeholder="First Name" required >
             <input type="text" id="lastname-input" placeholder="Last Name" required >
             <input type="number" id="salary-input" placeholder="Salary (i.e. 50000)">
@@ -24,7 +30,18 @@
     </div>
 </body>
 <footer>
-    <h2>Go back to <a href="http://127.0.0.1:5500/Client/LoginPage.html">Login HomePage</a>.</h2>
+    <h2>Return to <a href="http://127.0.0.1:5500/Client/LoginPage.html">Login Page</a>.</h2>
     <p>Created by: Saba Begum and Violet Yousif</p>
 </footer>
 </html>
+
+<script>
+    function hidePassword() {
+        var x = document.getElementById("password-input");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+</script>

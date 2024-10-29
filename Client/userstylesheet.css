@@ -6,47 +6,52 @@ body{
 }
 
 div{
-    display: block;
-    margin: auto;
-    border-style: groove;
-    border: 2px solid #888888a0;
-    border-radius: 10px;
+    box-sizing: content-box;
 }
 .signInBox {
     padding: 30px 70px 50px 70px;
-
+    display: block;
+    border: 2px solid #888888a0;
+    border-style: groove;
+    border-radius: 10px;
     background: white;
     border-radius: 10px;
     width: 20%;
     margin: 50px auto;
     text-align:left;
-    border-style: groove;
-    border: 2px solid #888888a0;
-    border-radius: 10px;
 }
 
 .registerBox {
+    display: block;
+    border-radius: 10px;
+    border-style: groove;
+    border: 2px solid #888888a0;
     padding: 30px 70px 50px 70px;
     background: white;
     border-radius: 10px;
     width: 30%;
     margin: 50px auto;
     text-align: left;
-    border-style: groove;
-    border: 2px solid #888888a0;
-    border-radius: 10px;
 }
 
 .searchBox {
+    display: block;
+    border-radius: 10px;
+    border-style: groove;
+    border: 2px solid #888888a0;
     padding: 30px 70px 50px 70px;
     background: white;
     border-radius: 10px;
-    width: 50%;
+    width: 80%;
     margin: 50px auto;
-    text-align:left;
-    border-style: groove;
-    border: 2px solid #888888a0;
-    border-radius: 10px;
+    text-align: center;
+}
+
+section {
+    margin: auto;
+}
+.showPwd {
+    margin: block-inline;
 }
 
 h1 {
@@ -72,6 +77,7 @@ p {
     margin-bottom: 20px;
 }
 
+
 form {
     margin-left: 25px;
     margin-bottom: 10px;
@@ -80,7 +86,7 @@ form {
 input {
     text-align: left;
     padding: 5px 10px;
-    margin: 7px 2px;
+    margin: 2% 1%;
     border-radius: 5px;
     border: 1px solid #888888a0;
     font-size: 14px;
@@ -129,3 +135,26 @@ a:hover {
     color: #005555; /* Change to a darker shade of the original color */
     text-decoration: underline; /* Add underline on hover */
 }
+
+select {
+    padding: 5px 10px;
+    margin: 2% 1%;
+    border-radius: 5px;
+    border: 1px solid #888888a0;
+    font-size: 12px;
+    height: 25px;
+    width: 22%
+}
+
+/* input is used for the search bar */
+input.searchEngine[type=text] {
+    width: 130px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+  
+/* When the input field gets focus, change its width to 100% */
+input.searchEngine[type=text]:focus {
+    width: 60%;
+}
+
