@@ -5,6 +5,7 @@ const express = require('express')
 const cors = require ('cors')
 const dotenv = require('dotenv')
 dotenv.config()
+const bodyParser = require('body-parser'); // Import body-parser
 
 const app = express();
 const userDbService = require('./userDbService');
@@ -52,6 +53,33 @@ app.get('/getAll', (request, response) => {
     result
     .then(data => response.json({data: data}))
     .catch(err => console.log(err));
+});
+
+app.use(bodyParser.json());
+
+app.post('/login', async (request, response) => {
+    const { username, password } = request.body;
+
+    console.log("receiving username:", username); // debugging
+    console.log("receiving password:", password); // debugging
+
+    const db = userDbService.getUserDbServiceInstance();
+
+    try {
+        // Search for a user with both the matching username and password
+        const result = await db.searchByUsernameAndPassword(username, password);
+
+        // If no matching user is found, return an error
+        if (!result) {
+            return response.status(401).json({ error: "Invalid username or password" });
+        }
+
+        // Successful login
+        response.json({ success: true });
+    } catch (err) {
+        console.error(err);
+        response.status(500).json({ error: "An error occurred while logging in." });
+    }
 });
 
 

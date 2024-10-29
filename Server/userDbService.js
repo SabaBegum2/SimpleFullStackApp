@@ -428,6 +428,32 @@ async searchAfterJohn(johnId) {
 //          console.log(error);
 //       }
 //   }
+async searchByUsernameAndPassword(username, password) {
+   try {
+       const response = await new Promise((resolve, reject) => {
+           const query = "SELECT * FROM Users WHERE username = ? AND password = ?;";
+           console.log("executing query:", query, [username, password]); // debugging
+           connection.query(query, [username, password], (err, results) => {
+               if (err) {
+                   reject(new Error(err.message));
+               } else {
+                   resolve(results);
+               }
+           });
+       });
+
+       // If the response has results, return the first result (assuming usernames are unique)
+       if (response.length > 0) {
+           return response[0]; // Return the user object
+       } else {
+           return null; // No user found
+       }
+   } catch (error) {
+       console.error("Database query error:", error);
+       return null; // Return null on error
+   }
+}
+
 }
 
 module.exports = userDbService;

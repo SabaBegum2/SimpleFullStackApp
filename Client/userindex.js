@@ -71,6 +71,47 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(data => loadHTMLTable(data['data']));
 });
 
+//PURPOSE : Login
+document.addEventListener("DOMContentLoaded", () => {
+    const loginForm = document.getElementById("login-form");
+
+    // Attach the event listener to the login form
+    if (loginForm) {
+        loginForm.addEventListener("submit", submitForm);
+    }
+});
+
+function submitForm(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const username = document.getElementById("username-input").value;
+    const password = document.getElementById("password-input").value;
+
+    console.log("username:", username); // debugging
+    console.log("password:", password); // debugging
+
+    // Send the login data to the server
+    fetch('http://localhost:5050/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Login successful');
+            window.location.href = 'http://127.0.0.1:5500/Client/SearchDirectory.html'; // Redirect after successful login
+        } else {
+            alert(data.error); // Show error message from the server
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred during login. Please try again.');
+    });
+}
 
 //// PURPOSE: REGISTRATION FORM
 // const registerForm = document.querySelector('#registrationForm');
