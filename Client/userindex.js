@@ -73,90 +73,90 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 //// PURPOSE: REGISTRATION FORM
-const registerForm = document.querySelector('#registrationForm');
-registerForm.addEventListener('submit', function(event){
-//registerForm.onclick = function() {
+// const registerForm = document.querySelector('#registrationForm');
+// registerForm.addEventListener('submit', function(event){
+// //registerForm.onclick = function() {
 
-    // prevent the default reload action of the page
-    event.preventDefault();
+//     // prevent the default reload action of the page
+//     event.preventDefault();
 
-     // Get the registration form inputs
-    const username = document.querySelector('#username-input').value.trim();
-    const password = document.querySelector('#password-input').value.trim();
-    const firstname = document.querySelector('#firstname-input').value.trim();
-    const lastname = document.querySelector('#lastname-input').value.trim();
-    const age = parseInt(document.querySelector('#age-input').value.trim()) || 0;
-    const salary = parseInt(document.querySelector('#salary-input').value.trim()) || 0;
+//      // Get the registration form inputs
+//     const username = document.querySelector('#username-input').value.trim();
+//     const password = document.querySelector('#password-input').value.trim();
+//     const firstname = document.querySelector('#firstname-input').value.trim();
+//     const lastname = document.querySelector('#lastname-input').value.trim();
+//     const age = parseInt(document.querySelector('#age-input').value.trim()) || 0;
+//     const salary = parseInt(document.querySelector('#salary-input').value.trim()) || 0;
 
-    // Check values against these characters
-    const invalidChars = /[@#$%^&*()_+=[\]{};:"\\|,.<>/?]+/;
-    const invalidUsernameChars = /[@#$%^&*()+=[\]{};:"\\|,.<>/?]+/;
-    const invalidPasswordChars = /[[\]{};:\\|,<>/?]+/;
+//     // Check values against these characters
+//     const invalidChars = /[@#$%^&*()_+=[\]{};:"\\|,.<>/?]+/;
+//     const invalidUsernameChars = /[@#$%^&*()+=[\]{};:"\\|,.<>/?]+/;
+//     const invalidPasswordChars = /[[\]{};:\\|,<>/?]+/;
 
-    // Check if firstname or lastname is less than 2 characters
-    if (firstname.length < 2 || lastname.length < 2) {          // Check if firstname is less than 2 characters
-        alert("Not enough characters in first or last name.");  // Throw error to user
-        return; // Exit function
-    }
-    // Check if first or last name contains special characters
-    if (invalidChars.test(firstname) || invalidChars.test(lastname)) {
-        alert("First or Last name cannot contain special characters"); // Throw error to user
-        return;
-    }
+//     // Check if firstname or lastname is less than 2 characters
+//     if (firstname.length < 2 || lastname.length < 2) {          // Check if firstname is less than 2 characters
+//         alert("Not enough characters in first or last name.");  // Throw error to user
+//         return; // Exit function
+//     }
+//     // Check if first or last name contains special characters
+//     if (invalidChars.test(firstname) || invalidChars.test(lastname)) {
+//         alert("First or Last name cannot contain special characters"); // Throw error to user
+//         return;
+//     }
 
-    // Check if username has whitespace
-    if (username.includes(" ")) { // Check if username contains whitespace
-        alert("Username cannot contain whitespace"); // Throw error to user
-        return; // Exit function
-    }
-    // Check if username is less than 4 characters
-    if (username.length < 4) { // Check if username is less than 2 characters
-        alert("Username must be at least 2 characters"); // Throw error to user
-        return; // Exit function
-    }
-    // Check if username contains special characters
-    if (invalidUsernameChars.test(username)) {
-        alert("Username cannot contain special characters"); // Throw error to user
-        return;
-    }
+//     // Check if username has whitespace
+//     if (username.includes(" ")) { // Check if username contains whitespace
+//         alert("Username cannot contain whitespace"); // Throw error to user
+//         return; // Exit function
+//     }
+//     // Check if username is less than 4 characters
+//     if (username.length < 4) { // Check if username is less than 2 characters
+//         alert("Username must be at least 2 characters"); // Throw error to user
+//         return; // Exit function
+//     }
+//     // Check if username contains special characters
+//     if (invalidUsernameChars.test(username)) {
+//         alert("Username cannot contain special characters"); // Throw error to user
+//         return;
+//     }
 
-    // Check if password has whitespace
-    if (password.includes(" ")) { // Check if password contains whitespace
-        alert("Password cannot contain whitespace"); // Throw error to user
-        return;
-    }
-    // Check if password is less than 8 characters
-    if (password.length < 8) { // Check if password is less than 8 characters
-        alert("Password must be at least 8 characters"); // Throw error to user
-        return; // Exit function
-    }
-    // Check if password contains special characters
-    if (invalidPasswordChars.test(password)) {
-        alert("Password cannot contain these special characters: []{};:\\|.<>/?"); // Throw error to user
-        return;
-    }
+//     // Check if password has whitespace
+//     if (password.includes(" ")) { // Check if password contains whitespace
+//         alert("Password cannot contain whitespace"); // Throw error to user
+//         return;
+//     }
+//     // Check if password is less than 8 characters
+//     if (password.length < 8) { // Check if password is less than 8 characters
+//         alert("Password must be at least 8 characters"); // Throw error to user
+//         return; // Exit function
+//     }
+//     // Check if password contains special characters
+//     if (invalidPasswordChars.test(password)) {
+//         alert("Password cannot contain these special characters: []{};:\\|.<>/?"); // Throw error to user
+//         return;
+//     }
 
-    // Check valid age range
-    if (age < 1 || age > 200) { 
-        alert("Please enter valid age."); // Throw error to user
-        return;
-    }
+//     // Check valid age range
+//     if (age < 1 || age > 200) { 
+//         alert("Please enter valid age."); // Throw error to user
+//         return;
+//     }
 
-    fetch('http://localhost:5050/register', {
-        headers: {
-            'Content-type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify({username, password, firstname, lastname, salary, age})
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert("User registration successful!");
-        console.log(data);
-        //console.log(data => insertRowIntoTable(data['data']));
-    })
-    .catch(error => console.error("Error: ", error));
-});
+//     fetch('http://localhost:5050/register', {
+//         headers: {
+//             'Content-type': 'application/json'
+//         },
+//         method: 'POST',
+//         body: JSON.stringify({username, password, firstname, lastname, salary, age})
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         alert("User registration successful!");
+//         console.log(data);
+//         //console.log(data => insertRowIntoTable(data['data']));
+//     })
+//     .catch(error => console.error("Error: ", error));
+// });
 
 
 
@@ -178,102 +178,147 @@ addBtn.onclick = function (){
 }*/
 
 
+// PURPOSE: SEARCH DATABASE INPUT FORM
+// Changes the input box based on the selected option
+// document.querySelector('#select-option').addEventListener('change', function () {
+//     const selectedOption = this.value;
+//     const firstBox = document.querySelector('#first-box');
+//     const lastBox = document.querySelector('#last-box');
+//     const searchInput = document.querySelector('#search-input');
 
+//     // When "First and Last Name" option is selected, shows both input boxes
+//     if (selectedOption === "3" || selectedOption === "5" || selectedOption === "6") {
+//         firstBox.style.display = 'inline-block';  // Show first name input
+//         lastBox.style.display = 'inline-block';   // Show last name input
+//         searchInput.style.display = 'none';           // Hide the single input box
+//     } else {
+//         // Hide first and last name inputs, and only show the single input box for other options
+//         firstBox.style.display = 'none';
+//         lastBox.style.display = 'none';
+//         searchInput.style.display = 'inline-block';
+//     }
+// });
 
-//when the searchBtn is clicked
+// PURPOSE: SEARCH DATABASE FOR VALUES
+// When the searchBtn is clicked
+const searchBtn = document.querySelector('#search-btn');
+searchBtn.onclick = async function() {
+    let selectOption = document.querySelector('#select-option').value;
+    console.log("/Select option: ", selectOption);
 
-const searchBtn =  document.querySelector('#search-btn');
-searchBtn.onclick = function() {
-    const selectOption = document.querySelector('#select-option').value;
+    const searchInput = document.querySelector('#search-input').value.trim();
+    console.log("Search input: ", searchInput);
 
-    let searchInput;
-    switch(selectOption) {
-        case "1":
-            searchInput = document.querySelector('#firstname-input').value;
-        case "2":
-            searchInput = document.querySelector('#lastname-input').value;
-        case "3":
-            searchInput = document.querySelector('#first-and-last-name-input').value;
-        case "4":
-            searchInput = document.querySelector('#username-input').value;
-        case "5":
-            searchInput = document.querySelector('#age-input').value;
-        case "6":
-            searchInput = document.querySelector('#salary-input').value;
-        case "7":
-            searchInput = document.querySelector('#registerday-input').value;
-        case "8":
-            searchInput = document.querySelector('#never-signed-in-input').value;
-        case "9":
-            searchInput = document.querySelector('#registered-today-input').value;
-        default:
+    let address;
+    try {
+
+        switch(selectOption) {
+            case "1":
+                selectOption = "firstname";
+                address = selectOption + "?" + selectOption + "=" + searchInput ;
+                break;
+            case "2":
+                selectOption = "lastname";
+                address = selectOption + "?" + selectOption + "=" + searchInput ;
+                break;
+            case "3":
+                selectOption = "firstandlastname";
+                const firstnameVal = "firstname=" + document.querySelector('#first-box').value.trim();
+                const lastnameVal = "lastname=" + document.querySelector('#last-box').value.trim();
+                if (!firstnameVal || !lastnameVal) {
+                    alert("Please enter both first and last name.");
+                    return;
+                }
+                address = selectOption + "?" + firstnameVal + "&" + lastnameVal;
+                break;
+            case "4":
+                selectOption = "username";
+                address = selectOption + "?" + selectOption + "=" + searchInput ;
+                break;
+            case "5":
+                selectOption = "age";
+                address = selectOption + "?" + selectOption + "=" + searchInput ;
+                break;
+            case "6":
+                selectOption = "salary";
+                const minSalary = document.querySelector('#first-box').value.trim();
+                const maxSalary = document.querySelector('#last-box').value.trim();
+                address = selectOption + "?" + selectOption + "=" + searchInput ;
+                break;
+            case "7":
+                // TODO: Implement registerday with 2 params
+                selectOption = "registerday";
+                address = selectOption + "?" + selectOption + "=" + searchInput ;
+                break;
+            case "8":
+                selectOption = "neverLoggedIn";
+                address = selectOption + "?" + selectOption + "=" + searchInput ;
+                break;
+            case "9":
+                selectOption = "registeredToday";
+                break;
+            default:
+                console.log("Invalid search option: " + selectOption);
+                return; // Exit function if invalid option
+        }
+        selectOption = "";
+
+        console.log("Address: ", address);
+        const response = await fetch('http://localhost:5050/search/' + address );
+        console.log("Response: ", response);
+        //const response = await fetch('http://localhost:5050/search/' + searchInput);
+        const data = await response.json();
+        console.log(data);
+        loadHTMLTable(data['data']);
+    } catch (error) {
+        console.error("Error: ", error);
     }
-
-
-    fetch('http://localhost:5050/search/' + searchInput)
-    .then(response => response.json())
-    .then(data => loadHTMLTable(data['data']));
 };
 
 
-const searchUsernameBtn =  document.querySelector('#search-btn');
-searchBtn.onclick = function (){
-    const firstname = document.querySelector('#firstname-input').value.trim();
-    const lastname = document.querySelector('#lastname-input').value.trim();
+// const searchUsernameBtn =  document.querySelector('#search-btn');
+// searchBtn.onclick = function (){
+//     const firstname = document.querySelector('#firstname-input').value.trim();
+//     const lastname = document.querySelector('#lastname-input').value.trim();
 
-    fetch('http://localhost:5050/search/' + searchInput)
-    .then(response => response.json())
-    .then(data => loadHTMLTable(data['data']));
-};
+//     fetch('http://localhost:5050/search/' + searchInput)
+//     .then(response => response.json())
+//     .then(data => loadHTMLTable(data['data']));
+// };
 
 
 
-// PURPOSE: SEARCH DATABASE FORM
 
-/*
-//when the search by username button is clicked
-const searchByUsernameBtn =  document.querySelector('#search-by-username-btn');
-searchByUsernameBtn.onclick = function (){
-    const usernameInput = document.querySelector('#username-input');
-    const username = usernameInput.value;
-    usernameInput.value = "";
 
-    fetch('http://localhost:5050/search/username/' + username)
-    .then(response => response.json())
-    .then(data => loadHTMLTable([data['data']]));
-}
+// //when the search by username button is clicked
+// const searchByUsernameBtn =  document.querySelector('#search-btn');
+// searchByUsernameBtn.onclick = function (){
+//     const usernameInput = document.querySelector('#username-input');
+//     const username = usernameInput.value;
+//     usernameInput.value = "";
 
-// TODO: This might be easier to with separate search buttons for each of these search types?
-const searchByFirstName =  document.querySelector('#search-by-firstname-btn');
-// When the searchBtn is clicked for searching users by first and last name
-searchByFirstName.onclick = function() {
-    // Check if the event is for searching by first and last name
-    // Make sure this button has the class 'search-by-first-last-name-btn'
-    // if (event.target.classList.contains("search-by-first-last-name-btn")) {
-    //     const firstnameInput = document.querySelector('#first-name-input');
-    //     const lastnameInput = document.querySelector('#last-name-input');
+//     fetch('http://localhost:5050/search/username/' + username)
+//     .then(response => response.json())
+//     .then(data => loadHTMLTable([data['data']]));
+// }
 
-    //event.target.classList.contains("search-by-firstname-btn");
-    const firstnameInput = document.querySelector('#firstname-input');
-    const firstName = firstnameInput.value;
-    firstnameInput.value = "";
 
-        //lastnameInput.value = "";
+// const searchFirstnameBtn =  document.querySelector('#search-btn');
+// searchFirstnameBtn.onclick = function() {
+//     //event.target.classList.contains("search-by-firstname-btn");
 
-        // TODO: Make sure to encode the query parameters to handle spaces and special characters
-        //const query = new URLSearchParams({ firstname: firstName, lastname: lastName }).toString();
-    const query = new URLSearchParams({ firstname: firstName }).toString();
-        
-    fetch('http://localhost:5050/search/firstname' + query)
-    .then(response => response.json())
-    .then(data => loadHTMLTable(data['data']));
-        
+//     const firstnameInput = document.querySelector('#firstname-input').value;
+//     try {
+//         console.log("First name input: ", firstnameInput);
+//         fetch('http://localhost:5050/search/firstname?' + firstnameInput)
+//         .then(response => response.json())
+//         .then(data => loadHTMLTable(data['data']));
+//     }
+//     catch (error) {
+//         console.error("Error: ", error);
+//     }
+// };
 
-        // fetch('http://localhost:5050/byFirstAndLastName?' + query)
-        // .then(response => response.json())
-        // .then(data => loadHTMLTable(data['data']));
-};
-*/
 
 // TODO: This needs to be reformatted to work for salary-input min and/or max
     // There aren't min and max queries so this will only have regular salary to work off of.
@@ -487,8 +532,6 @@ function insertRowIntoTable(data){
       }
    }
 
-
-
 //    tableHtml +=`<td><button class="delete-row-btn" data-username=${data.username}>Delete</td>`;
 //    tableHtml += `<td><button class="edit-row-btn" data-username=${data.username}>Edit</td>`;
 
@@ -547,7 +590,7 @@ function loadHTMLTable(data){
     data.forEach(function ({username, password, firstname, lastname, salary, age, registerday, signintime}){
          tableHtml += "<tr>";
          tableHtml +=`<td>${username}</td>`;
-        //  tableHtml +=`<td>${password}</td>`;
+         tableHtml +=`<td>${password}</td>`;
          tableHtml +=`<td>${firstname}</td>`;
          tableHtml +=`<td>${lastname}</td>`;
          tableHtml +=`<td>${salary}</td>`;
