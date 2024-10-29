@@ -4,7 +4,6 @@
 const express = require('express')
 const cors = require ('cors')
 const dotenv = require('dotenv')
-const bcrypt = require('bcrypt') // for password hashing
 dotenv.config()
 
 const app = express();
@@ -23,11 +22,8 @@ app.post('/register', async(request, response) => {
 
         // Check for missing fields
         if (!firstname || !lastname || !username || !password) {
-            return res.status(400).json({ message: "All required fields must be filled." });
+            return response.status(400).json({ message: "All required fields must be filled." });
         }
-
-        // Hash users password input
-        //const hashedPassword = await bcrypt.hash(password, 10);
 
         const db = userDbService.getUserDbServiceInstance();
 
@@ -70,7 +66,7 @@ app.get('/search/:username', (request, response) => { // we can debug by URL
     const db = userDbService.getUserDbServiceInstance();
 
     let result;
-    if(username === "all") {// in case we want to search all
+    if(username === "all") { // in case we want to search all
        result = db.getAllData()
     } else { 
        result =  db.searchByUsername(username); // call a DB function
@@ -82,66 +78,91 @@ app.get('/search/:username', (request, response) => { // we can debug by URL
 
 
 
-//search users by first and/or last name
-// app.get('/search/:FirstAndLastName', (request, response) => {
-//     const {firstname , lastname} = request.query;
+//search users by first name
+app.get('/search/:firstname', (request, response) => {
+    const {firstname} = request.query;
+    console.log(firstname);
+
+    const db = userDbService.getUserDbServiceInstance();
+
+    let result;
+    if (firstname === "") {
+        // Return empty array if both firstname and lastname are empty
+        result =  response.json({ data: [] });
+    } else {
+        // Proceed with searching by name
+        result = db.searchByFirstName(firstname);
+    }
+    result
+
+        .then(data => response.json({ data: data }))
+        .catch(err => console.log(err));
+});
+
+//search users by last name
+app.get('/search/:lastname', (request, response) => {
+    const {lastname} = request.query;
+    console.log(lastname);
+
+    const db = userDbService.getUserDbServiceInstance();
+
+    let result;
+    if (lastname === "") {
+        // Return empty array if both firstname and lastname are empty
+        result = response.json({ data: [] });
+    } else {
+        // Proceed with searching by name
+        result = db.searchByLasttname(lastname);
+    }
+    result
+
+        .then(data => response.json({ data: data }))
+        .catch(err => console.log(err));
+});
+
+
+//search users by first name
+app.get('/search/firstandlastname', (request, response) => {
+    const {firstname} = request.query;
+    console.log(firstname);
+
+    const db = userDbService.getUserDbServiceInstance();
+
+    let result;
+    if (firstname === "") {
+        // Return empty array if both firstname and lastname are empty
+        result =  response.json({ data: [] });
+    } else {
+        // Proceed with searching by name
+        result = db.searchByFirstName(firstname);
+    }
+    result
+
+        .then(data => response.json({ data: data }))
+        .catch(err => console.log(err));
+});
+
+
+// //search users by first name
+// app.get('/search/firstname', (request, response) => {
+//     const {firstname} = request.query;
 //     console.log(firstname);
-//     console.log(lastname);
 
 //     const db = userDbService.getUserDbServiceInstance();
 //     let result;
 
-//     if (firstname === "" && lastname === "") {
-//         // Return empty array if both firstname and lastname are empty
-//         return response.json({ data: [] });
+//     if (firstname === "") {
+//         // Return empty array if both firstname are empty
+//         result = db.getAllData();
 //     } else {
 //         // Proceed with searching by name
-//         result = db.searchByName(firstname, lastname);
+//         result = db.searchByFirstname(firstname);
 //     }
 
 //     result
 //         .then(data => response.json({ data: data }))
 //         .catch(err => console.log(err));
 // });
-
-// //search users by user id
-// app.get('/searchByUserID', (request, response) => {
-//     const { id = "" } = request.query;
-//     console.log(id);
-//     const db = userDbService.getUserDbServiceInstance();
-//     let result;
-//     if (id === "") {
-//         // Return empty array if user id is empty
-//         return response.json({ data: [] });
-//     } else {
-//         // Proceed with searching by user id
-//         result = db.searchByUserId(id);
-//     }
-//     result
-//        .then(data => response.json({ data: data }))
-//        .catch(err => console.log(err));
-// });
-
-//search users by first name
-app.get('/search/firstname', (request, response) => {
-    const {firstname} = request.query;
-    console.log(firstname);
-
-    const db = userDbService.getUserDbServiceInstance();
-    let result;
-
-    if (firstname === "") {
-        // Return empty array if both firstname are empty
-        result = db.getAllData();
-    } else {
-        // Proceed with searching by name
-        result = db.searchByFirstname(firstname);
-    }
-
-    result
-        .then(data => response.json({ data: data }))
-        .catch(err => console.log(err));
-});
 
 /*
 //search users by first name
@@ -168,7 +189,7 @@ app.get('/search/:lastname', (request, response) => {
 
 
 // search all users whose salary is between x and y
-app.get('/search/salary', (request, response) => {
+app.get('/search/:salary', (request, response) => {
     let { minSalary = 0, maxSalary = 999999999 } = request.query;
 
     // Convert to floats and handle potential invalid input
@@ -271,7 +292,7 @@ app.get('/search/age', (request, response) => {
 //     }
 // });
 
-app.get('/search/registerDate', (request, response) => {
+app.get('/search/:registerDate', (request, response) => {
 
     const { username, registerDate } = request.params;
 

@@ -40,10 +40,15 @@ connection.connect((err) => {
 
 // the following are database functions, 
 
+
 class userDbService{
-    static getUserDbServiceInstance(){ // only one instance is sufficient
-        return instance? instance: new userDbService();
-    }
+   static getUserDbServiceInstance(){
+      return instance? instance: new userDbService();
+   }
+    
+   // static postUserDbServiceInstance(){
+   //    return instance? instance: new userDbService();
+   // }
 
    /*
      This code defines an asynchronous function getAllData using the async/await syntax. 
@@ -140,22 +145,22 @@ class userDbService{
          }
    }
 
-// Search users by user ID
-async searchByUsername(id) {
-   try {
-       const query = "SELECT * FROM Users WHERE username = ?;";
-       const response = await new Promise((resolve, reject) => {
-           connection.query(query, [id], (err, results) => {
-               if (err) reject(new Error(err.message));
-               else resolve(results);
-           });
-       });
-       return response;
-   } catch (error) {
-       console.error("Error in searchByUsername:", error);
-       throw error;
-   }
-}
+// // Search users by user ID
+// async searchByUsername(id) {
+//    try {
+//        const query = "SELECT * FROM Users WHERE username = ?;";
+//        const response = await new Promise((resolve, reject) => {
+//            connection.query(query, [id], (err, results) => {
+//                if (err) reject(new Error(err.message));
+//                else resolve(results);
+//            });
+//        });
+//        return response;
+//    } catch (error) {
+//        console.error("Error in searchByUsername:", error);
+//        throw error;
+//    }
+// }
 
 
    async searchByUsername(username){
@@ -176,22 +181,7 @@ async searchByUsername(id) {
          }
    }
 
-//    // Search users by first and/or last name
-// async searchByFirstAndLastName(firstname, lastname) {
-//    try {
-//        const query = "SELECT * FROM Users WHERE firstname = ? OR lastname = ?;";
-//        const response = await new Promise((resolve, reject) => {
-//            connection.query(query, [firstname, lastname], (err, results) => {
-//                if (err) reject(new Error(err.message));
-//                else resolve(results);
-//            });
-//        });
-//        return response;
-//    } catch (error) {
-//        console.error("Error in searchByFirstAndLastName:", error);
-//        throw error; // Ensure the error is propagated
-//    }
-// }
+
 
    // Search users by first name
    async searchByFirstname(firstname) {
@@ -210,7 +200,41 @@ async searchByUsername(id) {
       }
    }
 
+   // Search users by first name
+   async searchByLasttname(lastname) {
+      try {
+          const query = "SELECT * FROM Users WHERE lastname = ?;";
+          const response = await new Promise((resolve, reject) => {
+              connection.query(query, [lastname], (err, results) => {
+                  if (err) reject(new Error(err.message));
+                  else resolve(results);
+              });
+          });
+          return response;
+      } catch (error) {
+          console.error("Error in searchByFirstname:", error);
+          throw error; // Ensure the error is propagated
+      }
+   }
 
+   // // Search users by first and/or last name
+   // async searchByFirstAndLastName(firstname, lastname) {
+   //    try {
+
+
+   //        const query = "SELECT * FROM Users WHERE firstname = ? OR lastname = ?;";
+   //        const response = await new Promise((resolve, reject) => {
+   //            connection.query(query, [firstname, lastname], (err, results) => {
+   //                if (err) reject(new Error(err.message));
+   //                else resolve(results);
+   //            });
+   //        });
+   //        return response;
+   //    } catch (error) {
+   //        console.error("Error in searchByFirstAndLastName:", error);
+   //        throw error; // Ensure the error is propagated
+   //    }
+   // }
 
 
 // Search users by salary range (between x and y)
@@ -290,28 +314,28 @@ async searchAfterJohn(johnId) {
    }
 }
 
-//search users who never signed in
-async searchByNeverLoggedIn(){
-        try{
-           // use await to call an asynchronous function
-           const response = await new Promise((resolve, reject) => 
-              {
-                 const query = "SELECT * FROM Users WHERE signintime = '0000-00-00 00:00:00';";
-                 connection.query(query, (err, results) => {
-                         if(err) reject(new Error(err.message));
-                         else resolve(results);
-                 });
-              }
-            );
+   //search users who never signed in
+   async searchByNeverLoggedIn(){
+         try{
+            // use await to call an asynchronous function
+            const response = await new Promise((resolve, reject) => 
+               {
+                  const query = "SELECT * FROM Users WHERE signintime = '0000-00-00 00:00:00';";
+                  connection.query(query, (err, results) => {
+                           if(err) reject(new Error(err.message));
+                           else resolve(results);
+                  });
+               }
+               );
 
-            // console.log("userDbServices.js: search result:");
-            // console.log(response);  // for debugging to see the result of select
-            return response;
+               // console.log("userDbServices.js: search result:");
+               // console.log(response);  // for debugging to see the result of select
+               return response;
 
-        }  catch(error){
-           console.log(error);
-        }
-   }
+         }  catch(error){
+            console.log(error);
+         }
+      }
 
    //search users who registered on the same day that john registered
    async searchBySameDayAsJohn(johnId){

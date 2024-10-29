@@ -9,22 +9,41 @@
 <body>
   <div class="searchBox">
     <h1>Search Directory</h1>
-        <h2>Search by one of the following parameters and click "Search".</h2>
-        <!-- <h3>First and Last Name: </h3> -->
+    <form>
+        <h2>Use the dropdown menu to choose an option to search by in User database.</h2>
+        <!-- <div class="dropdown" style="width:100%; margin-right:35px"> -->
+        <div>
+            <select id="select-option">
+                <option value="0">Options:</option disabled selected>
+                <option value="1" id="firstname-input">First Name</option>
+                <option value="2" id="lastname-input">Last Name</option>
+                <option value="3" id="first-and-last-name-input" class = "twoInputs" >First and Last Name</option>
+                <option value="4" id="username-input">Username</option>
+                <option value="5" id="age-input" class = "rangeInput" >Age</option>
+                <option  value="6" id="salary-input" class = "rangeInput">Salary</option>
+                <!-- This will use another checkbox to allow users to choose before, 
+                    day of, or after registration of defined user -->
+                <option value="7" type="Date" id="registerday-input" class="checkboxOption">Registrations Based on User</option>
+                <option value="8" id="never-signed-in-input">Never Signed In</option>
+                <option value="9" id="registered-today-input" >Registered Today</option>
+            </select>
+            <input id="search-input" class="searchEngine" type="text" name="search" placeholder="Search..">
+            <button type="button" id="search-btn">Search</button>
+        </div>
+
+        <!-- <h3>First and Last Name: </h3>
         <input placeholder="Search by Username" id="username-input">
         <button id="search-btn">Search</button>
-        <!-- <button id="search-by-username-btn">Search</button> -->
+        <button id="search-by-username-btn">Search</button>
 
-    <!-- Search by First and Last Name -->
     <section>
-        <!-- <h3>Search by First and Last Name</h2> -->
+        <h3>Search by First and Last Name</h2>
         <input type="text" id="firstname-input" placeholder="Search by First Name">
         <input type="text" id="lastname-input" placeholder="Search by Last Name">
         <button id="search-by-firstname-btn">Search</button>
-        <!-- <button id="search-by-first-last-name-btn">Search</button> -->
+        <button id="search-by-first-last-name-btn">Search</button>
     </section>
 
-    <!-- Search by Salary Range -->
     <section>
         <h3>Search by Salary Range</h3>
         <input type="number" id="min-salary-input" placeholder="Min Salary" min='0'>
@@ -32,14 +51,14 @@
         <button id="search-by-salary-btn">Search</button>
     </section>
 
-    <!-- Search by Age Range -->
     <section>
         <h3>Search by Age Range</h3>
         <input type="number" id="min-age-input" placeholder="Min Age">
         <input type="number" id="max-age-input" placeholder="Max Age">
         <button id="search-by-age-btn">Search</button>
-    </section>
+    </section> -->
 
+    </form>
      <table id="table">
          <thead>
              <th>First Name</th>
@@ -60,11 +79,11 @@
          <button id="update-row-btn" value="">Update</button>
     </section>
 </main>
-<h2>Go back to <a href="http://127.0.0.1:5500/Client/LoginPage.html">Login HomePage</a>.</h2>
-
+</div>
 <script src="userindex.js"></script>
 </body>
 <footer>
+    <h2>Return to <a href="http://127.0.0.1:5500/Client/LoginPage.html">Login Page</a>.</h2>
     <p>Created by: Saba Begum and Violet Yousif</p>
 </footer>
 </html>

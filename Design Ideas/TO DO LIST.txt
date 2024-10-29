@@ -1,0 +1,28 @@
+TO DO LIST:
+
+1. Sign in page
+    - Hash password
+    - if statements
+        - Search db for user; return if it was found. If not, error handling
+    - if statements
+        - search db for password; ...
+    - Once signed, brings to database page
+
+2. Registration
+    - Link it to sign in page
+    - fix the signed in date that's in the DbService file
+
+3. Search Directory
+    - first, last, first+last
+    - username
+    - salary (min and max)
+    - ages (min and max)
+    - register dates (after and on same day)
+    - never signed in (check for null values)
+    - registrations from today
+
+
+4. search page html
+    - search inputs
+        - add it where 2 search inputs come up for some
+        - add checkbox for the registerDate
