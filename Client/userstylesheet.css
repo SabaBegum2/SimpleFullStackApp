@@ -117,6 +117,12 @@ button:hover {
     background-color: #000e0e;
 }
 
+button.search {
+    margin-top: 0px;
+    margin-bottom: 30px;
+
+}
+
 footer {
     text-align: center;
     margin-top: 20px;
@@ -148,13 +154,23 @@ select {
 
 /* input is used for the search bar */
 input.searchEngine[type=text] {
-    width: 130px;
+    width: 20%;
     -webkit-transition: width 0.4s ease-in-out;
     transition: width 0.4s ease-in-out;
 }
   
 /* When the input field gets focus, change its width to 100% */
 input.searchEngine[type=text]:focus {
-    width: 60%;
+    width: 40%;
 }
 
+input.twoBoxes[type=text]:focus {
+    width: 30%;
+    margin: 0 5px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: auto;
+}

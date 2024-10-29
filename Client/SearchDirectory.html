@@ -9,10 +9,9 @@
 <body>
   <div class="searchBox">
     <h1>Search Directory</h1>
-    <form>
         <h2>Use the dropdown menu to choose an option to search by in User database.</h2>
         <!-- <div class="dropdown" style="width:100%; margin-right:35px"> -->
-        <div>
+        <div id = "searchInput">
             <select id="select-option">
                 <option value="0">Options:</option disabled selected>
                 <option value="1" id="firstname-input">First Name</option>
@@ -20,15 +19,25 @@
                 <option value="3" id="first-and-last-name-input" class = "twoInputs" >First and Last Name</option>
                 <option value="4" id="username-input">Username</option>
                 <option value="5" id="age-input" class = "rangeInput" >Age</option>
-                <option  value="6" id="salary-input" class = "rangeInput">Salary</option>
-                <!-- This will use another checkbox to allow users to choose before, 
+                <option value="6" id="salary-input" class = "rangeInput">Salary</option>
+                <!-- TODO: This will use another checkbox to allow users to choose before, 
                     day of, or after registration of defined user -->
-                <option value="7" type="Date" id="registerday-input" class="checkboxOption">Registrations Based on User</option>
+                <option value="7" type="Date" id="registerday-input">Registrations Based on User</option>
                 <option value="8" id="never-signed-in-input">Never Signed In</option>
                 <option value="9" id="registered-today-input" >Registered Today</option>
             </select>
-            <input id="search-input" class="searchEngine" type="text" name="search" placeholder="Search..">
-            <button type="button" id="search-btn">Search</button>
+            <!-- Input for first name (hidden by default) -->
+            <!-- <br><input id="first-box" type="text" placeholder="First Name" style="display: none;"> -->
+            
+            <!-- Input for last name (hidden by default) -->
+            <!-- <input id="second-box" type="text" placeholder="Last Name" style="display: none;"> -->
+         
+            <!-- Single input box for other options -->
+            <br><input id="search-input" class="searchEngine" type="text" name="search" placeholder="Search...">
+
+
+
+            <button class="search" type="button" id="search-btn">Search</button>
         </div>
 
         <!-- <h3>First and Last Name: </h3>
@@ -58,14 +67,14 @@
         <button id="search-by-age-btn">Search</button>
     </section> -->
 
-    </form>
      <table id="table">
          <thead>
+             <th>Username</th>
+             <th>Password</th>
              <th>First Name</th>
              <th>Last Name</th>
-             <th>Username</th>
-             <th>Age</th>
              <th>Salary</th>
+             <th>Age</th>
              <th>Registration Date</th>
              <th>Signed In</th>
          </thead>
