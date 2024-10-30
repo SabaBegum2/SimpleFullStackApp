@@ -11,7 +11,7 @@
     <h1>Search Directory</h1>
         <h2>Use the dropdown menu to choose an option to search by in User database.</h2>
         <!-- <div class="dropdown" style="width:100%; margin-right:35px"> -->
-        <div id = "searchInput">
+        <form id = "searchInput">
             <select id="select-option">
                 <option value="0">Options:</option disabled selected>
                 <option value="1" id="firstname-input">First Name</option>
@@ -35,10 +35,8 @@
             <!-- Single input box for other options -->
             <br><input id="search-input" class="searchEngine" type="text" name="search" placeholder="Search...">
 
-
-
             <button class="search" type="button" id="search-btn">Search</button>
-        </div>
+        </form>
 
         <!-- <h3>First and Last Name: </h3>
         <input placeholder="Search by Username" id="username-input">
@@ -73,8 +71,8 @@
             <th>Password</th>
             <th>First Name</th>
             <th>Last Name</th>
-            <th>Age</th>
             <th>Salary</th>
+            <th>Age</th>
             <th>Registration Date</th>
             <th>Signed In</th>
          </thead>
@@ -82,11 +80,12 @@
      </table>
 
      <!-- This allows the database to be updated with information from the database -->
-     <section hidden id="update-row">
+     <!-- <section hidden id="update-row">
          <label>username:</label>
          <input type="text" id="update-username-input">
          <button id="update-row-btn" value="">Update</button>
-    </section>
+    </section> -->
+
 </main>
 </div>
 <script src="userindex.js"></script>
