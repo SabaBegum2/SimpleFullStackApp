@@ -359,28 +359,93 @@ async searchAfterJohn(johnId) {
         }
    }
 
-   //return users who registered today
-   async searchByToday(){
-        try{
-           // use await to call an asynchronous function
-           const response = await new Promise((resolve, reject) => 
-              {
-                 const query = "SELECT * FROM Users WHERE DAYOFYEAR(registerday) = DAYOFYEAR(CURDATE());";
-                 connection.query(query, (err, results) => {
-                         if(err) reject(new Error(err.message));
-                         else resolve(results);
-                 });
-              }
-            );
 
-            // console.log("userDbServices.js: search result:");
-            // console.log(response);  // for debugging to see the result of select
-            return response;
-
-        }  catch(error){
-           console.log(error);
-        }
+   async searchByRegisteredToday() {
+      const today = new Date();
+      
+      // Get the start and end of today in the correct format
+      const startOfDay = new Date(today.setHours(0, 0, 0, 0)); // 00:00:00
+      const endOfDay = new Date(today.setHours(23, 59, 59, 999)); // 23:59:59
+      
+      //const query = "SELECT * FROM Users WHERE registerday >= $1 AND registerday <= $2";
+      try {
+      //const response = await new Promise((resolve, reject) =>
+         //{
+         const query = "SELECT * FROM Users WHERE registerday >= $1 AND registerday <= $2";
+          const result = await pool.query(query, [startOfDay, endOfDay]);
+          return result.rows; // Return the array of users registered today
+      } catch (error) {
+          console.error('Error executing query:', error); // Log the query error
+          throw error; // Rethrow for handling in app.js
+      }
    }
+
+
+//    async searchByName(firstname){
+//       try{
+//         //TODO: check if this dateAdded is needed
+//            //const dateAdded = new Date();
+//            // use await to call an asynchronous function
+//            const response = await new Promise((resolve, reject) => 
+//                 {
+//                    const query = "SELECT * FROM Users where firstname = ?;";
+//                    connection.query(query, [firstname], (err, results) => {
+//                        if(err) reject(new Error(err.message));
+//                        else resolve(results);
+//                    });
+//                 }
+//            );
+
+//            // console.log(response);  // for debugging to see the result of select
+//            return response;
+
+//        }  catch(error){
+//           console.log(error);
+//        }
+//  }
+
+
+
+   //return users who registered today
+   // async searchByToday(){
+   //      try{
+   //         // use await to call an asynchronous function
+   //         const response = await new Promise((resolve, reject) => 
+   //            {
+   //               const query = "SELECT * FROM Users WHERE DAYOFYEAR(registerday) = DAYOFYEAR(CURDATE());";
+   //               connection.query(query, (err, results) => {
+   //                       if(err) reject(new Error(err.message));
+   //                       else resolve(results);
+   //               });
+   //            }
+   //          );
+
+   //          // console.log("userDbServices.js: search result:");
+   //          // console.log(response);  // for debugging to see the result of select
+   //          return response;
+
+   //      }  catch(error){
+   //         console.log(error);
+   //      }
+   // }
+   //return all the users who registered today
+   // Return all the users who registered today
+// async searchByRegisteredToday() {
+//    const today = new Date();
+   
+//    // Get the start and end of today in the correct format
+//    const startOfDay = new Date(today.setHours(0, 0, 0, 0)); // 00:00:00
+//    const endOfDay = new Date(today.setHours(23, 59, 59, 999)); // 23:59:59
+
+//    const query = 'SELECT * FROM Users WHERE registerday >= $1 AND registerday <= $2';
+//    try {
+//        const result = await pool.query(query, [startOfDay, endOfDay]);
+//        return result.rows; // Return the array of users registered today
+//    } catch (error) {
+//        console.error('Error executing query:', error); // Log the query error
+//        throw error; // Rethrow for handling in app.js
+//    }
+// }
 
 
    async deleteRowByUsername(username){

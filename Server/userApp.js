@@ -1,6 +1,5 @@
 // Server: application services, accessible by URIs
 
-
 const express = require('express')
 const cors = require ('cors')
 const dotenv = require('dotenv')
@@ -55,9 +54,11 @@ app.get('/getAll', (request, response) => {
     .catch(err => console.log(err));
 });
 
-app.use(bodyParser.json());
 
 app.post('/login', async (request, response) => {
+
+    app.use(bodyParser.json());
+
     const { username, password } = request.body;
 
     console.log("receiving username:", username); // debugging
@@ -146,7 +147,7 @@ app.get('/search/:firstname', (request, response) => {
     console.log(firstname);
     //console.log(`Searching for first name: ${firstname}`);  // Debugging
 
-    const db = userDbService.getUserDbServiceInstance();
+//     const db = userDbService.getUserDbServiceInstance();
 
     let result;
     if (firstname === "all") {
@@ -167,6 +168,7 @@ app.get('/search/:firstname', (request, response) => {
     // })
     // .catch(err => console.log('Error: ', err));
 });
+
 
 
 //search users by last name
@@ -329,6 +331,7 @@ app.get('/search/:age', (request, response) => {
 //     }
 // });
 
+
 app.get('/search/:registerDate', (request, response) => {
 
     const { username, registerDate } = request.params;
@@ -369,6 +372,30 @@ app.get('/search/NeverLoggedIn', async (request, response) => {
     
 });
 
+
+
+app.get('/search/:firstname', (request, response) => { // we can debug by URL
+    
+    const {firstname} = request.params;
+    
+    console.log(firstname);
+
+    const db = dbService.getDbServiceInstance();
+
+    let result;
+    if(firstname === "all") // in case we want to search all
+       result = db.getAllData()
+    else 
+       result =  db.searchByName(firstname); // call a DB function
+
+    result
+    .then(data => response.json({data: data}))
+    .catch(err => console.log(err));
+});
+
+
+
+
 // TODO: Alter this function to make a function that checks for user first
         // then check for their registation date
 /*
@@ -397,20 +424,35 @@ app.get('/registeredSameDay', async (request, response) => {
 
 
 //return the users who registered today
+//when the user selects the register today option in dropdown in search directory page, return the users who registered today
 
+// app.get('/search/RegisteredToday', async (request, response) => {
+
+//     let result;
+//     try {
+//         const db = userDbService.getUserDbServiceInstance();
+//         const result = await db.searchByRegisteredToday();
+//         result = response.json({ data: result });
+//     } catch (err) {
+//         console.error(err);
+//         result = response.status(500).json({ error: "An error occurred while searching users." });
+//     }
+//     result
+// });
+
+// Route for searching users registered today
 app.get('/search/RegisteredToday', async (request, response) => {
-
-    let result;
     try {
         const db = userDbService.getUserDbServiceInstance();
         const result = await db.searchByRegisteredToday();
-        result = response.json({ data: result });
+        //response.json({ data: data });
+        response.json({ data: result });
     } catch (err) {
         console.error(err);
-        result = response.status(500).json({ error: "An error occurred while searching users." });
+        response.status(500).json({ error: "An error occurred while searching users." });
     }
-    result
 });
+
 
 
 //update

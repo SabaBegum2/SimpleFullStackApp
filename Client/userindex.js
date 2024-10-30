@@ -88,16 +88,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-//PURPOSE : Login
-// document.addEventListener("DOMContentLoaded", () => {
-//     const loginForm = document.getElementById("login-form");
-
-//     // Attach the event listener to the login form
-//     if (loginForm) {
-//         loginForm.addEventListener("submit", submitForm);
-//     }
-// });
-
 //function submitForm(event) {
 function submitLoginForm(event) {
     event.preventDefault(); // Prevent default form submission
@@ -276,9 +266,10 @@ addBtn.onclick = function (){
 const searchBtn = document.querySelector('#searchInput');
 searchBtn.onclick = async function(event) {
     const selectOption = document.querySelector('#select-option').value;
+
     console.log("/Select option: ", selectOption);
 
-    const searchInput = document.querySelector('#search-input').value.trim();
+    const searchInput = document.getElementById('#search-input').value.trim();
     console.log("Search input: ", searchInput);
 
     let address;
@@ -293,9 +284,9 @@ searchBtn.onclick = async function(event) {
                 //address = "lastname?lastname=" + searchInput ;
                 break;
             case "3":
-                selectOption = "firstandlastname";
-                const firstnameVal = "firstname=" + document.querySelector('#first-box').value.trim();
-                const lastnameVal = "lastname=" + document.querySelector('#last-box').value.trim();
+                address = "firstandlastname";
+                const firstnameVal = "firstname=" + document.getElementById('#first-box').value.trim();
+                const lastnameVal = "lastname=" + document.getElementById('#last-box').value.trim();
                 if (!firstnameVal || !lastnameVal) {
                     alert("Please enter both first and last name.");
                     return;
@@ -340,10 +331,11 @@ searchBtn.onclick = async function(event) {
                 return; // Exit function if invalid option
         }
         address
-
+        
         //console.log("Address: ", address);
         //const response = await fetch('http://localhost:5050/search/' + address );
         //console.log("Address: ", address);
+
         const response = await fetch('http://localhost:5050/search/' + address );
         
         //address = "";
@@ -355,7 +347,126 @@ searchBtn.onclick = async function(event) {
     } catch (error) {
         console.error("Error: ", error);
     }
-};
+}
+);
+
+//when the user selects registered today option in the drop down list
+// document.getElementById("select-option").addEventListener("change", async (event) => {
+//     if (event.target.value === "9") { // Check if "Registered Today" is selected
+//         try {
+//             const response = await fetch('/search/RegisteredToday');
+//             const result = await response.json();
+//             displayUsers(result.data); // Call the function to display user data on the page
+//         } catch (error) {
+//             console.error("Error fetching today's registered users:", error);
+//         }
+//     }
+// });
+
+// // Function to display the users in the table
+// function displayUsers(users) {
+//     const userTableBody = document.getElementById("userTableBody"); // Target your user table body
+//     userTableBody.innerHTML = ''; // Clear previous results
+
+//     users.forEach(user => {
+//         const row = document.createElement("tr");
+//         row.innerHTML = `
+//             <td>${user.username}</td>
+//             <td>${user.password}</td> <!-- Consider displaying hashed password or omitting for security -->
+//             <td>${user.firstname}</td>
+//             <td>${user.lastname}</td>
+//             <td>${user.age}</td>
+//             <td>${user.salary}</td>
+//             <td>${user.registerday}</td>
+//             <td>${user.signedIn ? 'Yes' : 'No'}</td> <!-- Adjust based on your user object structure -->
+//         `;
+//         userTableBody.appendChild(row);
+//     });
+// }
+
+//when the user selects registered today
+//document.addEventListener('DOMContentLoaded', () => {
+
+
+    function todayRegisters() {
+        const userTableBody = document.getElementById('table').querySelector('tbody'); // Access tbody directly
+        const searchBtn = document.getElementById('search-btn');
+        
+        searchBtn.addEventListener('click', async () => { // Use addEventListener
+            const selectOption = document.getElementById('select-option');
+            const searchInput = document.getElementById('search-input');
+            const selectedValue = selectOption.value;
+    
+            console.log('Selected input:', searchInput); // Log the selected input
+            console.log('Selected value:', selectedValue); // Log the selected value
+    
+            // Clear previous results in the table
+            userTableBody.innerHTML = '';
+    
+            if (selectedValue === '9') { // Registered Today option
+                try {
+                    const response = await fetch('/search/RegisteredToday');
+                    console.log("Response: ", response);
+                    
+                    // Check if the response is OK before parsing
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+    
+                    const data = await response.json();
+                    console.log('Fetched data:', data); // Log the fetched data
+    
+                    // Check if data exists
+                    if (data.data.length === 0) {
+                        userTableBody.innerHTML = '<tr><td colspan="8">No users registered today.</td></tr>';
+                    } else {
+                        loadHTMLTable(data.data); // Assuming loadHTMLTable is defined to add rows
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while fetching data. Please try again.');
+                }
+            } else {
+                const query = searchInput.value;
+            }
+        });
+    }
+    
+
+    // // Populate table function
+    // function populateTable(Users) {
+    //     users.forEach(Users => {
+    //         const row = document.createElement('tr');
+    //         row.innerHTML = `
+    //             <td>${Users.username}</td>
+    //             <td>${Users.password}</td>
+    //             <td>${Users.firstname}</td>
+    //             <td>${Users.lastname}</td>
+    //             <td>${Users.age}</td>
+    //             <td>${Users.salary}</td>
+    //             <td>${new Date(Users.registerday).toLocaleDateString()}</td>
+    //             <td>${Users.signintime ? new Date(Users.signintime).toLocaleString() : 'Never'}</td>
+    //         `;
+    //         userTableBody.appendChild(row);
+    //     });
+    // }
+//});
+}
+
+// temp
+// // when the searchBtn is clicked
+// const searchBtn =  document.querySelector('#search-button');
+// searchBtn.onclick = function (){
+//     const searchInput = document.querySelector('#search-fname');
+//     const searchValue = searchInput.value;
+//     searchInput.value = "";
+
+//     fetch('http://localhost:5050/search/' + searchValue)
+//     .then(response => response.json())
+//     .then(data => loadHTMLTable(data['data']));
+// }
+
+
 
 
 

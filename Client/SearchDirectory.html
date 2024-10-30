@@ -8,6 +8,7 @@
 </head>
 <body data-page="SearchDirectory">
   <div class="searchBox">
+
     <h1>Search Directory</h1>
         <h2>Use the dropdown menu to choose an option to search by in User database.</h2>
         <!-- <div class="dropdown" style="width:100%; margin-right:35px"> -->
@@ -38,10 +39,11 @@
             <button class="search" type="button" id="search-btn">Search</button>
         </form>
 
-        <!-- <h3>First and Last Name: </h3>
-        <input placeholder="Search by Username" id="username-input">
-        <button id="search-btn">Search</button>
-        <button id="search-by-username-btn">Search</button>
+
+    <!-- <h3>First and Last Name: </h3>
+    <input placeholder="Search by Username" id="username-input">
+    <button id="search-btn">Search</button>
+    <button id="search-by-username-btn">Search</button>
 
     <section>
         <h3>Search by First and Last Name</h2>
@@ -91,7 +93,21 @@
 <script src="userindex.js"></script>
 </body>
 <footer>
+
     <h2>Return to <a href="http://127.0.0.1:5500/Client/LoginPage.html">Login Page</a>.</h2>
     <p>Created by: Saba Begum and Violet Yousif</p>
-</footer>
+  </footer>
+
+  <!-- Password function to hide password on HTML page using JavaScript -->
+  <script>
+    function hidePassword() {
+      var x = document.getElementById("password-input");
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+  </script> 
+</body>
 </html>
