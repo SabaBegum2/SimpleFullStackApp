@@ -1,12 +1,7 @@
 TO DO LIST:
 
 1. Sign in page
-    - Hash password
-    - if statements
-        - Search db for user; return if it was found. If not, error handling
-    - if statements
-        - search db for password; ...
-    - Once signed, brings to database page
+    - Updated date for signedin var
 
 2. Registration
     - Link it to sign in page

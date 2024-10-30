@@ -213,12 +213,12 @@ function submitRegistrationForm(event) {
         .then(response => response.json())
         .then(data => {
             alert("User registration successful!");
-            console.log(data);
+            console.log(data);  // debugging
+            window.location.href = 'http://127.0.0.1:5500/Client/LoginPage.html'; // Redirect after successful login
             //console.log(data => insertRowIntoTable(data['data']));
         })
         .catch(error => console.error("Error: ", error));
 }
-
 
 
 
@@ -263,11 +263,10 @@ addBtn.onclick = function (){
 
 // PURPOSE: SEARCH DATABASE FOR VALUES
 // When the searchBtn is clicked
+const searchBtn = document.querySelector('#searchInput');
+searchBtn.onclick = async function(event) {
+    const selectOption = document.querySelector('#select-option').value;
 
-//const searchBtn = document.getElementById('#search-btn');
-//searchBtn.onclick = async function(event) {
-document.getElementById('#search-btn').addEventListener('click', async function() {
-    const selectOption = document.getElementById('#select-option').value;
     console.log("/Select option: ", selectOption);
 
     const searchInput = document.getElementById('#search-input').value.trim();
@@ -275,15 +274,14 @@ document.getElementById('#search-btn').addEventListener('click', async function(
 
     let address;
     try {
-
         switch(selectOption) {
             case "1":
-                address = "firstname";
-                //address = selectOption + "?" + selectOption + "=" + searchInput ;
+                address = searchInput;
+                //address = "firsname?firstname=" + searchInput ;
                 break;
             case "2":
-                address = "lastname";
-                //address = selectOption + "?" + selectOption + "=" + searchInput ;
+                address = searchInput;
+                //address = "lastname?lastname=" + searchInput ;
                 break;
             case "3":
                 address = "firstandlastname";
@@ -293,34 +291,40 @@ document.getElementById('#search-btn').addEventListener('click', async function(
                     alert("Please enter both first and last name.");
                     return;
                 }
+                address = searchInput;
                 //address = selectOption + "?" + firstnameVal + "&" + lastnameVal;
                 break;
             case "4":
-                address = "username";
+                address = "username=" + searchInput;
+                //selectOption = "username";
                 //address = selectOption + "?" + selectOption + "=" + searchInput ;
                 break;
             case "5":
-                address = "age";
+                //selectOption = "age";
+                address = searchInput;
                 //address = selectOption + "?" + selectOption + "=" + searchInput ;
                 break;
             case "6":
+                //selectOption = "salary";
                 address = "salary";
-                const minSalary = document.getElementById('#first-box').value.trim();
-                const maxSalary = document.getElementById('#last-box').value.trim();
+                const minSalary = document.querySelector('#first-box').value.trim();
+                const maxSalary = document.querySelector('#last-box').value.trim();
                 //address = selectOption + "?" + selectOption + "=" + searchInput ;
                 break;
             case "7":
                 // TODO: Implement registerday with 2 params
-                address = "registerday";
+                //selectOption = "registerday";
                 //address = selectOption + "?" + selectOption + "=" + searchInput ;
+                address = "registerday";
                 break;
             case "8":
+                //selectOption = "neverLoggedIn";
                 address = "neverLoggedIn";
                 //address = selectOption + "?" + selectOption + "=" + searchInput ;
                 break;
             case "9":
+                //selectOption = "registeredToday";
                 address = "RegisteredToday";
-                //todayRegisters();
                 break;
             default:
                 console.log("Invalid search option: " + selectOption);
@@ -328,9 +332,13 @@ document.getElementById('#search-btn').addEventListener('click', async function(
         }
         address
         
-        selectOption = "";
-        console.log("Address: ", address);
+        //console.log("Address: ", address);
+        //const response = await fetch('http://localhost:5050/search/' + address );
+        //console.log("Address: ", address);
+
         const response = await fetch('http://localhost:5050/search/' + address );
+        
+        //address = "";
         console.log("Response: ", response);
         //const response = await fetch('http://localhost:5050/search/' + searchInput);
         const data = await response.json();
@@ -461,15 +469,52 @@ document.getElementById('#search-btn').addEventListener('click', async function(
 
 
 
-// const searchUsernameBtn =  document.querySelector('#search-btn');
-// searchBtn.onclick = function (){
-//     const firstname = document.querySelector('#firstname-input').value.trim();
-//     const lastname = document.querySelector('#lastname-input').value.trim();
 
-//     fetch('http://localhost:5050/search/' + searchInput)
-//     .then(response => response.json())
-//     .then(data => loadHTMLTable(data['data']));
-// };
+
+// function todayRegisters() {
+//     const userTableBody = document.getElementById('table').querySelector('tbody'); // Access tbody directly
+//     const searchBtn = document.getElementById('search-btn');
+    
+//     searchBtn.addEventListener('click', async () => { // Use addEventListener
+//         const selectOption = document.getElementById('select-option');
+//         const searchInput = document.getElementById('search-input');
+//         const selectedValue = selectOption.value;
+
+//         console.log('Selected input:', searchInput); // Log the selected input
+//         console.log('Selected value:', selectedValue); // Log the selected value
+
+//         // Clear previous results in the table
+//         userTableBody.innerHTML = '';
+
+//         if (selectedValue === '9') { // Registered Today option
+//             try {
+//                 const response = await fetch('/search/RegisteredToday');
+//                 console.log("Response: ", response);
+                
+//                 // Check if the response is OK before parsing
+//                 if (!response.ok) {
+//                     throw new Error('Network response was not ok');
+//                 }
+
+//                 const data = await response.json();
+//                 console.log('Fetched data:', data); // Log the fetched data
+
+//                 // Check if data exists
+//                 if (data.data.length === 0) {
+//                     userTableBody.innerHTML = '<tr><td colspan="8">No users registered today.</td></tr>';
+//                 } else {
+//                     loadHTMLTable(data.data); // Assuming loadHTMLTable is defined to add rows
+//                 }
+//             } catch (error) {
+//                 console.error('Error:', error);
+//                 alert('An error occurred while fetching data. Please try again.');
+//             }
+//         } else {
+//             const query = searchInput.value;
+//         }
+//     });
+// }
+
 
 
 
@@ -772,7 +817,7 @@ function loadHTMLTable(data){
     */
 
     let tableHtml = "";
-    data.forEach(function ({firstname, lastname, username, password, age, salary, registerday, signintime}){
+    data.forEach(function ({username, password, firstname, lastname, age, salary, registerday, signintime}){
          tableHtml += "<tr>";
          tableHtml +=`<td>${username}</td>`;
          tableHtml +=`<td>${password}</td>`;
@@ -782,7 +827,6 @@ function loadHTMLTable(data){
          tableHtml +=`<td>${age}</td>`;
          tableHtml +=`<td>${new Date(registerday).toLocaleString()}</td>`;
          tableHtml +=`<td>${new Date(signintime).toLocaleString()}</td>`;
-        //  tableHtml +=`<td><button class="delete-row-btn" data-username=${username}>Delete</button></td>`;
          tableHtml += "</tr>";
     });
 

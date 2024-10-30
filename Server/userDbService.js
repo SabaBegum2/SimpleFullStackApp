@@ -145,29 +145,31 @@ class userDbService{
          }
    }
 
-// // Search users by user ID
-// async searchByUsername(id) {
-//    try {
-//        const query = "SELECT * FROM Users WHERE username = ?;";
-//        const response = await new Promise((resolve, reject) => {
-//            connection.query(query, [id], (err, results) => {
-//                if (err) reject(new Error(err.message));
-//                else resolve(results);
-//            });
-//        });
-//        return response;
-//    } catch (error) {
-//        console.error("Error in searchByUsername:", error);
-//        throw error;
-//    }
-// }
+   // // Search users by user ID
+   // async searchByAttribute(attribute, key) {
+   //    try {
+   //       // ?? is used to insert dynamic values into the query
+   //       // ? is a placeholder for the actual value
+   //       const query = "SELECT * FROM Users WHERE ?? = ?;";
+   //       const response = await new Promise((resolve, reject) => {
+   //          connection.query(query, [attribute, key], (err, results) => {
+   //                if (err) reject(new Error(err.message));
+   //                else resolve(results);
+   //          });
+   //       });
+   //       return response;
+   //    } catch (error) {
+   //       console.error("Error in searchByAttribute:", error);
+   //       throw error;
+   //    }
+   // }
 
 
    async searchByUsername(username){
       try{
          // use await to call an asynchronous function
-         const query = "SELECT * FROM Users WHERE username = ?;";
          const response = await new Promise((resolve, reject) => {
+            const query = "SELECT * FROM Users WHERE username = ?;";
             connection.query(query, [username], (err, results) => {
                if(err) reject(new Error(err.message));
                else resolve(results);
@@ -176,11 +178,9 @@ class userDbService{
          // console.log(response);  // for debugging to see the result of select
          return response;
       }  catch(error) {
-         console.error("Error in searchByUsername:", error);
-         throw error;;
+         console.error("Error: ", error);
       }
    }
-
 
 
    // Search users by first name
@@ -195,8 +195,9 @@ class userDbService{
          });
          return response;
       } catch (error) {
-         console.error("Error in searchByFirstname: ", error);
-         throw error; // Ensure the error is propagated
+         console.log(error);
+         //console.error("Error in searchByFirstname: ", error);
+         //throw error; // Ensure the error is propagated
       }
    }
 
@@ -493,32 +494,32 @@ async searchAfterJohn(johnId) {
 //          console.log(error);
 //       }
 //   }
-async searchByUsernameAndPassword(username, password) {
-   try {
-       const response = await new Promise((resolve, reject) => {
-           const query = "SELECT * FROM Users WHERE username = ? AND password = ?;";
-           console.log("executing query:", query, [username, password]); // debugging
-           connection.query(query, [username, password], (err, results) => {
-               if (err) {
-                   reject(new Error(err.message));
-               } else {
-                   resolve(results);
-               }
-           });
-       });
 
-       // If the response has results, return the first result (assuming usernames are unique)
-       if (response.length > 0) {
-           return response[0]; // Return the user object
-       } else {
-           return null; // No user found
-       }
-   } catch (error) {
-       console.error("Database query error:", error);
-       return null; // Return null on error
+   async searchByUsernameAndPassword(username, password) {
+      try {
+         const response = await new Promise((resolve, reject) => {
+            const query = "SELECT * FROM Users WHERE username = ? AND password = ?;";
+            console.log("executing query:", query, [username, password]); // debugging
+            connection.query(query, [username, password], (err, results) => {
+                  if (err) {
+                     reject(new Error(err.message));
+                  } else {
+                     resolve(results);
+                  }
+            });
+         });
+
+         // If the response has results, return the first result (assuming usernames are unique)
+         if (response.length > 0) {
+            return response[0]; // Return the user object
+         } else {
+            return null; // No user found
+         }
+      } catch (error) {
+         console.error("Database query error:", error);
+         return null; // Return null on error
+      }
    }
-}
-
 }
 
 module.exports = userDbService;
