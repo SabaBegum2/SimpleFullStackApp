@@ -5,90 +5,139 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="userstylesheet.css">
   <title>Search Directory</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif; /* Set a font for better readability */
+      margin: 20px; /* Space around the body */
+    }
+    
+    h1, h3 {
+      margin-bottom: 10px; /* Space below headings */
+    }
+    
+    .searchBox > div {
+      margin-bottom: 15px; /* Space between search input groups */
+      display: flex; /* Use flexbox for input and button alignment */
+      align-items: center; /* Align items vertically */
+      gap: 10px; /* Space between input fields and buttons */
+    }
+
+    input[type="text"], 
+    input[type="number"] {
+      padding: 8px; /* Inner padding for input fields */
+      font-size: 1rem; /* Font size */
+      width: 200px; /* Set width for uniformity */
+    }
+    
+    button {
+      padding: 8px 12px; /* Inner padding for buttons */
+      font-size: 1rem; /* Font size */
+      cursor: pointer; /* Change cursor on hover */
+    }
+
+    table {
+      width: 100%; /* Full width table */
+      border-collapse: collapse; /* Collapse borders */
+      margin-top: 20px; /* Space above the table */
+    }
+    
+    th, td {
+      padding: 10px; /* Padding inside table cells */
+      border: 1px solid #ddd; /* Light border */
+      text-align: left; /* Left align text */
+    }
+
+    th {
+      background-color: #f2f2f2; /* Light gray background for headers */
+    }
+
+    footer {
+      margin-top: 20px; /* Space above footer */
+      text-align: center; /* Center footer text */
+    }
+  </style>
 </head>
 <body data-page="SearchDirectory">
   <div class="searchBox">
-  <main>
-    <h1>Search Directory</h1>
+    <main>
+      <h1>Search Directory</h1>
 
-    <div> 
-        <input id="search-input" placeholder="Search by First name...">
-        <button id="search-btn">Search</button>
-    </div>
-    <div> 
-        <input id="search-lastname-input" placeholder="Search by Last name..." >
-        <button id="search-lastname-btn">Search</button>
-    </div>
-    <div>
-        <input type="text" id="firstname-input" placeholder="Search by First Name...">
-        <input type="text" id="lastname-input" placeholder="Search by Last Name...">
-        <button id="search-full-name-btn">Search</button>
-    </div>
-    
-    <div> 
-        <input id="search-username-input" placeholder="Search by Username..." >
-        <button id="search-lastname-btn">Search</button>
-    </div>
+      <div> 
+          <input id="search-input" placeholder="Search by First name...">
+          <button id="search-btn">Search</button>
+      </div>
+      <div> 
+          <input id="search-lastname-input" placeholder="Search by Last name...">
+          <button id="search-lastname-btn">Search</button>
+      </div>
+      <div>
+          <input type="text" id="firstname-input" placeholder="Search by First Name...">
+          <input type="text" id="lastname-input" placeholder="Search by Last Name...">
+          <button id="search-full-name-btn">Search</button>
+      </div>
+      
+      <div> 
+          <input id="search-username-input" placeholder="Search by Username...">
+          <button id="search-username-btn">Search</button>
+      </div>
 
+      <div>
+          <h3>Search by salary range:</h3>
+          <input type="number" id="min-salary-input" placeholder="Min Salary" min='0'>
+          <input type="number" id="max-salary-input" placeholder="Max Salary" min='0'>
+          <button id="search-salary-btn">Search</button>
+      </div>
 
-    <div>
-        <h3>Search by salary range:</h3>
-        <input type="number" id="min-salary-input" placeholder="Min Salary" min='0'>
-        <input type="number" id="max-salary-input" placeholder="Max Salary" min='0'>
-        <button id="search-salary-btn">Search</button>
-    </div>
+      <div>
+          <input type="number" id="min-age-input" placeholder="Min Age" min='0'>
+          <input type="number" id="max-age-input" placeholder="Max Age" min='0'>
+          <button id="search-age-btn">Search</button>
+      </div>
 
-    <div>
-        <input type="number" id="min-age-input" placeholder="Min Age" min='0'>
-        <input type="number" id="max-age-input" placeholder="Max Age" min='0'>
-        <button id="search-age-btn">Search</button>
-    </div>
+      <div>
+          <h3>Search users registered after specific user:</h3>
+          <input type="text" id="reg-username-input" placeholder="Username to compare...">
+          <button id="search-after-reg-btn">Search</button>
+      </div>
+      <div>
+          <h3>Search users registered on same day as specific user:</h3>
+          <input type="text" id="reg-username-input" placeholder="Username to compare...">
+          <button id="search-sameday-reg-btn">Search</button>
+      </div>
 
-    <div>
-        <h3>Search users registered after specific user:</h3>
-        <input type="text" id="reg-username-input" placeholder="Username to compare...">
-        <button id="search-after-reg-btn">Search</button>
-    </div>
-    <div>
-        <h3>Search users registered on same day as specific user:</h3>
-        <input type="text" id="reg-username-input" placeholder="Username to compare...">
-        <button id="search-sameday-reg-btn">Search</button>
-    </div>
+      <div>
+          <h3>Display users who never signed in:</h3>
+          <button id="search-never-signedin-btn">Search</button>
+      </div>
 
-    <div>
-        <h3>Display users who never signed in:</h3>
-        <!-- <input type="text" id="reg-username-input" placeholder="Username to compare..."> -->
-        <button id="search-never-signedin-btn">Search</button>
-    </div>
-
-    <div>
-        <h3>Display users registered today:</h3>
-        <!-- <input type="text" id="reg-username-input" placeholder="Username to compare..."> -->
-        <button id="search-new-reg-btn">Search</button>
-    </div>
-
-     <table id="table">
-         <thead>
-            <th>Username</th>
-            <th>Password</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Salary</th>
-            <th>Age</th>
-            <th>Registration Date</th>
-            <th>Signed In</th>
-         </thead>
-         <tbody></tbody>
-     </table>
+      <div style="margin-bottom: 20px;">
+          <h3 style="margin-bottom: 10px;">Display users registered today:</h3>
+          <button id="search-new-reg-btn" style="padding: 10px 15px;">Search</button>
+      </div>
+      
+      <table id="table">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Password</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Salary</th>
+              <th>Age</th>
+              <th>Registration Date</th>
+              <th>Signed In</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+      </table>
 
     </main>
-    </div>
-    <script src="userindex.js"></script>
+  </div>
+  <script src="userindex.js"></script>
 
-</body>
-<footer>
-    <h2>Return to <a href="http://127.0.0.1:5501/Client/LoginPage.html">Login Page</a>.</h2>
-    <p>Created by: Saba Begum and Violet Yousif</p>
-</footer>
+  <footer>
+      <h2>Return to <a href="http://127.0.0.1:5501/Client/LoginPage.html">Login Page</a>.</h2>
+      <p>Created by: Saba Begum and Violet Yousif</p>
+  </footer>
 </body>
 </html>

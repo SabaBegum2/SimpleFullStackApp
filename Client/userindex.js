@@ -184,6 +184,57 @@ searchLastnameBtn.onclick = function (){
     console.log("Search button clicked for lastname");
 }
 
+const searchBothNameBtn = document.querySelector('search-full-name-btn');
+searchBothNameBtn.onclick = function (){
+    console.log("Search button clicked for first and lastname");
+    const firstnameInput = document.querySelector('#firstname-input');
+    const firstname = firstnameInput.value;
+    const lastnameInput = document.querySelector('#lastname-input');
+    const lastname = lastnameInput.value;
+    console.log("Search firstname: ", firstname);
+    console.log("Search lastname: ", lastname);
+    firstnameInput.value = "";
+    lastnameInput.value = "";
+
+    fetch('http://localhost:5050/searchByFullname/' + firstname + '/' + lastname)
+    .then(response => response.json())
+    .then(data => loadHTMLTable(data['data']));
+    console.log("Search button clicked for first and lastname");
+}    
+
+const searchUsernameBtn =  document.querySelector('#search-username-btn');
+searchLastnameBtn.onclick = function (){
+    console.log("Search button clicked for username");
+    const searchInput = document.querySelector('#search-username-input');
+    console.log("Search input: ", searchInput);
+    const searchValue = searchInput.value;
+    console.log("Search value: ", searchValue);
+    searchInput.value = "";
+
+    fetch('http://localhost:5050/searchUserName/' + searchValue)
+    .then(response => response.json())
+    .then(data => loadHTMLTable(data['data']));
+    console.log("Search button clicked for username");
+}
+
+// when the botton is clicked for salary range
+const salaryRangeBtn = document.querySelector('#salary-salary-btn');
+salaryRangeBtn.onclick = function (){
+    console.log("Salary range button clicked");
+    const minSalaryInput = document.querySelector('#min-salary-input');
+    const minSalary = minSalaryInput.value;
+    minSalaryInput.value = "";
+
+    const maxSalaryInput = document.querySelector('#max-salary-input');
+    const maxSalary = maxSalaryInput.value;
+    maxSalaryInput.value = "";
+
+    fetch('http://localhost:5050/searchBySalary/' + minSalary + '/' + maxSalary)
+   .then(response => response.json())
+   .then(data => loadHTMLTable(data['data']));
+    console.log("Salary range button clicked");
+}
+
 
 
 /*const addBtn = document.querySelector('#add-user-btn');

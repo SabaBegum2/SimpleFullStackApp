@@ -221,7 +221,7 @@ class userDbService{
    async searchByFirstAndLastName(firstname, lastname) {
       try {
           const response = await new Promise((resolve, reject) => {
-            const query = "SELECT * FROM Users WHERE firstname = ? AND lastname = ?;";
+            const query = "SELECT * FROM Users WHERE firstname LIKE ? AND lastname LIKE ?;";
             connection.query(query, [firstname, lastname], (err, results) => {
                if (err) reject(new Error(err.message));
                else resolve(results);
@@ -234,6 +234,20 @@ class userDbService{
       }
    }
 
+   async searchByUserName(username) {
+      try {
+         const response = await new Promise((resolve, reject) => {
+            const query = "SELECT * FROM Users WHERE username LIKE ?;";
+            connection.query(query, [username], (err, results) => {
+               if (err) reject(new Error(err.message));
+               else resolve(results);
+            });
+         });
+         return response;
+      } catch (error) {
+         console.error("Error in searchByUserName:", error);
+      }
+   }
 
 // Search users by salary range (between x and y)
 async searchBySalary(minSalary, maxSalary) {
@@ -276,24 +290,7 @@ async searchByAge(minAge, maxAge) {
 }
 
 // Search users by age range (between x and y)
-async searchByRegistrationDate(username, registerday) {
-   try {
-       const response = await new Promise((resolve, reject) => {
-         const query = "SELECT registerDate FROM Users WHERE username = ? AND registerday < username.register;";
-            connection.query(query, [minAge || 0, maxAge || 200], (err, results) => {
-               if (err) reject(new Error(err.message));
-               else resolve(results);
-            });
-         }
-      );
-      console.log(response);  // for debugging to see the result of select
-      return response;
 
-   } catch (error) {
-      console.error("Error in searchByRegistrationRange:", error);
-      throw error;
-   }
-}
 
 //search users who registered after john registered where john is the userid
 async searchAfterJohn(johnId) {

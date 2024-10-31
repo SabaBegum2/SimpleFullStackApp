@@ -134,36 +134,53 @@ app.get('/searchLastname/:lastname', (request, response) => {
 
 
 //search users by first name and last name
-app.get('/search/firstandlastname', (request, response) => {
-    const { firstname, lastname } = request.query;
+app.get('/searchByFullName/:firstname?/:lastname?', (request, response) => {
+    const { firstname, lastname } = request.params; // Use params instead of query
     console.log(firstname, lastname);
 
     const db = userDbService.getUserDbServiceInstance();
-
     let result;
-    
+
     if (!firstname && !lastname) {
         // Return empty array if both firstname and lastname are empty
         result = Promise.resolve([]);
     } else if (firstname && lastname) {
         // Proceed with searching by both first and last name
         result = db.searchByFirstAndLastName(firstname, lastname);
-    // } else if (firstname) {
-    //     // Proceed with searching by first name only
-    //     result = db.searchByFirstname(firstname);
-    // } else {
-    //     // Proceed with searching by last name only
-    //     result = db.searchByLastname(lastname);
+    } else if (firstname) {
+        // Proceed with searching by first name only
+        result = db.searchByFirstname(firstname);
+    } else {
+        // Proceed with searching by last name only
+        result = db.searchByLastname(lastname);
     }
 
     result
-        .then(data => response.json({ data: data }))
-        .catch(err => {
-            console.error("Error: ", err);
-            response.status(500).json({ error: "An error occurred while searching users." });
-        });
+        .then(data => response.json({ data }))
+        .catch(err => response.status(500).json({ error: err.message }));
 });
 
+app.get('/searchUserName/:username', (request, response) => {
+    const { username } = request.params;
+    //console.log(lastname);
+    console.log(username);  // Debugging
+
+    const db = userDbService.getUserDbServiceInstance();
+
+    let result;
+    if (lastname === "all") {
+        // Return empty array if last name is not provided
+        //result = Promise.resolve([]);
+        result = db.getAllData()
+    } else {
+        // Proceed with searching by last name
+        result = db.searchByUsername(username);
+    }
+    result
+
+    .then(data => response.json({data: data}))
+    .catch(err => console.log('Error: ', err));
+});
 
 // search all users whose salary is between x and y
 app.get('/search/:salary', (request, response) => {
