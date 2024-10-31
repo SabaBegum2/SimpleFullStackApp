@@ -1,72 +1,17 @@
 
-// This is the frontEnd that modifies the HTML page directly
-// event-based programming,such as document load, click a button
-
-/*
-What is a Promise in Javascript? 
-
-A Promise can be in one of three states:
-
-    - Pending: The initial state; the promise is neither fulfilled nor rejected.
-
-    - Fulfilled: The operation completed successfully, and the promise has a 
-      resulting value.
-
-    - Rejected: The operation failed, and the promise has a reason for the failure.
-
-Promises have two main methods: then and catch.
-
-    - The then method is used to handle the successful fulfillment of a promise. 
-    It takes a callback function that will be called when the promise is resolved, 
-    and it receives the resulting value.
-
-    - The catch method is used to handle the rejection of a promise. It takes a 
-    callback function that will be called when the promise is rejected, and it 
-    receives the reason for the rejection.
-
-What is a promise chain? 
-    The Promise chain starts with some asyncOperation1(), which returns a promise, 
-    and each subsequent ``then`` is used to handle the result of the previous Promise.
-
-    The catch is used at the end to catch any errors that might occur at any point 
-    in the chain.
-
-    Each then returns a new Promise, allowing you to chain additional ``then`` calls to 
-    handle subsequent results.
-
-What is an arrow function?
-
-    An arrow function in JavaScript is a concise way to write anonymous function 
-    expressions.
-
-    Traditional function syntax: 
-        const add = function(x, y) {
-           return x + y;
-        };
-
-    Arrow function syntax:
-        const add = (x, y) => x + y;
-    
-    
-Arrow functions have a few notable features:
-
-    - Shorter Syntax: Arrow functions eliminate the need for the function keyword, 
-      curly braces {}, and the return keyword in certain cases, making the syntax 
-      more concise.
-
-    - Implicit Return: If the arrow function consists of a single expression, it is 
-      implicitly returned without needing the return keyword.
-
-    - Lexical this: Arrow functions do not have their own this context; instead, they 
-      inherit this from the surrounding code. This can be beneficial in certain situations,
-      especially when dealing with callbacks and event handlers.
-*/
-
+// //fetch call is to call the server
+// document.addEventListener('DOMContentLoaded', function() {
+//     // one can point your browser to http://localhost:5050/getAll to check what it returns first.
+//     fetch('http://localhost:5050/getall')     
+//     .then(response => response.json())
+//     .then(data => loadHTMLTable(data['data']));
+// });
 
 // This is the frontEnd calls that interact with the HTML pages directly
 document.addEventListener('DOMContentLoaded', function () {
     const currentPage = document.body.getAttribute('data-page');  // Identify the current page
     console.log(`Current page: ${currentPage}`);
+
 
     // Execute the correct setup function based on the page
     if(currentPage === 'LoginPage') {
@@ -74,69 +19,73 @@ document.addEventListener('DOMContentLoaded', function () {
             loginForm.addEventListener("submit", submitLoginForm);
             submitLoginForm();  // Fetch data for the search page
     }
-    else if(currentPage === 'RegistrationPage') {
+    else if (currentPage === 'RegistrationPage') {
             const registrationForm = document.getElementById('registrationForm');
             registrationForm.addEventListener("submit", submitRegistrationForm);
             submitRegistrationForm();  // Setup registration form event
     }
-    else {  //SearchDirectory:
-        // one can point your browser to http://localhost:5050/getAll to check what it returns first.
-        fetch('http://localhost:5050/getAll')     
-        .then(response => response.json())
-        .then(data => loadHTMLTable(data['data']));
-    }
+    //else if(currentPage === 'SearchDirectory') {
+    // else {
+    //         const searchDb = document.getElementById('searchInput');
+    //         searchDb.addEventListener("click", submitSearchDirectory);
+    //         submitSearchDirectory();  // Setup search form event
+    //         //console.log("Invalid page: ", currentPage);
+    // }
+    fetch('http://localhost:5050/getall')     
+    .then(response => response.json())
+    .then(data => loadHTMLTable(data['data']));
+
 });
 
-
-//function submitForm(event) {
-function submitLoginForm(event) {
-    event.preventDefault(); // Prevent default form submission
-
-    const username = document.getElementById("username-input").value;
-    const password = document.getElementById("password-input").value;
-
-    console.log("username:", username); // debugging
-    console.log("password:", password); // debugging
-
-    // Send the login data to the server
-    fetch('http://localhost:5050/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Login successful');
-            window.location.href = 'http://127.0.0.1:5500/Client/SearchDirectory.html'; // Redirect after successful login
-        } else {
-            alert(data.error); // Show error message from the server
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred during login. Please try again.');
-    });
-}
-
-
-//fetch call is to call the server
-// document.addEventListener('DOMContentLoaded', function() {
-//     // one can point your browser to http://localhost:5050/getAll to check what it returns first.
-//     fetch('http://localhost:5050/getAll')     
+// document.addEventListener('DOMContentLoaded', function () {
+//     fetch('http://localhost:5050/getall')     
 //     .then(response => response.json())
 //     .then(data => loadHTMLTable(data['data']));
+
 // });
+
+//function submitForm(event) {
+// function submitLoginForm(event) {
+//     event.preventDefault(); // Prevent default form submission
+
+//     const username = document.getElementById("username-input").value;
+//     const password = document.getElementById("password-input").value;
+
+//     console.log("username:", username); // debugging
+//     console.log("password:", password); // debugging
+
+//     // Send the login data to the server
+//     fetch('http://localhost:5050/login', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ username, password }),
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         if (data.success) {
+//             alert('Login successful');
+//             window.location.href = 'SearchDirectory.html'; // Redirect after successful login
+//         } else {
+//             alert(data.error); // Show error message from the server
+//         }
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
+//         alert('An error occurred during login. Please try again.');
+//     });
+// }
+
 
 
 //// PURPOSE: REGISTRATION FORM
 
 function submitRegistrationForm(event) {
+
     //const registerForm = document.querySelector('#registrationForm');
     //registerForm.addEventListener('submit', function(event){
-    //registerForm.onclick = function() {
+    ///registerForm.onclick = function() {
 
         // prevent the default reload action of the page
         event.preventDefault();
@@ -202,7 +151,7 @@ function submitRegistrationForm(event) {
             alert("Please enter valid age."); // Throw error to user
             return;
         }
-
+ 
         fetch('http://localhost:5050/register', {
             headers: {
                 'Content-type': 'application/json'
@@ -214,10 +163,28 @@ function submitRegistrationForm(event) {
         .then(data => {
             alert("User registration successful!");
             console.log(data);  // debugging
-            window.location.href = 'http://127.0.0.1:5500/Client/LoginPage.html'; // Redirect after successful login
+            window.location.href = 'http://127.0.0.1:5501/Client/LoginPage.html?'; // Redirect after successful login
             //console.log(data => insertRowIntoTable(data['data']));
         })
         .catch(error => console.error("Error: ", error));
+    //}
+}
+
+
+// when the searchBtn is clicked
+const searchBtn =  document.querySelector('#search-btn');
+searchBtn.onclick = function (){
+    console.log("Search button clicked for firstname");
+    const searchInput = document.querySelector('#search-input');
+    console.log("Search input: ", searchInput);
+    const searchValue = searchInput.value;
+    console.log("Search value: ", searchValue);
+    searchInput.value = "";
+
+    fetch('http://localhost:5050/search/' + searchValue)
+    .then(response => response.json())
+    .then(data => loadHTMLTable(data['data']));
+    console.log("Search button clicked for firstname");
 }
 
 
@@ -239,6 +206,7 @@ addBtn.onclick = function (){
     .then(data => insertRowIntoTable(data['data']));
 }*/
 
+//const searchBtn = document.querySelector('searchInput');
 
 // PURPOSE: SEARCH DATABASE INPUT FORM
 // Changes the input box based on the selected option
@@ -263,92 +231,165 @@ addBtn.onclick = function (){
 
 // PURPOSE: SEARCH DATABASE FOR VALUES
 // When the searchBtn is clicked
-const searchBtn = document.querySelector('#searchInput');
-searchBtn.onclick = async function(event) {
-    const selectOption = document.querySelector('#select-option').value;
+//function submitSearchDirectory(event) {
 
-    console.log("/Select option: ", selectOption);
+        //if (!searchBtn) return;
 
-    const searchInput = document.getElementById('#search-input').value.trim();
-    console.log("Search input: ", searchInput);
+        //event.preventDefault();
 
-    let address;
-    try {
-        switch(selectOption) {
-            case "1":
-                address = searchInput;
-                //address = "firsname?firstname=" + searchInput ;
-                break;
-            case "2":
-                address = searchInput;
-                //address = "lastname?lastname=" + searchInput ;
-                break;
-            case "3":
-                address = "firstandlastname";
-                const firstnameVal = "firstname=" + document.getElementById('#first-box').value.trim();
-                const lastnameVal = "lastname=" + document.getElementById('#last-box').value.trim();
-                if (!firstnameVal || !lastnameVal) {
-                    alert("Please enter both first and last name.");
-                    return;
-                }
-                address = searchInput;
-                //address = selectOption + "?" + firstnameVal + "&" + lastnameVal;
-                break;
-            case "4":
-                address = "username=" + searchInput;
-                //selectOption = "username";
-                //address = selectOption + "?" + selectOption + "=" + searchInput ;
-                break;
-            case "5":
-                //selectOption = "age";
-                address = searchInput;
-                //address = selectOption + "?" + selectOption + "=" + searchInput ;
-                break;
-            case "6":
-                //selectOption = "salary";
-                address = "salary";
-                const minSalary = document.querySelector('#first-box').value.trim();
-                const maxSalary = document.querySelector('#last-box').value.trim();
-                //address = selectOption + "?" + selectOption + "=" + searchInput ;
-                break;
-            case "7":
-                // TODO: Implement registerday with 2 params
-                //selectOption = "registerday";
-                //address = selectOption + "?" + selectOption + "=" + searchInput ;
-                address = "registerday";
-                break;
-            case "8":
-                //selectOption = "neverLoggedIn";
-                address = "neverLoggedIn";
-                //address = selectOption + "?" + selectOption + "=" + searchInput ;
-                break;
-            case "9":
-                //selectOption = "registeredToday";
-                address = "RegisteredToday";
-                break;
-            default:
-                console.log("Invalid search option: " + selectOption);
-                return; // Exit function if invalid option
-        }
-        address
-        
-        //console.log("Address: ", address);
-        //const response = await fetch('http://localhost:5050/search/' + address );
-        //console.log("Address: ", address);
+        //const searchBtn = document.querySelector('#searchInput');
+        // searchBtn.onclick = async function(event) {
+        //     const selectOption = document.querySelector('#select-option').value;
+        //     const option = selectOption;
 
-        const response = await fetch('http://localhost:5050/search/' + address );
-        
-        //address = "";
-        console.log("Response: ", response);
-        //const response = await fetch('http://localhost:5050/search/' + searchInput);
-        const data = await response.json();
-        console.log(data);
-        loadHTMLTable(data['data']);
-    } catch (error) {
-        console.error("Error: ", error);
-    }
-}
-);
+        //     console.log("/Select option: ", selectOption);
+
+        //     const searchInput = document.querySelector('#search-input').value.trim();
+        //     const inputValue = searchInput;
+        //     searchInput.value = "";
+
+        //     console.log("Search input: ", searchInput);
+        //     console.log("input Value: ", inputValue);
+
+        //     try {
+        //         fetch('http://localhost:5050/search/' + inputValue)
+        //         .then(response => response.json())
+        //         .then(data => loadHTMLTable(data['data']));
+
+
+        //     //const response = await fetch('http://localhost:5050/search/' + address );
+
+        //     //console.log("Response: ", response);
+        //     //const response = await fetch('http://localhost:5050/search/' + searchInput);
+        //     //const data = await response.json();
+        //     // console.log(data);
+        //     // loadHTMLTable(data['data']);
+        //     } catch (error) {
+        //         debug("Search input: ", searchInput);
+        //         console.error("Error: ", error);
+        //     }
+        // }
+
+
+    //const searchBtn = document.querySelector('#searchInput');
+    //searchBtn.onclick = async function(event) {
+    // searchBtn.addEventListener('click', async function() {
+    //     // const selectOption = document.querySelector('#select-option');
+    //     // const option = selectOption.value;
+    //     // selectOption.value = "";
+
+    //     // console.log("/Select option: ", selectOption);
+
+    //     // const searchInput = document.querySelector('#search-input').trim();
+    //     // const inputValue = searchInput.value;
+    //     // searchInput.value = "";
+
+    //     const selectOption = document.querySelector('select-option').value;
+    //     const searchInput = document.querySelector('search-input').value.trim();
+    //     const response = '';
+    //     console.log("Search input: ", searchInput);
+
+    //     //let address = "";
+    //     try {
+    //         switch(selectOption) {
+    //             case "1":
+    //                 console.log("Search by first name: ", searchInput);
+    //                 fetch('http://localhost:5050/search/' + searchInput)
+    //                 .then(response => response.json())
+    //                 .then(data => loadHTMLTable(data['data']));
+
+    //                 //address = inputValue;
+    //                 //address = "firsname?firstname=" + searchInput ;
+    //                 break;
+    //             case "2":
+    //                 //address = searchInput;
+    //                 fetch('http://localhost:5050/search/' + searchInput)
+    //                 .then(response => response.json())
+    //                 .then(data => loadHTMLTable(data['data']));
+    //                 //address = "lastname?lastname=" + searchInput ;
+    //                 break;
+    //             case "3":
+    //                 address = "firstandlastname";
+    //                 const firstnameVal = "firstname=" + document.querySelector('#first-box').value.trim();
+    //                 const lastnameVal = "lastname=" + document.querySelector('#last-box').value.trim();
+    //                 if (!firstnameVal || !lastnameVal) {
+    //                     alert("Please enter both first and last name.");
+    //                     return;
+    //                 }
+    //                 address = searchInput;
+    //                 //address = selectOption + "?" + firstnameVal + "&" + lastnameVal;
+    //                 break;
+    //             case "4":
+    //                 address = searchInput;
+    //                 //selectOption = "username";
+    //                 //address = selectOption + "?" + selectOption + "=" + searchInput ;
+    //                 break;
+    //             case "5":
+    //                 //selectOption = "age";
+    //                 address = searchInput;
+    //                 //address = selectOption + "?" + selectOption + "=" + searchInput ;
+    //                 break;
+    //             case "6":
+    //                 //selectOption = "salary";
+    //                 address = searchInput;
+    //                 const minSalary = document.querySelector('#first-box').value.trim();
+    //                 const maxSalary = document.querySelector('#last-box').value.trim();
+    //                 //address = selectOption + "?" + selectOption + "=" + searchInput ;
+    //                 break;
+    //             case "7":
+    //                 // TODO: Implement registerday with 2 params
+    //                 //selectOption = "registerday";
+    //                 //address = selectOption + "?" + selectOption + "=" + searchInput ;
+    //                 address = searchInput;
+    //                 break;
+    //             case "8":
+    //                 //selectOption = "neverLoggedIn";
+    //                 address = searchInput;
+    //                 //address = selectOption + "?" + selectOption + "=" + searchInput ;
+    //                 break;
+    //             case "9":
+    //                 //selectOption = "registeredToday";
+    //                 address = searchInput;
+    //                 break;
+    //             default:
+    //                 console.log("Invalid search option: " + selectOption);
+    //                 return; // Exit function if invalid option
+    //         }
+            
+    //         //searchInput = "";
+
+    //         // fetch('http://localhost:5050/search/', {
+    //         //     method: 'GET',
+    //         //     headers: {
+    //         //         'Content-Type': 'application/json',
+    //         //     },
+    //         //     body: JSON.stringify({ data: data }),
+    //         // })
+    //         // .then(response => response.json())
+    //         // .then(data => {
+    //         //     if (data.success) {
+    //         //         alert('Search successful');
+    //         //     } else {
+    //         //         alert(data.error); // Show error message from the server
+    //         //     }
+    //         // })
+
+    //         //console.log("Address: ", address);
+    //         //const response = await fetch('http://localhost:5050/search/' + address );
+    //         //const response = await fetch('http://localhost:5050/search/${name}');
+    //         //console.log("Response: ", response);
+    //         //const response = await fetch('http://localhost:5050/search/' + searchInput);
+    //         //const data = await response.json();
+    //         //console.log(data);
+    //         //loadHTMLTable(data['data']);
+    //         // fetch('http://localhost:5050/search/' + selectInput)
+    //         // .then(response => response.json())
+    //         // .then(data => loadHTMLTable(data['data']));
+    //     } catch (error) {
+    //         console.error("Error: ", error);
+    //     }
+    // });
+//};
 
 //when the user selects registered today option in the drop down list
 // document.getElementById("select-option").addEventListener("change", async (event) => {
@@ -388,33 +429,33 @@ searchBtn.onclick = async function(event) {
 //document.addEventListener('DOMContentLoaded', () => {
 
 
-    function todayRegisters() {
-        const userTableBody = document.getElementById('table').querySelector('tbody'); // Access tbody directly
-        const searchBtn = document.getElementById('search-btn');
+    // function todayRegisters() {
+    //     const userTableBody = document.getElementById('table').querySelector('tbody'); // Access tbody directly
+    //     const searchBtn = document.getElementById('search-btn');
         
-        searchBtn.addEventListener('click', async () => { // Use addEventListener
-            const selectOption = document.getElementById('select-option');
-            const searchInput = document.getElementById('search-input');
-            const selectedValue = selectOption.value;
+    //     searchBtn.addEventListener('click', async () => { // Use addEventListener
+    //         const selectOption = document.getElementById('select-option');
+    //         const searchInput = document.getElementById('search-input');
+    //         const selectedValue = selectOption.value;
     
-            console.log('Selected input:', searchInput); // Log the selected input
-            console.log('Selected value:', selectedValue); // Log the selected value
+    //         console.log('Selected input:', searchInput); // Log the selected input
+    //         console.log('Selected value:', selectedValue); // Log the selected value
     
-            // Clear previous results in the table
-            userTableBody.innerHTML = '';
+    //         // Clear previous results in the table
+    //         userTableBody.innerHTML = '';
     
-            if (selectedValue === '9') { // Registered Today option
-                try {
-                    const response = await fetch('/search/RegisteredToday');
-                    console.log("Response: ", response);
+    //         if (selectedValue === '9') { // Registered Today option
+    //             try {
+    //                 const response = await fetch('/search/RegisteredToday');
+    //                 console.log("Response: ", response);
                     
-                    // Check if the response is OK before parsing
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
+    //                 // Check if the response is OK before parsing
+    //                 if (!response.ok) {
+    //                     throw new Error('Network response was not ok');
+    //                 }
     
-                    const data = await response.json();
-                    console.log('Fetched data:', data); // Log the fetched data
+    //                 const data = await response.json();
+    //                 console.log('Fetched data:', data); // Log the fetched data
     
     //                 // Check if data exists
     //                 if (data.data.length === 0) {
@@ -464,9 +505,6 @@ searchBtn.onclick = async function(event) {
 //     .then(response => response.json())
 //     .then(data => loadHTMLTable(data['data']));
 // }
-
-
-
 
 
 
