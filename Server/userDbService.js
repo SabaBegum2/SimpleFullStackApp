@@ -116,7 +116,7 @@ class userDbService{
    async registerNewUser(username, password, firstname, lastname, salary, age){
          try {
             const registerDate = new Date();
-            const timeLoggedIn = new Date();    // TODO: Change this to null for final version
+            const timeLoggedIn = "0000-00-00 00:00:00";    // TODO: Change this to null for final version
             // use await to call an asynchronous function
             //const hashedPassword = bcrypt.hash(password, 10);
             const insertProfile = await new Promise((resolve, reject) => 
@@ -128,7 +128,6 @@ class userDbService{
                });
             });
             console.log(insertProfile);  // for debugging to see the result of select
-            //res.status(201).json({ message: 'User registered successfully!', data: results.insertProfile });
             return{
                username: username,
                password: password,
@@ -494,7 +493,9 @@ async searchAfterJohn(johnId) {
 //       }
 //   }
 
-   async searchByUsernameAndPassword(username, password) {
+   async searchByUsernameAndPassword(username, password){
+      const newSignInTime = new Date();
+
       try {
          const response = await new Promise((resolve, reject) => {
             const query = "SELECT * FROM Users WHERE username = ? AND password = ?;";
@@ -506,14 +507,24 @@ async searchAfterJohn(johnId) {
                      resolve(results);
                   }
             });
+            const datequery = "UPDATE Users SET signintime = ? WHERE username = ? AND password = ?;";
+               console.log("executing sign in date query:", datequery, [newSignInTime, username, password]); // debugging
+               connection.query(datequery, [newSignInTime, username, password], (err, results) => {
+                  if (err) {
+                     reject(new Error(err.message));
+                  } else {
+                      resolve(results);
+                  }
+            });
          });
-
+         
          // If the response has results, return the first result (assuming usernames are unique)
          if (response.length > 0) {
             return response[0]; // Return the user object
          } else {
             return null; // No user found
          }
+         
       } catch (error) {
          console.error("Database query error:", error);
          return null; // Return null on error
