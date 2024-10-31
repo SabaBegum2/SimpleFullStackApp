@@ -20,14 +20,6 @@ TO DO LIST:
     - never signed in (didn't get to it)
     - registrations from today (didn't get to it)
 
-    Updates: 
-    1.  Idk if I'm just overly frustrated with the 2 box concept, but now I'm wondering if it'll be annoying to keep coding them for each double input 
-        and maybe we should just use a split method and have the user enter their values with a comma separating it.
-    2.  For some reason the queries that I labeled "works" will randomly work for me and then not work (even manually typing it into the address).
-    3.  I had to comment out registration's function bc I think the event listener keeps trying to take over (I can work on solving this tomorrow)
-    4.  Feel free to reconstruct the whole search directory (front and backend) if you need to. At this point, bare minimum would work for me and we can improve it on the next project.
-
-
 4. search page html
     - search inputs
         - add it where 2 search inputs come up for some (done)

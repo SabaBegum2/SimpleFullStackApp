@@ -168,6 +168,22 @@ searchBtn.onclick = function (){
     console.log("Search button clicked for firstname");
 }
 
+// when the searchBtn is clicked
+const searchLastnameBtn =  document.querySelector('#search-lastname-btn');
+searchLastnameBtn.onclick = function (){
+    console.log("Search button clicked for lastname");
+    const searchInput = document.querySelector('#search-lastname-input');
+    console.log("Search input: ", searchInput);
+    const searchValue = searchInput.value;
+    console.log("Search value: ", searchValue);
+    searchInput.value = "";
+
+    fetch('http://localhost:5050/searchLastname/' + searchValue)
+    .then(response => response.json())
+    .then(data => loadHTMLTable(data['data']));
+    console.log("Search button clicked for lastname");
+}
+
 
 
 /*const addBtn = document.querySelector('#add-user-btn');
