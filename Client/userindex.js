@@ -1,12 +1,4 @@
 
-// //fetch call is to call the server
-// document.addEventListener('DOMContentLoaded', function() {
-//     // one can point your browser to http://localhost:5050/getAll to check what it returns first.
-//     fetch('http://localhost:5050/getall')     
-//     .then(response => response.json())
-//     .then(data => loadHTMLTable(data['data']));
-// });
-
 // This is the frontEnd calls that interact with the HTML pages directly
 document.addEventListener('DOMContentLoaded', function () {
     const currentPage = document.body.getAttribute('data-page');  // Identify the current page
@@ -24,13 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
             registrationForm.addEventListener("submit", submitRegistrationForm);
             submitRegistrationForm();  // Setup registration form event
     }
-    //else if(currentPage === 'SearchDirectory') {
-    // else {
-    //         const searchDb = document.getElementById('searchInput');
-    //         searchDb.addEventListener("click", submitSearchDirectory);
-    //         submitSearchDirectory();  // Setup search form event
-    //         //console.log("Invalid page: ", currentPage);
-    // }
+
     fetch('http://localhost:5050/getall')     
     .then(response => response.json())
     .then(data => loadHTMLTable(data['data']));
@@ -44,48 +30,44 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // });
 
-//function submitForm(event) {
-// function submitLoginForm(event) {
-//     event.preventDefault(); // Prevent default form submission
+//// PURPOSE: LOGIN FORM
+function submitLoginForm(event) {
+    event.preventDefault(); // Prevent default form submission
 
-//     const username = document.getElementById("username-input").value;
-//     const password = document.getElementById("password-input").value;
+    const username = document.getElementById("username-input").value;
+    const password = document.getElementById("password-input").value;
 
-//     console.log("username:", username); // debugging
-//     console.log("password:", password); // debugging
+    console.log("username:", username); // debugging
+    console.log("password:", password); // debugging
 
-//     // Send the login data to the server
-//     fetch('http://localhost:5050/login', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({ username, password }),
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         if (data.success) {
-//             alert('Login successful');
-//             window.location.href = 'SearchDirectory.html'; // Redirect after successful login
-//         } else {
-//             alert(data.error); // Show error message from the server
-//         }
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//         alert('An error occurred during login. Please try again.');
-//     });
-// }
+    // Send the login data to the server
+    fetch('http://localhost:5050/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Login successful');
+            window.location.href = 'http://127.0.0.1:5501/Client/SearchDirectory.html'; // Redirect after successful login
+        } else {
+            alert(data.error); // Show error message from the server
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred during login. Please try again.');
+    });
+}
 
 
 
 //// PURPOSE: REGISTRATION FORM
 
 function submitRegistrationForm(event) {
-
-    //const registerForm = document.querySelector('#registrationForm');
-    //registerForm.addEventListener('submit', function(event){
-    ///registerForm.onclick = function() {
 
         // prevent the default reload action of the page
         event.preventDefault();
@@ -163,8 +145,7 @@ function submitRegistrationForm(event) {
         .then(data => {
             alert("User registration successful!");
             console.log(data);  // debugging
-            window.location.href = 'http://127.0.0.1:5501/Client/LoginPage.html?'; // Redirect after successful login
-            //console.log(data => insertRowIntoTable(data['data']));
+            window.location.href = 'http://127.0.0.1:5501/Client/LoginPage.html'; // Redirect after successful login
         })
         .catch(error => console.error("Error: ", error));
     //}
@@ -208,26 +189,6 @@ addBtn.onclick = function (){
 
 //const searchBtn = document.querySelector('searchInput');
 
-// PURPOSE: SEARCH DATABASE INPUT FORM
-// Changes the input box based on the selected option
-// document.querySelector('#select-option').addEventListener('change', function () {
-//     const selectedOption = this.value;
-//     const firstBox = document.querySelector('#first-box');
-//     const lastBox = document.querySelector('#last-box');
-//     const searchInput = document.querySelector('#search-input');
-
-//     // When "First and Last Name" option is selected, shows both input boxes
-//     if (selectedOption === "3" || selectedOption === "5" || selectedOption === "6") {
-//         firstBox.style.display = 'inline-block';  // Show first name input
-//         lastBox.style.display = 'inline-block';   // Show last name input
-//         searchInput.style.display = 'none';           // Hide the single input box
-//     } else {
-//         // Hide first and last name inputs, and only show the single input box for other options
-//         firstBox.style.display = 'none';
-//         lastBox.style.display = 'none';
-//         searchInput.style.display = 'inline-block';
-//     }
-// });
 
 // PURPOSE: SEARCH DATABASE FOR VALUES
 // When the searchBtn is clicked
@@ -425,87 +386,6 @@ addBtn.onclick = function (){
 //     });
 // }
 
-//when the user selects registered today
-//document.addEventListener('DOMContentLoaded', () => {
-
-
-    // function todayRegisters() {
-    //     const userTableBody = document.getElementById('table').querySelector('tbody'); // Access tbody directly
-    //     const searchBtn = document.getElementById('search-btn');
-        
-    //     searchBtn.addEventListener('click', async () => { // Use addEventListener
-    //         const selectOption = document.getElementById('select-option');
-    //         const searchInput = document.getElementById('search-input');
-    //         const selectedValue = selectOption.value;
-    
-    //         console.log('Selected input:', searchInput); // Log the selected input
-    //         console.log('Selected value:', selectedValue); // Log the selected value
-    
-    //         // Clear previous results in the table
-    //         userTableBody.innerHTML = '';
-    
-    //         if (selectedValue === '9') { // Registered Today option
-    //             try {
-    //                 const response = await fetch('/search/RegisteredToday');
-    //                 console.log("Response: ", response);
-                    
-    //                 // Check if the response is OK before parsing
-    //                 if (!response.ok) {
-    //                     throw new Error('Network response was not ok');
-    //                 }
-    
-    //                 const data = await response.json();
-    //                 console.log('Fetched data:', data); // Log the fetched data
-    
-    //                 // Check if data exists
-    //                 if (data.data.length === 0) {
-    //                     userTableBody.innerHTML = '<tr><td colspan="8">No users registered today.</td></tr>';
-    //                 } else {
-    //                     loadHTMLTable(data.data); // Assuming loadHTMLTable is defined to add rows
-    //                 }
-    //             } catch (error) {
-    //                 console.error('Error:', error);
-    //                 alert('An error occurred while fetching data. Please try again.');
-    //             }
-    //         } else {
-    //             const query = searchInput.value;
-    //         }
-    //     });
-    // }
-    
-
-    // // Populate table function
-    // function populateTable(Users) {
-    //     users.forEach(Users => {
-    //         const row = document.createElement('tr');
-    //         row.innerHTML = `
-    //             <td>${Users.username}</td>
-    //             <td>${Users.password}</td>
-    //             <td>${Users.firstname}</td>
-    //             <td>${Users.lastname}</td>
-    //             <td>${Users.age}</td>
-    //             <td>${Users.salary}</td>
-    //             <td>${new Date(Users.registerday).toLocaleDateString()}</td>
-    //             <td>${Users.signintime ? new Date(Users.signintime).toLocaleString() : 'Never'}</td>
-    //         `;
-    //         userTableBody.appendChild(row);
-    //     });
-    // }
-//});
-
-// temp
-// // when the searchBtn is clicked
-// const searchBtn =  document.querySelector('#search-button');
-// searchBtn.onclick = function (){
-//     const searchInput = document.querySelector('#search-fname');
-//     const searchValue = searchInput.value;
-//     searchInput.value = "";
-
-//     fetch('http://localhost:5050/search/' + searchValue)
-//     .then(response => response.json())
-//     .then(data => loadHTMLTable(data['data']));
-// }
-
 
 
 // function todayRegisters() {
@@ -551,8 +431,6 @@ addBtn.onclick = function (){
 //         }
 //     });
 // }
-
-
 
 
 
