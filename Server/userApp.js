@@ -13,6 +13,21 @@ app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({extended: false}));
 
+
+
+// read 
+app.get('/getAll', (request, response) => {
+    
+    const db = userDbService.getUserDbServiceInstance();
+    
+    const result =  db.getAllData(); // call a DB function
+
+    result
+    .then(data => response.json({ data: data }))
+    .catch(err => console.log(err));
+});
+
+
 // create
 app.post('/register', async(request, response) => {
     console.log("userApp: insert a row.");
@@ -38,20 +53,6 @@ app.post('/register', async(request, response) => {
         console.error(error);
         response.status(500).json({ error: "An error occurred while registering user." });
     }
-});
-
-
-
-// read 
-app.get('/getAll', (request, response) => {
-    
-    const db = userDbService.getUserDbServiceInstance();
-    
-    const result =  db.getAllData(); // call a DB function
-
-    result
-    .then(data => response.json({data: data}))
-    .catch(err => console.log(err));
 });
 
 
@@ -84,90 +85,74 @@ app.post('/login', async (request, response) => {
 });
 
 
-// app.get('/search', (request, response) => {
-//     const { attribute, input } = request.query;
+// app.get('/search/:username', (request, response) => {
+//     const { username } = request.params;
 
-//     console.log(attribute, input);
+//     console.log(username);
 
 //     const db = userDbService.getUserDbServiceInstance();
 
 //     let result;
-//     // if (!attribute || !input) {
-//     //     result = response.status(400).json({ error: "Option and value are required" });
-//         //result = Promise.resolve([]);
-//     if(username === "all") // in case we want to search all
+//     if (input === "all") {
 //        result = db.getAllData();
 //     } else {
 //         result = db.searchByUsername(username);
 //     }
 
-//     //let result;
-//     // if (username === "") {
-//     //     result = Promise.resolve([]);
-//     // } else {
-//     //     result = db.searchByUsername(username);
-//     // }
-    
 //     result
-
 //         .then(data => response.json({ data: data }))
 //         .catch(err => console.log(err));
 
 // });
 
 
-// Search by Username
-app.get('/search/username', (request, response) => { // we can debug by URL
+app.get('/search/:firstname', (request, response) => { // we can debug by URL
+    console.log("userApp.js - search by first name");
+    const {firstname} = request.params;
     
-    const {username} = request.query;
-    //const {username} = request.params;
-    
-    console.log(username);
+    console.log(firstname);
 
     const db = userDbService.getUserDbServiceInstance();
 
     let result;
-    if(username === "all") { // in case we want to search all
-        //result = Promise.resolve([]);
-        result = db.getAllData();
-    } else { 
-        result =  db.searchByUsername(username); // call a DB function
-    }
+    if(firstname === "all") // in case we want to search all
+       result = db.getAllData()
+    else 
+       result =  db.searchByFirstname(firstname); // call a DB function
+
     result
     .then(data => response.json({data: data}))
     .catch(err => console.log(err));
 });
-
-
 
 //search users by first name
-app.get('/search/:firstname', (request, response) => {
-    //const { firstname } = request.query;
-    const { firstname } = request.params;
-    console.log(firstname);
-    //console.log(`Searching for first name: ${firstname}`);  // Debugging
+// app.get('/search/:firstname', (request, response) => {
+//     //const { firstname } = request.query;
+//     const { firstname } = request.params;
+//     console.log(firstname);
+//     //console.log(`Searching for first name: ${firstname}`);  // Debugging
 
-//     const db = userDbService.getUserDbServiceInstance();
+//      const db = userDbService.getUserDbServiceInstance();
 
-    let result;
-    if (firstname === "all") {
-        // Return empty array if first name is not provided
-        //result = Promise.resolve([]);
-        result = db.getAllData()
-    } else {
-        // Proceed with searching by first name
-        result = db.searchByFirstname(firstname);
-    }
-    result
-    .then(data => response.json({data: data}))
-    .catch(err => console.log(err));
+//     let result;
+//     if (firstname === "all") {
+//         // Return empty array if first name is not provided
+//         //result = Promise.resolve([]);
+//         result = db.getAllData()
+//     } else {
+//         // Proceed with searching by first name
+//         result = db.searchByFirstname(firstname);
+//     }
+//     result
+//     .then(data => response.json({ data: data }))
+//     .catch(err => console.log(err));
 
-    // .then(data => {
-    //     console.log('Search Results:', data);
-    //     response.json({ data: data });
-    // })
-    // .catch(err => console.log('Error: ', err));
-});
+//     // .then(data => {
+//     //     console.log('Search Results:', data);
+//     //     response.json({ data: data });
+//     // })
+//     // .catch(err => console.log('Error: ', err));
+// });
 
 
 
@@ -231,6 +216,8 @@ app.get('/search/firstandlastname', (request, response) => {
 app.get('/search/:salary', (request, response) => {
     let { minSalary = 0, maxSalary = 999999999 } = request.params;
 
+    const db = userDbService.getUserDbServiceInstance();
+
     // Convert to floats and handle potential invalid input
     minSalary = parseFloat(minSalary);
     maxSalary = parseFloat(maxSalary);
@@ -243,7 +230,6 @@ app.get('/search/:salary', (request, response) => {
     console.log('Min Salary:', minSalary);
     console.log('Max Salary:', maxSalary);
 
-    const db = dbService.getDbServiceInstance();
 
     let result;
     if (minSalary === 0 && maxSalary === 99999999) {
@@ -271,7 +257,7 @@ app.get('/search/:age', (request, response) => {
     console.log(minAge);
     console.log(maxAge);
 
-    const db = dbService.getDbServiceInstance();
+    const db = userDbService.getUserDbServiceInstance();
 
     let result;
     if (minAge === 0 && maxAge === 120) {
@@ -370,27 +356,6 @@ app.get('/search/NeverLoggedIn', async (request, response) => {
     console.error(err);
     result = response.status(500).json({ error: "An error occurred while searching users." });
     
-});
-
-
-
-app.get('/search/:firstname', (request, response) => { // we can debug by URL
-    
-    const {firstname} = request.params;
-    
-    console.log(firstname);
-
-    const db = dbService.getDbServiceInstance();
-
-    let result;
-    if(firstname === "all") // in case we want to search all
-       result = db.getAllData()
-    else 
-       result =  db.searchByName(firstname); // call a DB function
-
-    result
-    .then(data => response.json({data: data}))
-    .catch(err => console.log(err));
 });
 
 
