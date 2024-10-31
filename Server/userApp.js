@@ -85,25 +85,6 @@ app.post('/login', async (request, response) => {
 });
 
 
-// app.get('/search/:username', (request, response) => {
-//     const { username } = request.params;
-
-//     console.log(username);
-
-//     const db = userDbService.getUserDbServiceInstance();
-
-//     let result;
-//     if (input === "all") {
-//        result = db.getAllData();
-//     } else {
-//         result = db.searchByUsername(username);
-//     }
-
-//     result
-//         .then(data => response.json({ data: data }))
-//         .catch(err => console.log(err));
-
-// });
 
 
 app.get('/search/:firstname', (request, response) => { // we can debug by URL
@@ -125,39 +106,11 @@ app.get('/search/:firstname', (request, response) => { // we can debug by URL
     .catch(err => console.log(err));
 });
 
-//search users by first name
-// app.get('/search/:firstname', (request, response) => {
-//     //const { firstname } = request.query;
-//     const { firstname } = request.params;
-//     console.log(firstname);
-//     //console.log(`Searching for first name: ${firstname}`);  // Debugging
-
-//      const db = userDbService.getUserDbServiceInstance();
-
-//     let result;
-//     if (firstname === "all") {
-//         // Return empty array if first name is not provided
-//         //result = Promise.resolve([]);
-//         result = db.getAllData()
-//     } else {
-//         // Proceed with searching by first name
-//         result = db.searchByFirstname(firstname);
-//     }
-//     result
-//     .then(data => response.json({ data: data }))
-//     .catch(err => console.log(err));
-
-//     // .then(data => {
-//     //     console.log('Search Results:', data);
-//     //     response.json({ data: data });
-//     // })
-//     // .catch(err => console.log('Error: ', err));
-// });
 
 
 
 //search users by last name
-app.get('/search/:lastname', (request, response) => {
+app.get('/searchLastname/:lastname', (request, response) => {
     const { lastname } = request.params;
     //console.log(lastname);
     console.log(lastname);  // Debugging

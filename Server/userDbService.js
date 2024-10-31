@@ -205,7 +205,7 @@ class userDbService{
    async searchByLastname(lastname) {
       try {
          const response = await new Promise((resolve, reject) => {
-            const query = "SELECT * FROM Users WHERE lastname = ?;";
+            const query = "SELECT * FROM Users WHERE lastname LIKE ?;";
             connection.query(query, [lastname], (err, results) => {
                if (err) reject(new Error(err.message));
                else resolve(results);
@@ -214,7 +214,6 @@ class userDbService{
          return response;
       } catch (error) {
          console.error("Error in searchByLastname:", error);
-         throw error; // Ensure the error is propagated
       }
    }
 
