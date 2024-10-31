@@ -416,21 +416,21 @@ searchBtn.onclick = async function(event) {
                     const data = await response.json();
                     console.log('Fetched data:', data); // Log the fetched data
     
-                    // Check if data exists
-                    if (data.data.length === 0) {
-                        userTableBody.innerHTML = '<tr><td colspan="8">No users registered today.</td></tr>';
-                    } else {
-                        loadHTMLTable(data.data); // Assuming loadHTMLTable is defined to add rows
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('An error occurred while fetching data. Please try again.');
-                }
-            } else {
-                const query = searchInput.value;
-            }
-        });
-    }
+    //                 // Check if data exists
+    //                 if (data.data.length === 0) {
+    //                     userTableBody.innerHTML = '<tr><td colspan="8">No users registered today.</td></tr>';
+    //                 } else {
+    //                     loadHTMLTable(data.data); // Assuming loadHTMLTable is defined to add rows
+    //                 }
+    //             } catch (error) {
+    //                 console.error('Error:', error);
+    //                 alert('An error occurred while fetching data. Please try again.');
+    //             }
+    //         } else {
+    //             const query = searchInput.value;
+    //         }
+    //     });
+    // }
     
 
     // // Populate table function
@@ -451,7 +451,6 @@ searchBtn.onclick = async function(event) {
     //     });
     // }
 //});
-}
 
 // temp
 // // when the searchBtn is clicked
