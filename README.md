@@ -40,11 +40,16 @@ npm start
 
 ## Frontend Setup:
 Open the following URLs in your web browser:
+
 Login Page: http://127.0.0.1:5501/Client/LoginPage.html
+
 Registration Page: http://127.0.0.1:5501/Client/RegistrationPage.html
+
 Search Directory: http://127.0.0.1:5501/Client/SearchDirectory.html
+
 The pages should load correctly if the server is running and XAMPP is properly set up.
-Features
+
+## Features
 
 User Registration: New users can create an account by entering their username, password, first name, last name, salary, and age.
 User Sign-In: Registered users can log in using their username and password.
