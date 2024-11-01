@@ -184,57 +184,127 @@ searchLastnameBtn.onclick = function (){
     console.log("Search button clicked for lastname");
 }
 
-const searchBothNameBtn = document.querySelector('search-full-name-btn');
-searchBothNameBtn.onclick = function (){
-    console.log("Search button clicked for first and lastname");
+// Search by first and last name
+const searchBothNameBtn = document.querySelector('#search-full-name-btn');
+searchBothNameBtn.addEventListener('click', function () {
     const firstnameInput = document.querySelector('#firstname-input');
-    const firstname = firstnameInput.value;
     const lastnameInput = document.querySelector('#lastname-input');
-    const lastname = lastnameInput.value;
-    console.log("Search firstname: ", firstname);
-    console.log("Search lastname: ", lastname);
+    
+    const firstname = firstnameInput.value.trim();
+    const lastname = lastnameInput.value.trim();
+
+    if (firstname && lastname) {
+        console.log("Searching for:", firstname, lastname);
+        fetchAndLoad(`http://localhost:5050/search-by-fullname/${firstname}/${lastname}`);
+    } else {
+        console.log("Both first name and last name are required.");
+    }
+
     firstnameInput.value = "";
     lastnameInput.value = "";
+});
 
-    fetch('http://localhost:5050/searchByFullname/' + firstname + '/' + lastname)
-    .then(response => response.json())
-    .then(data => loadHTMLTable(data['data']));
-    console.log("Search button clicked for first and lastname");
-}    
-
-const searchUsernameBtn =  document.querySelector('#search-username-btn');
-searchLastnameBtn.onclick = function (){
-    console.log("Search button clicked for username");
+// Search by username
+const searchUsernameBtn = document.querySelector('#search-username-btn');
+searchUsernameBtn.addEventListener('click', function () {
     const searchInput = document.querySelector('#search-username-input');
-    console.log("Search input: ", searchInput);
-    const searchValue = searchInput.value;
-    console.log("Search value: ", searchValue);
+    const searchValue = searchInput.value.trim();
+
+    if (searchValue) {
+        console.log("Searching for username:", searchValue);
+        fetchAndLoad(`http://localhost:5050/search-by-username/${searchValue}`);
+    } else {
+        console.log("Username is required.");
+    }
+
     searchInput.value = "";
+});
 
-    fetch('http://localhost:5050/searchUserName/' + searchValue)
-    .then(response => response.json())
-    .then(data => loadHTMLTable(data['data']));
-    console.log("Search button clicked for username");
-}
-
-// when the botton is clicked for salary range
+// Search by salary range
 const salaryRangeBtn = document.querySelector('#salary-salary-btn');
-salaryRangeBtn.onclick = function (){
-    console.log("Salary range button clicked");
+salaryRangeBtn.addEventListener('click', function () {
     const minSalaryInput = document.querySelector('#min-salary-input');
-    const minSalary = minSalaryInput.value;
-    minSalaryInput.value = "";
-
     const maxSalaryInput = document.querySelector('#max-salary-input');
-    const maxSalary = maxSalaryInput.value;
+
+    const minSalary = minSalaryInput.value.trim();
+    const maxSalary = maxSalaryInput.value.trim();
+
+    if (minSalary && maxSalary) {
+        console.log("Searching for salary range:", minSalary, maxSalary);
+        fetchAndLoad(`http://localhost:5050/search-by-salary/${minSalary}/${maxSalary}`);
+    } else {
+        console.log("Both minimum and maximum salary are required.");
+    }
+
+    minSalaryInput.value = "";
     maxSalaryInput.value = "";
+});
 
-    fetch('http://localhost:5050/searchBySalary/' + minSalary + '/' + maxSalary)
-   .then(response => response.json())
-   .then(data => loadHTMLTable(data['data']));
-    console.log("Salary range button clicked");
-}
+// Search by age range
+const ageRangeBtn = document.querySelector('#age-range-btn');
+ageRangeBtn.addEventListener('click', function () {
+    const minAgeInput = document.querySelector('#min-age-input');
+    const maxAgeInput = document.querySelector('#max-age-input');
 
+    const minAge = minAgeInput.value.trim();
+    const maxAge = maxAgeInput.value.trim();
+
+    if (minAge && maxAge) {
+        console.log("Searching for age range:", minAge, maxAge);
+        fetchAndLoad(`http://localhost:5050/search-by-age/${minAge}/${maxAge}`);
+    } else {
+        console.log("Both minimum and maximum age are required.");
+    }
+
+    minAgeInput.value = "";
+    maxAgeInput.value = "";
+});
+
+// Search users registered after a specific username
+const searchAfterRegBtn = document.querySelector('#search-after-reg-btn');
+searchAfterRegBtn.addEventListener('click', function () {
+    const usernameInput = document.querySelector('#username-input');
+    const username = usernameInput.value.trim();
+
+    if (username) {
+        console.log("Searching for users registered after:", username);
+        fetchAndLoad(`http://localhost:5050/search-by-registered-after/${username}`);
+    } else {
+        console.log("Username is required.");
+    }
+
+    usernameInput.value = "";
+});
+
+// Search users registered on the same day
+const searchSamedayRegBtn = document.querySelector('#search-sameday-reg-btn');
+searchSamedayRegBtn.addEventListener('click', function () {
+    const usernameInput = document.querySelector('#username-input');
+    const username = usernameInput.value.trim();
+
+    if (username) {
+        console.log("Searching for users registered on the same day as:", username);
+        fetchAndLoad(`http://localhost:5050/search-by-users/${username}`);
+    } else {
+        console.log("Username is required.");
+    }
+
+    usernameInput.value = "";
+});
+
+// Search users who never signed in
+const searchNeverSignedInBtn = document.querySelector('#search-never-signedin-btn');
+searchNeverSignedInBtn.addEventListener('click', function () {
+    console.log("Searching for users who never signed in.");
+    fetchAndLoad('http://localhost:5050/search-users-never-signed-in');
+});
+
+// Search users who registered today
+const searchNewRegBtn = document.querySelector('#search-new-reg-btn');
+searchNewRegBtn.addEventListener('click', function () {
+    console.log("Searching for users who registered today.");
+    fetchAndLoad('http://localhost:5050/search-users-registered-today');
+});
 
 
 /*const addBtn = document.querySelector('#add-user-btn');
