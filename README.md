@@ -56,16 +56,16 @@ The pages should load correctly if the server is running and XAMPP is properly s
 
 ## Features
 
-User Registration: New users can create an account by entering their username, password, first name, last name, salary, and age.
-**User Sign-In:** Registered users can log in using their username and password.
-**Search Users by First and/or Last Name:** Users can search for others based on their first or last names.
-**Search Users by User ID:** Allows searching users using their unique user ID.
-**Search Users by Salary Range:** Query users whose salary falls between specified values (X and Y).
-**Search Users by Age Range:** Find users whose ages fall within a defined range (X and Y).
-**Search Users Who Registered After a Specific User:** Identify users who registered after a specified user by their user ID.
-**Search Users Who Never Signed In:** Generate a list of users who have registered but never logged in.
-**Search Users Registered on the Same Day as a Specific User:** Find users who registered on the same day as a given user (e.g., John).
-**Return Users Who Registered Today:** Fetch all users who registered on the current date.
+1. User Registration: New users can create an account by entering their username, password, first name, last name, salary, and age.
+2. **User Sign-In:** Registered users can log in using their username and password.
+3. **Search Users by First and/or Last Name:** Users can search for others based on their first or last names.
+4. **Search Users by User ID:** Allows searching users using their unique user ID.
+5. **Search Users by Salary Range:** Query users whose salary falls between specified values (X and Y).
+6. **Search Users by Age Range:** Find users whose ages fall within a defined range (X and Y).
+7. **Search Users Who Registered After a Specific User:** Identify users who registered after a specified user by their user ID.
+8. **Search Users Who Never Signed In:** Generate a list of users who have registered but never logged in.
+9. **Search Users Registered on the Same Day as a Specific User:** Find users who registered on the same day as a given user (e.g., John).
+10. **Return Users Who Registered Today:** Fetch all users who registered on the current date.
 
 ## Technologies Used
 
