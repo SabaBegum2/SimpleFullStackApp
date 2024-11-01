@@ -38,7 +38,7 @@ HOST=localhost
 5. Start thr backend server:
 npm start
 
-Frontend Setup
+## Frontend Setup:
 Open the following URLs in your web browser:
 Login Page: http://127.0.0.1:5501/Client/LoginPage.html
 Registration Page: http://127.0.0.1:5501/Client/RegistrationPage.html
@@ -58,7 +58,7 @@ Search Users Registered on the Same Day as a Specific User: Find users who regis
 Return Users Who Registered Today: Fetch all users who registered on the current date.
 Technologies Used
 
-Backend:
+## Backend:
 Node.js with Express for server-side logic
 MySQL for database management
 CORS for handling cross-origin requests
@@ -70,7 +70,7 @@ Development Tools:
 XAMPP for running the local MySQL database
 npm for package management
 
-Database Schema
+## Database Schema
 
 The database schema consists of a Users table created with the following SQL command:
 CREATE TABLE Users (
@@ -84,7 +84,7 @@ CREATE TABLE Users (
     signintime DATETIME
 );
 
-How to Use
+## How to Use
 
 Start the XAMPP server:
 Ensure that Apache and MySQL are running in the XAMPP control panel.
