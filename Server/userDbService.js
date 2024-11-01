@@ -262,8 +262,8 @@ async searchNeverSignedIn() {
    //const emptyDate = "";
    try {
        const response = await new Promise((resolve, reject) => {
-           const query = "SELECT * FROM Users WHERE signintime = emptyDate;";
-           connection.query(query, [emptyDate], (err, results) => {
+           const query = "SELECT * FROM Users WHERE signintime IS NULL;";
+           connection.query(query, (err, results) => {
                if (err) reject(new Error(err.message));
                else resolve(results);
            });
