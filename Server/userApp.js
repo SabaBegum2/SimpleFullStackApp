@@ -47,9 +47,6 @@ app.post('/register', async(request, response) => {
         response.status(201).json({ message: "User registration successful!", data: result });
     }
     catch (error) {
-        //.then(data => response.json({data: data})) // return the newly added row to frontend, which will show it
-        //.then(data => console.log({data: data})) // debug first before return by response
-        //.catch(err => console.log(err));
         console.error(error);
         response.status(500).json({ error: "An error occurred while registering user." });
     }

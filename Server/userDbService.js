@@ -46,48 +46,6 @@ class userDbService{
       return instance? instance: new userDbService();
    }
     
-   // static postUserDbServiceInstance(){
-   //    return instance? instance: new userDbService();
-   // }
-
-   /*
-     This code defines an asynchronous function getAllData using the async/await syntax. 
-     The purpose of this function is to retrieve all data from a database table named 
-     "Users" using a SQL query.
-
-     Let's break down the code step by step:
-         - async getAllData() {: This line declares an asynchronous function named getAllData.
-
-         - try {: The try block is used to wrap the code that might throw an exception 
-            If any errors occur within the try block, they can be caught and handled in 
-            the catch block.
-
-         - const response = await new Promise((resolve, reject) => { ... });: 
-            This line uses the await keyword to pause the execution of the function 
-            until the Promise is resolved. Inside the await, there is a new Promise 
-            being created that represents the asynchronous operation of querying the 
-            database. resolve is called when the database query is successful, 
-            and it passes the query results. reject is called if there is an error 
-            during the query, and it passes an Error object with an error message.
-
-         - The connection.query method is used to execute the SQL query on the database.
-
-         - return response;: If the database query is successful, the function returns 
-           the response, which contains the results of the query.
-
-        - catch (error) {: The catch block is executed if an error occurs anywhere in 
-           the try block. It logs the error to the console.
-
-        - console.log(error);: This line logs the error to the console.   
-    }: Closes the catch block.
-
-    In summary, this function performs an asynchronous database query using await and a 
-   Promise to fetch all data from the "Users" table. If the query is successful, 
-   it returns the results; otherwise, it catches and logs any errors that occur 
-   during the process. It's important to note that the await keyword is used here 
-   to work with the asynchronous nature of the connection.query method, allowing 
-   the function to pause until the query is completed.
-   */
     async getAllData(){
         try{
            // use await to call an asynchronous function
@@ -102,9 +60,6 @@ class userDbService{
                   );
                }
             );
-        
-            // console.log("userDbServices.js: search result:");
-            // console.log(response);  // for debugging to see the result of select
             return response;
 
         }  catch(error){
@@ -335,137 +290,6 @@ async searchRegToday() {
       console.log(error);
    }
 }
-
-// //search users who registered after john registered where john is the userid
-// async searchAfterJohn(johnId) {
-//    try {
-//        const query = "SELECT * FROM Users WHERE registerday > (SELECT registerday FROM Users WHERE username =?) ORDER BY registerday ASC;";
-//        const response = await new Promise((resolve, reject) => {
-//            connection.query(query, [johnId], (err, results) => {
-//                if (err) reject(new Error(err.message));
-//                else resolve(results);
-//            });
-//        });
-//        return response;
-//    } catch (error) {
-//        console.error("Error in searchAfterJohn:", error);
-//        throw error;
-//    }
-// }
-
-   // //search users who never signed in
-   // async searchByNeverLoggedIn(){
-   //       try{
-   //          // use await to call an asynchronous function
-   //          const response = await new Promise((resolve, reject) => 
-   //             {
-   //                const query = "SELECT * FROM Users WHERE signintime = '0000-00-00 00:00:00';";
-   //                connection.query(query, (err, results) => {
-   //                         if(err) reject(new Error(err.message));
-   //                         else resolve(results);
-   //                });
-   //             }
-   //             );
-
-   //             // console.log("userDbServices.js: search result:");
-   //             // console.log(response);  // for debugging to see the result of select
-   //             return response;
-
-   //       }  catch(error){
-   //          console.log(error);
-   //       }
-   //    }
-
-   // //search users who registered on the same day that john registered
-   // async searchBySameDayAsJohn(johnId){
-   //      try{
-   //         // use await to call an asynchronous function
-   //         const response = await new Promise((resolve, reject) => 
-   //            {
-   //               const query = "SELECT * FROM Users WHERE DATEDIFF(registerday, (SELECT registerday FROM Users WHERE username =?)) = 0 AND username!=?;";
-   //               connection.query(query, [johnId, johnId], (err, results) => {
-   //                       if(err) reject(new Error(err.message));
-   //                       else resolve(results);
-   //               });
-   //            }
-   //          );
-
-   //          // console.log("userDbServices.js: search result:");
-   //          // console.log(response);  // for debugging to see the result of select
-   //          return response;
-
-   //      }  catch(error){
-   //         console.log(error);
-   //      }
-   // }
-
-
-   // async searchByRegisteredToday() {
-   //    const today = new Date();
-      
-   //    // Get the start and end of today in the correct format
-   //    const startOfDay = new Date(today.setHours(0, 0, 0, 0)); // 00:00:00
-   //    const endOfDay = new Date(today.setHours(23, 59, 59, 999)); // 23:59:59
-      
-   //    //const query = "SELECT * FROM Users WHERE registerday >= $1 AND registerday <= $2";
-   //    try {
-   //    //const response = await new Promise((resolve, reject) =>
-   //       //{
-   //       const query = "SELECT * FROM Users WHERE registerday >= $1 AND registerday <= $2";
-   //        const result = await pool.query(query, [startOfDay, endOfDay]);
-   //        return result.rows; // Return the array of users registered today
-   //    } catch (error) {
-   //        console.error('Error executing query:', error); // Log the query error
-   //        throw error; // Rethrow for handling in app.js
-   //    }
-   // }
-
-
-
-
-   //return users who registered today
-   // async searchByToday(){
-   //      try{
-   //         // use await to call an asynchronous function
-   //         const response = await new Promise((resolve, reject) => 
-   //            {
-   //               const query = "SELECT * FROM Users WHERE DAYOFYEAR(registerday) = DAYOFYEAR(CURDATE());";
-   //               connection.query(query, (err, results) => {
-   //                       if(err) reject(new Error(err.message));
-   //                       else resolve(results);
-   //               });
-   //            }
-   //          );
-
-   //          // console.log("userDbServices.js: search result:");
-   //          // console.log(response);  // for debugging to see the result of select
-   //          return response;
-
-   //      }  catch(error){
-   //         console.log(error);
-   //      }
-   // }
-
-
-   //return all the users who registered today
-   // Return all the users who registered today
-// async searchByRegisteredToday() {
-//    const today = new Date();
-   
-//    // Get the start and end of today in the correct format
-//    const startOfDay = new Date(today.setHours(0, 0, 0, 0)); // 00:00:00
-//    const endOfDay = new Date(today.setHours(23, 59, 59, 999)); // 23:59:59
-
-//    const query = 'SELECT * FROM Users WHERE registerday >= $1 AND registerday <= $2';
-//    try {
-//        const result = await pool.query(query, [startOfDay, endOfDay]);
-//        return result.rows; // Return the array of users registered today
-//    } catch (error) {
-//        console.error('Error executing query:', error); // Log the query error
-//        throw error; // Rethrow for handling in app.js
-//    }
-// }
-
 
 
    async searchByUsernameAndPassword(username, password){
