@@ -26,19 +26,24 @@ npm init -y
 3. Install required packages
 npm install express mysql cors nodemon dotenv
 
-4. Configure the environment variables:
-Create a file named .env in the Backend directory and add the following:
-PORT=5050
-USER=root
-PASSWORD=
-DATABASE=web_app
-DB_PORT=3306
-HOST=localhost
+## Configure Environment Variables
 
-5. Start thr backend server:
-npm start
+4. Create a file named `.env` in the `Backend` directory and add the following:
+
+   ```bash
+   PORT=5050
+   USER=root
+   PASSWORD=
+   DATABASE=web_app
+   DB_PORT=3306
+   HOST=localhost
+
+5. Start the backend server:
+   ```bash
+   npm start
 
 ## Frontend Setup:
+
 Open the following URLs in your web browser:
 
 Login Page: http://127.0.0.1:5501/Client/LoginPage.html
@@ -52,26 +57,27 @@ The pages should load correctly if the server is running and XAMPP is properly s
 ## Features
 
 User Registration: New users can create an account by entering their username, password, first name, last name, salary, and age.
-User Sign-In: Registered users can log in using their username and password.
-Search Users by First and/or Last Name: Users can search for others based on their first or last names.
-Search Users by User ID: Allows searching users using their unique user ID.
-Search Users by Salary Range: Query users whose salary falls between specified values (X and Y).
-Search Users by Age Range: Find users whose ages fall within a defined range (X and Y).
-Search Users Who Registered After a Specific User: Identify users who registered after a specified user by their user ID.
-Search Users Who Never Signed In: Generate a list of users who have registered but never logged in.
-Search Users Registered on the Same Day as a Specific User: Find users who registered on the same day as a given user (e.g., John).
-Return Users Who Registered Today: Fetch all users who registered on the current date.
-Technologies Used
+**User Sign-In:** Registered users can log in using their username and password.
+**Search Users by First and/or Last Name:** Users can search for others based on their first or last names.
+**Search Users by User ID:** Allows searching users using their unique user ID.
+**Search Users by Salary Range:** Query users whose salary falls between specified values (X and Y).
+**Search Users by Age Range:** Find users whose ages fall within a defined range (X and Y).
+**Search Users Who Registered After a Specific User:** Identify users who registered after a specified user by their user ID.
+**Search Users Who Never Signed In:** Generate a list of users who have registered but never logged in.
+**Search Users Registered on the Same Day as a Specific User:** Find users who registered on the same day as a given user (e.g., John).
+**Return Users Who Registered Today:** Fetch all users who registered on the current date.
 
-## Backend:
+## Technologies Used
+
+### Backend:
 Node.js with Express for server-side logic
 MySQL for database management
 CORS for handling cross-origin requests
 dotenv for managing environment variables
-Frontend:
+## Frontend:
 HTML/CSS for user interface
 JavaScript for client-side interactions
-Development Tools:
+## Development Tools:
 XAMPP for running the local MySQL database
 npm for package management
 
