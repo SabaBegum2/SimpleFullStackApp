@@ -16,19 +16,13 @@ document.addEventListener('DOMContentLoaded', function () {
             registrationForm.addEventListener("submit", submitRegistrationForm);
             submitRegistrationForm();  // Setup registration form event
     }
-
+    else {
     fetch('http://localhost:5050/getall')     
     .then(response => response.json())
     .then(data => loadHTMLTable(data['data']));
-
+    }
 });
 
-// document.addEventListener('DOMContentLoaded', function () {
-//     fetch('http://localhost:5050/getall')     
-//     .then(response => response.json())
-//     .then(data => loadHTMLTable(data['data']));
-
-// });
 
 //// PURPOSE: LOGIN FORM
 function submitLoginForm(event) {
@@ -151,11 +145,11 @@ function submitRegistrationForm(event) {
     //}
 }
 
-
+// PURPOSE: SEARCH DATABASE FOR VALUES
 // when the searchBtn is clicked
 const searchBtn =  document.querySelector('#search-btn');
 searchBtn.onclick = function (){
-    console.log("Search button clicked for firstname");
+    console.log("Search button clicked for first name");
     const searchInput = document.querySelector('#search-input');
     console.log("Search input: ", searchInput);
     const searchValue = searchInput.value;
@@ -165,13 +159,13 @@ searchBtn.onclick = function (){
     fetch('http://localhost:5050/search/' + searchValue)
     .then(response => response.json())
     .then(data => loadHTMLTable(data['data']));
-    console.log("Search button clicked for firstname");
+    console.log("Search button clicked for first name");
 }
 
 // when the searchBtn is clicked
 const searchLastnameBtn =  document.querySelector('#search-lastname-btn');
 searchLastnameBtn.onclick = function (){
-    console.log("Search button clicked for lastname");
+    console.log("Search button clicked for last name");
     const searchInput = document.querySelector('#search-lastname-input');
     console.log("Search input: ", searchInput);
     const searchValue = searchInput.value;
@@ -181,32 +175,121 @@ searchLastnameBtn.onclick = function (){
     fetch('http://localhost:5050/searchLastname/' + searchValue)
     .then(response => response.json())
     .then(data => loadHTMLTable(data['data']));
-    console.log("Search button clicked for lastname");
+    console.log("Search button clicked for last name");
 }
 
 
+// when the searchBtn is clicked
+const searchFullNameBtn =  document.querySelector('#search-full-name-btn');
+searchFullNameBtn.onclick = function (){
+    const firstInput = document.querySelector('#firstname-input');
+    const firstname = firstInput.value;
+    firstInput.value = "";
 
-/*const addBtn = document.querySelector('#add-user-btn');
-addBtn.onclick = function (){
-    const usernameInput = document.querySelector('#username-input');
+    const lastInput = document.querySelector('#lastname-input');
+    const lastname = lastInput.value;
+    lastInput.value = "";
+
+    fetch(`http://localhost:5050/search/fullname/${firstname}/${lastname}`)
+    .then(response => response.json())
+    .then(data => loadHTMLTable(data['data']));
+}
+
+
+// When Username search button is clicked
+const searchUsernameBtn =  document.querySelector('#search-username-btn');
+searchUsernameBtn.onclick = function (){
+    console.log("Search button clicked for username");
+    const searchInput = document.querySelector('#search-username-input');
+    console.log("Search input: ", searchInput);
+    const searchValue = searchInput.value;
+    console.log("Search value: ", searchValue);
+    searchInput.value = "";
+
+    fetch('http://localhost:5050/searchUsername/' + searchValue)
+    .then(response => response.json())
+    .then(data => loadHTMLTable(data['data']));
+    console.log("Search button clicked for last name");
+}
+
+
+// When Salary search button is clicked
+const searchSalaryBtn =  document.querySelector('#search-salary-btn');
+searchSalaryBtn.onclick = function (){
+    const minInput = document.querySelector('#min-salary-input');
+    const minSalary = minInput.value;
+    minInput.value = "";
+
+    const maxInput = document.querySelector('#max-salary-input');
+    const maxSalary = maxInput.value;
+    maxInput.value = "";
+
+    fetch(`http://localhost:5050/search/salary/${minSalary}/${maxSalary}`)
+    .then(response => response.json())
+    .then(data => loadHTMLTable(data['data']));
+}
+
+
+// When Salary search button is clicked
+const searchAgeBtn =  document.querySelector('#search-age-btn');
+searchAgeBtn.onclick = function (){
+    const minInput = document.querySelector('#min-age-input');
+    const minAge = minInput.value;
+    minInput.value = "";
+
+    const maxInput = document.querySelector('#max-age-input');
+    const maxAge = maxInput.value;
+    maxInput.value = "";
+
+    fetch(`http://localhost:5050/search/age/${minAge}/${maxAge}`)
+    .then(response => response.json())
+    .then(data => loadHTMLTable(data['data']));
+}
+
+
+// Search registered after a specific user
+const searchRegAfterUserBtn = document.querySelector('#search-reg-after-btn');
+searchRegAfterUserBtn.onclick = function () {
+    const usernameInput = document.querySelector('#after-reg-input');
     const username = usernameInput.value;
     usernameInput.value = "";
 
-    fetch('http://localhost:5050/insert', {
-        headers: {
-            'Content-type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify({username: username})
-    })
+    fetch(`http://localhost:5050/search/regAfter/${username}`)
     .then(response => response.json())
-    .then(data => insertRowIntoTable(data['data']));
-}*/
-
-//const searchBtn = document.querySelector('searchInput');
+    .then(data => loadHTMLTable(data['data']));
+}
 
 
-// PURPOSE: SEARCH DATABASE FOR VALUES
+// Search registered on same day as a specific user
+const searchRegSameDayAsUserBtn = document.querySelector('#search-same-day-reg-btn');
+searchRegSameDayAsUserBtn.onclick = function () {
+    const usernameInput = document.querySelector('#same-day-reg-input');
+    const username = usernameInput.value;
+    usernameInput.value = "";
+
+    fetch(`http://localhost:5050/search/regSameDay/${username}`)
+    .then(response => response.json())
+    .then(data => loadHTMLTable(data['data']));
+}
+
+
+// Search users who never signed in
+const searchNeverSignedInBtn = document.querySelector('#search-never-signedin-btn');
+searchNeverSignedInBtn.onclick = function () {
+    fetch(`http://localhost:5050/search/neverSignedIn`)
+    .then(response => response.json())
+    .then(data => loadHTMLTable(data['data']));
+}
+
+// Search users who never signed in
+const searchRegToday = document.querySelector('#search-new-reg-btn');
+searchRegToday.onclick = function () {
+
+    fetch(`http://localhost:5050/search/regToday`)
+    .then(response => response.json())
+    .then(data => loadHTMLTable(data['data']));
+}
+
 // When the searchBtn is clicked
 //function submitSearchDirectory(event) {
 
@@ -567,90 +650,7 @@ searchByTodayRegisteredBtn.onclick = function () {
 };
 */
 
-//let rowToDelete; 
 
-// when the delete button is clicked, since it is not part of the DOM tree, we need to do it differently
-// document.querySelector('table tbody').addEventListener('click', 
-//       function(event){
-//         if(event.target.className === "delete-row-btn"){
-
-//             deleteRowByUsername(event.target.dataset.username);   
-//             rowToDelete = event.target.parentNode.parentNode.rowIndex;    
-//             debug("delete which one:");
-//             debug(rowToDelete);
-//         }   
-//         if(event.target.className === "edit-row-btn"){
-//             showEditRowInterface(event.target.dataset.username); // display the edit row interface
-//         }
-//       }
-// );
-
-// function deleteRowByusername(username){
-//     // debug(username);
-//     fetch('http://localhost:5050/delete/' + username,
-//        { 
-//         method: 'DELETE'
-//        }
-//     )
-//     .then(response => response.json())
-//     .then(
-//          data => {
-//              if(data.success){
-//                 document.getElementByusername("table").deleteRow(rowToDelete);
-//                 // location.reload();
-//              }
-//          }
-//     );
-// }
-
-// let usernameToUpdate = 0;
-
-// function showEditRowInterface(username){
-//     debug("username clicked: ");
-//     debug(username);
-//     document.querySelector('#update-username-input').value = ""; // clear this field
-//     const updateSection = document.querySelector("#update-row");  
-//     updateSection.hidden = false;
-//     // we assign the username to the update button as its username attribute value
-//     usernameToUpdate = username;
-//     debug("username set!");
-//     debug(usernameToUpdate+"");
-// }
-
-
-// when the update button on the update interface is clicked
-// const updateBtn = document.querySelector('#update-row-btn');
-
-// updateBtn.onclick = function(){
-//     debug("update clicked");
-//     debug("Got the username: ");
-//     debug(updateBtn.value);
-    
-//     const updatedUsernameInput = document.querySelector('#update-username-input');
-
-//     fetch('http://localhost:5050/update',
-//           {
-//             headers: {
-//                 'Content-type': 'application/json'
-//             },
-//             method: 'PATCH',
-//             body: JSON.stringify(
-//                   {
-//                     username: usernameToUpdate,
-//                     username: updatedUsernameInput.value
-//                   }
-//             )
-//           }
-//     ) 
-//     .then(response => response.json())
-//     .then(data => {
-//         if(data.success){
-//             location.reload();
-//         }
-//         else 
-//            debug("No update occurred");
-//     })
-// }
 
 
 // this function is used for debugging only, and should be deleted afterwards
@@ -684,7 +684,8 @@ function insertRowIntoTable(data){
    for(var key in data){                // iterating over the each property key of an object data
       if(data.hasOwnProperty(key)){     // key is a direct property for data
             if(key === 'registerday'){  // the property is 'registerday'
-                data[key] = new Date(data[key]).toLocaleString(); // format to javascript string
+                //data[key] = new Date(data[key]).toLocaleString(); // format to javascript string
+                data[key] = new Date(data[key]).toISOString().split('T')[0];
             }
             else if (key === 'signintime'){
                 data[key] = new Date(data[key]).toLocaleString(); // format to javascript string
@@ -756,8 +757,8 @@ function loadHTMLTable(data){
          tableHtml +=`<td>${lastname}</td>`;
          tableHtml +=`<td>${salary}</td>`;
          tableHtml +=`<td>${age}</td>`;
-         tableHtml +=`<td>${new Date(registerday).toLocaleString()}</td>`;
-         tableHtml +=`<td>${new Date(signintime).toLocaleString()}</td>`;
+         tableHtml +=`<td>${new Date(registerday).toISOString().split('T')[0]}</td>`;
+         tableHtml +=`<td>${signintime ? new Date(signintime).toLocaleString() : "N/A" }</td>`;
          tableHtml += "</tr>";
     });
 

@@ -115,10 +115,10 @@ class userDbService{
 
    async registerNewUser(username, password, firstname, lastname, salary, age){
          try {
-            const registerDate = new Date();
-            const timeLoggedIn = new Date();    // TODO: Change this to null for final version
-            // use await to call an asynchronous function
-            //const hashedPassword = bcrypt.hash(password, 10);
+            const registerDate = new Date().toISOString().split('T')[0];
+            console.log("registerDate: ", registerDate);
+            let timeLoggedIn = new Date('0000-00-00 00:00:00.00');
+            //let timeLoggedIn = null;
             const insertProfile = await new Promise((resolve, reject) => 
             {
                const query = "INSERT INTO Users (username, password, firstname, lastname, salary, age, registerday, signintime) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
@@ -128,7 +128,6 @@ class userDbService{
                });
             });
             console.log(insertProfile);  // for debugging to see the result of select
-            //res.status(201).json({ message: 'User registered successfully!', data: results.insertProfile });
             return{
                username: username,
                password: password,
@@ -136,33 +135,14 @@ class userDbService{
                lastname: lastname,
                salary: salary,
                age: age,
-               registerDate: registerDate,
-               timeLoggedIn: timeLoggedIn
+               registerday: registerDate,
+               signintime: timeLoggedIn
             }
          } catch(error){
                console.log(error);
                throw error;
          }
    }
-
-   // // Search users by user ID
-   // async searchByAttribute(attribute, key) {
-   //    try {
-   //       // ?? is used to insert dynamic values into the query
-   //       // ? is a placeholder for the actual value
-   //       const query = "SELECT * FROM Users WHERE ?? = ?;";
-   //       const response = await new Promise((resolve, reject) => {
-   //          connection.query(query, [attribute, key], (err, results) => {
-   //                if (err) reject(new Error(err.message));
-   //                else resolve(results);
-   //          });
-   //       });
-   //       return response;
-   //    } catch (error) {
-   //       console.error("Error in searchByAttribute:", error);
-   //       throw error;
-   //    }
-   // }
 
 
    async searchByUsername(username){
@@ -201,7 +181,7 @@ class userDbService{
       }
    }
 
-   // Search users by first name
+   // Search users by last name
    async searchByLastname(lastname) {
       try {
          const response = await new Promise((resolve, reject) => {
@@ -217,191 +197,229 @@ class userDbService{
       }
    }
 
-   // Search users by first and/or last name
-   async searchByFirstAndLastName(firstname, lastname) {
+    // Search users by first and last name
+    async searchByFirstAndLastName(firstname, lastname) {
       try {
           const response = await new Promise((resolve, reject) => {
-            const query = "SELECT * FROM Users WHERE firstname = ? AND lastname = ?;";
-            connection.query(query, [firstname, lastname], (err, results) => {
+              const query = "SELECT * FROM Users WHERE firstname LIKE ? AND lastname LIKE ?;";
+              connection.query(query, [`%${firstname}%`, `%${lastname}%`], (err, results) => {
+                  if (err) reject(new Error(err.message));
+                  else resolve(results);
+              });
+          });
+          return response;
+      } catch (error) {
+          console.log(error);
+      }
+  }
+
+   // Search users by username
+   async searchByUsername(username) {
+      try {
+         const response = await new Promise((resolve, reject) => {
+            const query = "SELECT * FROM Users WHERE username LIKE ?;";
+            connection.query(query, [username], (err, results) => {
                if (err) reject(new Error(err.message));
                else resolve(results);
             });
          });
          return response;
       } catch (error) {
-          console.error("Error in searchByFirstAndLastName:", error);
-          throw error; // Ensure the error is propagated
+         console.error("Error in searchByUsername:", error);
       }
    }
 
 
-// Search users by salary range (between x and y)
+// Search users by salary range
 async searchBySalary(minSalary, maxSalary) {
    try {
-      const response = await new Promise((resolve, reject) =>
-      {
-         const query = "SELECT * FROM Users WHERE salary BETWEEN ? AND ?;";
-         connection.query(query, [minSalary || 0, maxSalary || Number.MAX_SAFE_INTEGER], (err, results) => {
-            if (err) reject(new Error(err.message));
-            else resolve(results);
-      });
-   });
-      console.log(response);  // for debugging to see the result of select
-      return response ;
-
-   }  catch (error) {
-         console.error("Error in searchBySalary:", error);
-         throw error;
-   }
-}
-
-// Search users by age range (between x and y)
-async searchByAge(minAge, maxAge) {
-   try {
        const response = await new Promise((resolve, reject) => {
-         const query = "SELECT * FROM Users WHERE age BETWEEN ? AND ?;";
-            connection.query(query, [minAge || 0, maxAge || 200], (err, results) => {
-               if (err) reject(new Error(err.message));
-               else resolve(results);
-            });
-         }
-      );
-      console.log(response);  // for debugging to see the result of select
-      return response;
-
-   } catch (error) {
-      console.error("Error in searchByAgeRange:", error);
-      throw error;
-   }
-}
-
-// Search users by age range (between x and y)
-async searchByRegistrationDate(username, registerday) {
-   try {
-       const response = await new Promise((resolve, reject) => {
-         const query = "SELECT registerDate FROM Users WHERE username = ? AND registerday < username.register;";
-            connection.query(query, [minAge || 0, maxAge || 200], (err, results) => {
-               if (err) reject(new Error(err.message));
-               else resolve(results);
-            });
-         }
-      );
-      console.log(response);  // for debugging to see the result of select
-      return response;
-
-   } catch (error) {
-      console.error("Error in searchByRegistrationRange:", error);
-      throw error;
-   }
-}
-
-//search users who registered after john registered where john is the userid
-async searchAfterJohn(johnId) {
-   try {
-       const query = "SELECT * FROM Users WHERE registerday > (SELECT registerday FROM Users WHERE username =?) ORDER BY registerday ASC;";
-       const response = await new Promise((resolve, reject) => {
-           connection.query(query, [johnId], (err, results) => {
+           const query = "SELECT * FROM Users WHERE salary BETWEEN ? AND ?;";
+           connection.query(query, [minSalary, maxSalary], (err, results) => {
                if (err) reject(new Error(err.message));
                else resolve(results);
            });
        });
        return response;
    } catch (error) {
-       console.error("Error in searchAfterJohn:", error);
-       throw error;
+       console.log(error);
    }
 }
 
-   //search users who never signed in
-   async searchByNeverLoggedIn(){
-         try{
-            // use await to call an asynchronous function
-            const response = await new Promise((resolve, reject) => 
-               {
-                  const query = "SELECT * FROM Users WHERE signintime = '0000-00-00 00:00:00';";
-                  connection.query(query, (err, results) => {
-                           if(err) reject(new Error(err.message));
-                           else resolve(results);
-                  });
-               }
-               );
+// Search users by age range
+async searchByAge(minAge, maxAge) {
+   try {
+       const response = await new Promise((resolve, reject) => {
+           const query = "SELECT * FROM Users WHERE age BETWEEN ? AND ?;";
+           connection.query(query, [minAge, maxAge], (err, results) => {
+               if (err) reject(new Error(err.message));
+               else resolve(results);
+           });
+       });
+       return response;
+   } catch (error) {
+       console.log(error);
+   }
+}
 
-               // console.log("userDbServices.js: search result:");
-               // console.log(response);  // for debugging to see the result of select
-               return response;
-
-         }  catch(error){
-            console.log(error);
+// Search users registered after specific user
+async searchAfterRegDate(username) {
+   try {
+       const response = await new Promise((resolve, reject) => {
+         const query = "SELECT * FROM Users WHERE registerday > (SELECT registerday FROM Users WHERE username = ?);";
+            connection.query(query, [username], (err, results) => {
+               if (err) reject(new Error(err.message));
+               else resolve(results);
+            });
          }
-      }
-
-   //search users who registered on the same day that john registered
-   async searchBySameDayAsJohn(johnId){
-        try{
-           // use await to call an asynchronous function
-           const response = await new Promise((resolve, reject) => 
-              {
-                 const query = "SELECT * FROM Users WHERE DATEDIFF(registerday, (SELECT registerday FROM Users WHERE username =?)) = 0 AND username!=?;";
-                 connection.query(query, [johnId, johnId], (err, results) => {
-                         if(err) reject(new Error(err.message));
-                         else resolve(results);
-                 });
-              }
-            );
-
-            // console.log("userDbServices.js: search result:");
-            // console.log(response);  // for debugging to see the result of select
-            return response;
-
-        }  catch(error){
-           console.log(error);
-        }
+      );
+      console.log(response);  // for debugging to see the result of select
+      return response;
+   } catch (error) {
+      console.error(error);
    }
+}
 
-
-   async searchByRegisteredToday() {
-      const today = new Date();
-      
-      // Get the start and end of today in the correct format
-      const startOfDay = new Date(today.setHours(0, 0, 0, 0)); // 00:00:00
-      const endOfDay = new Date(today.setHours(23, 59, 59, 999)); // 23:59:59
-      
-      //const query = "SELECT * FROM Users WHERE registerday >= $1 AND registerday <= $2";
-      try {
-      //const response = await new Promise((resolve, reject) =>
-         //{
-         const query = "SELECT * FROM Users WHERE registerday >= $1 AND registerday <= $2";
-          const result = await pool.query(query, [startOfDay, endOfDay]);
-          return result.rows; // Return the array of users registered today
-      } catch (error) {
-          console.error('Error executing query:', error); // Log the query error
-          throw error; // Rethrow for handling in app.js
-      }
+// Search users registered on same day as user
+async searchSameDayRegDate(username) {
+   try {
+       const response = await new Promise((resolve, reject) => {
+         const query = "SELECT * FROM Users WHERE registerday = (SELECT registerday FROM Users WHERE username = ?);";
+            connection.query(query, [username], (err, results) => {
+               if (err) reject(new Error(err.message));
+               else resolve(results);
+            });
+         }
+      );
+      console.log(response);  // for debugging to see the result of select
+      return response;
+   } catch (error) {
+      console.error(error);
    }
+}
+
+// Search users who never signed in
+async searchNeverSignedIn() {
+   //const emptyDate = '0000-00-00 00:00:00.00';
+   let emptyDate = new Date('0000-00-00 00:00:00.00');
+
+   //let emptyDate = 'null';
+   //const emptyDate = "";
+   try {
+       const response = await new Promise((resolve, reject) => {
+           const query = "SELECT * FROM Users WHERE signintime = emptyDate;";
+           connection.query(query, [emptyDate], (err, results) => {
+               if (err) reject(new Error(err.message));
+               else resolve(results);
+           });
+       });
+       return response;
+   } catch (error) {
+       console.log(error);
+   }
+}
+
+// Search users who registered today
+async searchRegToday() {
+   try {
+      const today = new Date().toISOString().split('T')[0];    // Get today's date in YYYY-MM-DD format
+      const response = await new Promise((resolve, reject) => {
+         const query = "SELECT * FROM Users WHERE registerday = ?;";
+         connection.query(query, [today], (err, results) => {
+            if (err) reject(new Error(err.message));
+            else resolve(results);
+         });
+      });
+      return response;
+   } catch (error) {
+      console.log(error);
+   }
+}
+
+// //search users who registered after john registered where john is the userid
+// async searchAfterJohn(johnId) {
+//    try {
+//        const query = "SELECT * FROM Users WHERE registerday > (SELECT registerday FROM Users WHERE username =?) ORDER BY registerday ASC;";
+//        const response = await new Promise((resolve, reject) => {
+//            connection.query(query, [johnId], (err, results) => {
+//                if (err) reject(new Error(err.message));
+//                else resolve(results);
+//            });
+//        });
+//        return response;
+//    } catch (error) {
+//        console.error("Error in searchAfterJohn:", error);
+//        throw error;
+//    }
+// }
+
+   // //search users who never signed in
+   // async searchByNeverLoggedIn(){
+   //       try{
+   //          // use await to call an asynchronous function
+   //          const response = await new Promise((resolve, reject) => 
+   //             {
+   //                const query = "SELECT * FROM Users WHERE signintime = '0000-00-00 00:00:00';";
+   //                connection.query(query, (err, results) => {
+   //                         if(err) reject(new Error(err.message));
+   //                         else resolve(results);
+   //                });
+   //             }
+   //             );
+
+   //             // console.log("userDbServices.js: search result:");
+   //             // console.log(response);  // for debugging to see the result of select
+   //             return response;
+
+   //       }  catch(error){
+   //          console.log(error);
+   //       }
+   //    }
+
+   // //search users who registered on the same day that john registered
+   // async searchBySameDayAsJohn(johnId){
+   //      try{
+   //         // use await to call an asynchronous function
+   //         const response = await new Promise((resolve, reject) => 
+   //            {
+   //               const query = "SELECT * FROM Users WHERE DATEDIFF(registerday, (SELECT registerday FROM Users WHERE username =?)) = 0 AND username!=?;";
+   //               connection.query(query, [johnId, johnId], (err, results) => {
+   //                       if(err) reject(new Error(err.message));
+   //                       else resolve(results);
+   //               });
+   //            }
+   //          );
+
+   //          // console.log("userDbServices.js: search result:");
+   //          // console.log(response);  // for debugging to see the result of select
+   //          return response;
+
+   //      }  catch(error){
+   //         console.log(error);
+   //      }
+   // }
 
 
-//    async searchByName(firstname){
-//       try{
-//         //TODO: check if this dateAdded is needed
-//            //const dateAdded = new Date();
-//            // use await to call an asynchronous function
-//            const response = await new Promise((resolve, reject) => 
-//                 {
-//                    const query = "SELECT * FROM Users where firstname = ?;";
-//                    connection.query(query, [firstname], (err, results) => {
-//                        if(err) reject(new Error(err.message));
-//                        else resolve(results);
-//                    });
-//                 }
-//            );
+   // async searchByRegisteredToday() {
+   //    const today = new Date();
+      
+   //    // Get the start and end of today in the correct format
+   //    const startOfDay = new Date(today.setHours(0, 0, 0, 0)); // 00:00:00
+   //    const endOfDay = new Date(today.setHours(23, 59, 59, 999)); // 23:59:59
+      
+   //    //const query = "SELECT * FROM Users WHERE registerday >= $1 AND registerday <= $2";
+   //    try {
+   //    //const response = await new Promise((resolve, reject) =>
+   //       //{
+   //       const query = "SELECT * FROM Users WHERE registerday >= $1 AND registerday <= $2";
+   //        const result = await pool.query(query, [startOfDay, endOfDay]);
+   //        return result.rows; // Return the array of users registered today
+   //    } catch (error) {
+   //        console.error('Error executing query:', error); // Log the query error
+   //        throw error; // Rethrow for handling in app.js
+   //    }
+   // }
 
-//            // console.log(response);  // for debugging to see the result of select
-//            return response;
-
-//        }  catch(error){
-//           console.log(error);
-//        }
-//  }
 
 
 
@@ -427,6 +445,8 @@ async searchAfterJohn(johnId) {
    //         console.log(error);
    //      }
    // }
+
+
    //return all the users who registered today
    // Return all the users who registered today
 // async searchByRegisteredToday() {
@@ -447,54 +467,10 @@ async searchAfterJohn(johnId) {
 // }
 
 
-   // async deleteRowByUsername(username){
-   //       try{
-   //          //id = parseInt(id, 10);
-   //            // use await to call an asynchronous function
-   //            const response = await new Promise((resolve, reject) => 
-   //                {
-   //                   const query = "DELETE FROM Users WHERE username = ?;";
-   //                   connection.query(query, [username], (err, result) => {
-   //                        if(err) reject(new Error(err.message));
-   //                        else resolve(result.affectedRows);
-   //                   });
-   //                }
-   //             );
 
-   //             console.log(response);  // for debugging to see the result of select
-   //             return response === 1? true: false;
+   async searchByUsernameAndPassword(username, password){
+      const newSignInTime = new Date();
 
-   //       }  catch(error){
-   //            console.log(error);
-   //       }
-   // }
-
-  
-//   async updateNameById(username, newName){
-//       try{
-//            console.log("userDbService: ");
-//            console.log(username);
-//            console.log(newName);
-//            id = parseInt(id, 10);
-//            // use await to call an asynchronous function
-//            const response = await new Promise((resolve, reject) => 
-//                {
-//                   const query = "UPDATE Users SET name = ? WHERE id = ?;";
-//                   connection.query(query, [newName, id], (err, result) => {
-//                        if(err) reject(new Error(err.message));
-//                        else resolve(result.affectedRows);
-//                   });
-//                }
-//             );
-
-//             // console.log(response);  // for debugging to see the result of select
-//             return response === 1? true: false;
-//       }  catch(error){
-//          console.log(error);
-//       }
-//   }
-
-   async searchByUsernameAndPassword(username, password) {
       try {
          const response = await new Promise((resolve, reject) => {
             const query = "SELECT * FROM Users WHERE username = ? AND password = ?;";
@@ -506,14 +482,24 @@ async searchAfterJohn(johnId) {
                      resolve(results);
                   }
             });
+            const datequery = "UPDATE Users SET signintime = ? WHERE username = ? AND password = ?;";
+               console.log("executing sign in date query:", datequery, [newSignInTime, username, password]); // debugging
+               connection.query(datequery, [newSignInTime, username, password], (err, results) => {
+                  if (err) {
+                     reject(new Error(err.message));
+                  } else {
+                      resolve(results);
+                  }
+            });
          });
-
+         
          // If the response has results, return the first result (assuming usernames are unique)
          if (response.length > 0) {
             return response[0]; // Return the user object
          } else {
             return null; // No user found
          }
+         
       } catch (error) {
          console.error("Database query error:", error);
          return null; // Return null on error
