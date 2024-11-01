@@ -74,10 +74,10 @@ Node.js with Express for server-side logic
 MySQL for database management
 CORS for handling cross-origin requests
 dotenv for managing environment variables
-## Frontend:
+### Frontend:
 HTML/CSS for user interface
 JavaScript for client-side interactions
-## Development Tools:
+### Development Tools:
 XAMPP for running the local MySQL database
 npm for package management
 
