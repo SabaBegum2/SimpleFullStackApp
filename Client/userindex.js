@@ -290,166 +290,7 @@ searchRegToday.onclick = function () {
     .then(data => loadHTMLTable(data['data']));
 }
 
-// When the searchBtn is clicked
-//function submitSearchDirectory(event) {
 
-        //if (!searchBtn) return;
-
-        //event.preventDefault();
-
-        //const searchBtn = document.querySelector('#searchInput');
-        // searchBtn.onclick = async function(event) {
-        //     const selectOption = document.querySelector('#select-option').value;
-        //     const option = selectOption;
-
-        //     console.log("/Select option: ", selectOption);
-
-        //     const searchInput = document.querySelector('#search-input').value.trim();
-        //     const inputValue = searchInput;
-        //     searchInput.value = "";
-
-        //     console.log("Search input: ", searchInput);
-        //     console.log("input Value: ", inputValue);
-
-        //     try {
-        //         fetch('http://localhost:5050/search/' + inputValue)
-        //         .then(response => response.json())
-        //         .then(data => loadHTMLTable(data['data']));
-
-
-        //     //const response = await fetch('http://localhost:5050/search/' + address );
-
-        //     //console.log("Response: ", response);
-        //     //const response = await fetch('http://localhost:5050/search/' + searchInput);
-        //     //const data = await response.json();
-        //     // console.log(data);
-        //     // loadHTMLTable(data['data']);
-        //     } catch (error) {
-        //         debug("Search input: ", searchInput);
-        //         console.error("Error: ", error);
-        //     }
-        // }
-
-
-    //const searchBtn = document.querySelector('#searchInput');
-    //searchBtn.onclick = async function(event) {
-    // searchBtn.addEventListener('click', async function() {
-    //     // const selectOption = document.querySelector('#select-option');
-    //     // const option = selectOption.value;
-    //     // selectOption.value = "";
-
-    //     // console.log("/Select option: ", selectOption);
-
-    //     // const searchInput = document.querySelector('#search-input').trim();
-    //     // const inputValue = searchInput.value;
-    //     // searchInput.value = "";
-
-    //     const selectOption = document.querySelector('select-option').value;
-    //     const searchInput = document.querySelector('search-input').value.trim();
-    //     const response = '';
-    //     console.log("Search input: ", searchInput);
-
-    //     //let address = "";
-    //     try {
-    //         switch(selectOption) {
-    //             case "1":
-    //                 console.log("Search by first name: ", searchInput);
-    //                 fetch('http://localhost:5050/search/' + searchInput)
-    //                 .then(response => response.json())
-    //                 .then(data => loadHTMLTable(data['data']));
-
-    //                 //address = inputValue;
-    //                 //address = "firsname?firstname=" + searchInput ;
-    //                 break;
-    //             case "2":
-    //                 //address = searchInput;
-    //                 fetch('http://localhost:5050/search/' + searchInput)
-    //                 .then(response => response.json())
-    //                 .then(data => loadHTMLTable(data['data']));
-    //                 //address = "lastname?lastname=" + searchInput ;
-    //                 break;
-    //             case "3":
-    //                 address = "firstandlastname";
-    //                 const firstnameVal = "firstname=" + document.querySelector('#first-box').value.trim();
-    //                 const lastnameVal = "lastname=" + document.querySelector('#last-box').value.trim();
-    //                 if (!firstnameVal || !lastnameVal) {
-    //                     alert("Please enter both first and last name.");
-    //                     return;
-    //                 }
-    //                 address = searchInput;
-    //                 //address = selectOption + "?" + firstnameVal + "&" + lastnameVal;
-    //                 break;
-    //             case "4":
-    //                 address = searchInput;
-    //                 //selectOption = "username";
-    //                 //address = selectOption + "?" + selectOption + "=" + searchInput ;
-    //                 break;
-    //             case "5":
-    //                 //selectOption = "age";
-    //                 address = searchInput;
-    //                 //address = selectOption + "?" + selectOption + "=" + searchInput ;
-    //                 break;
-    //             case "6":
-    //                 //selectOption = "salary";
-    //                 address = searchInput;
-    //                 const minSalary = document.querySelector('#first-box').value.trim();
-    //                 const maxSalary = document.querySelector('#last-box').value.trim();
-    //                 //address = selectOption + "?" + selectOption + "=" + searchInput ;
-    //                 break;
-    //             case "7":
-    //                 // TODO: Implement registerday with 2 params
-    //                 //selectOption = "registerday";
-    //                 //address = selectOption + "?" + selectOption + "=" + searchInput ;
-    //                 address = searchInput;
-    //                 break;
-    //             case "8":
-    //                 //selectOption = "neverLoggedIn";
-    //                 address = searchInput;
-    //                 //address = selectOption + "?" + selectOption + "=" + searchInput ;
-    //                 break;
-    //             case "9":
-    //                 //selectOption = "registeredToday";
-    //                 address = searchInput;
-    //                 break;
-    //             default:
-    //                 console.log("Invalid search option: " + selectOption);
-    //                 return; // Exit function if invalid option
-    //         }
-            
-    //         //searchInput = "";
-
-    //         // fetch('http://localhost:5050/search/', {
-    //         //     method: 'GET',
-    //         //     headers: {
-    //         //         'Content-Type': 'application/json',
-    //         //     },
-    //         //     body: JSON.stringify({ data: data }),
-    //         // })
-    //         // .then(response => response.json())
-    //         // .then(data => {
-    //         //     if (data.success) {
-    //         //         alert('Search successful');
-    //         //     } else {
-    //         //         alert(data.error); // Show error message from the server
-    //         //     }
-    //         // })
-
-    //         //console.log("Address: ", address);
-    //         //const response = await fetch('http://localhost:5050/search/' + address );
-    //         //const response = await fetch('http://localhost:5050/search/${name}');
-    //         //console.log("Response: ", response);
-    //         //const response = await fetch('http://localhost:5050/search/' + searchInput);
-    //         //const data = await response.json();
-    //         //console.log(data);
-    //         //loadHTMLTable(data['data']);
-    //         // fetch('http://localhost:5050/search/' + selectInput)
-    //         // .then(response => response.json())
-    //         // .then(data => loadHTMLTable(data['data']));
-    //     } catch (error) {
-    //         console.error("Error: ", error);
-    //     }
-    // });
-//};
 
 //when the user selects registered today option in the drop down list
 // document.getElementById("select-option").addEventListener("change", async (event) => {
@@ -684,7 +525,6 @@ function insertRowIntoTable(data){
    for(var key in data){                // iterating over the each property key of an object data
       if(data.hasOwnProperty(key)){     // key is a direct property for data
             if(key === 'registerday'){  // the property is 'registerday'
-                //data[key] = new Date(data[key]).toLocaleString(); // format to javascript string
                 data[key] = new Date(data[key]).toISOString().split('T')[0];
             }
             else if (key === 'signintime'){
@@ -693,9 +533,6 @@ function insertRowIntoTable(data){
             tableHtml += `<td>${data[key]}</td>`;
       }
    }
-
-//    tableHtml +=`<td><button class="delete-row-btn" data-username=${data.username}>Delete</td>`;
-//    tableHtml += `<td><button class="edit-row-btn" data-username=${data.username}>Edit</td>`;
 
    tableHtml += "</tr>";
 
@@ -721,32 +558,6 @@ function loadHTMLTable(data){
         table.innerHTML = "<tr><td class='no-data' colspan='8'>No Data</td></tr>";
         return;
     }
-  
-    /*
-    In the following JavaScript code, the forEach method is used to iterate over the 
-    elements of the data array. The forEach method is a higher-order function 
-    that takes a callback function as its argument. The callback function is 
-    executed once for each element in the array.
-    
-    In this case, the callback function takes a single argument, which is an object 
-    destructuring pattern:
-
-
-    function ({username, password, firstname, lastname, salary, age, registerday, signintime) {
-        // ... code inside the callback function
-    }
-
-    This pattern is used to extract the username, password, firstname, lastname, salary, age, registerday, signintime properties from each 
-    element of the data array. The callback function is then executed for each element
-    in the array, and within the function, you can access these properties directly 
-    as variables (username, password, firstname, lastname, salary, age, registerday, signintime).
-
-    
-    In summary, the forEach method is a convenient way to iterate over each element in 
-    an array and perform some operation or execute a function for each element. 
-    The provided callback function is what gets executed for each element in the 
-    data array.
-    */
 
     let tableHtml = "";
     data.forEach(function ({username, password, firstname, lastname, age, salary, registerday, signintime}){
