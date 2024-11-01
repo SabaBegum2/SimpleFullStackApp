@@ -758,7 +758,7 @@ function loadHTMLTable(data){
          tableHtml +=`<td>${salary}</td>`;
          tableHtml +=`<td>${age}</td>`;
          tableHtml +=`<td>${new Date(registerday).toISOString().split('T')[0]}</td>`;
-         tableHtml +=`<td>${signintime ? new Date(signintime).toLocaleString() : "N/A" }</td>`;
+         tableHtml +=`<td>${signintime ? new Date(signintime).toLocaleString() : "" }</td>`;
          tableHtml += "</tr>";
     });
 
