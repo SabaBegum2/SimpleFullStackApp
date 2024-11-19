@@ -30,7 +30,7 @@ npm install express mysql cors nodemon dotenv
 
 4. Create a file named `.env` in the `Backend` directory and add the following:
 
-   ```bash
+   ```env
    PORT=5050
    USER=root
    PASSWORD=
