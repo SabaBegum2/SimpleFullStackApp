@@ -1,4 +1,4 @@
-# User Database Project
+# User Database System
 
 A client-server application for user registration and search functionality using MySQL and XAMPP. This project allows users to register, sign in, and perform various searches on a user database based on multiple criteria.
 
